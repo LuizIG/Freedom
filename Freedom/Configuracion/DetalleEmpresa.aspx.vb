@@ -154,10 +154,16 @@ Public Class DetalleEmpresa
                     statusCode = result.GetValue("statusCode").Value(Of Integer)
 
                     If (statusCode >= 200 And statusCode < 400) Then
+                        Dim list = New List(Of DomicilioEmpresa) From {
+                            domicilio,
+                            lugarEmision
+                        }
+
+                        data = JsonConvert.SerializeObject(list)
                         Return New ServiceResult() With {
                             .Result = True,
                             .Message = "Domicilio Fiscal y lugar de emisión guardados",
-                            .Ret = ""
+                            .Ret = data
                         }
                     Else
                         Dim errorMessage = result.GetValue("errorMessage").Value(Of String)
@@ -168,11 +174,16 @@ Public Class DetalleEmpresa
                         }
                     End If
                 Else
+                    Dim list = New List(Of DomicilioEmpresa) From {
+                        domicilio
+                    }
+
+                    data = JsonConvert.SerializeObject(list)
                     Return New ServiceResult() With {
-                             .Result = True,
-                             .Message = "Domicilio Fiscal guardado",
-                             .Ret = ""
-                         }
+                        .Result = True,
+                        .Message = "Domicilio Fiscal guardado",
+                        .Ret = data
+                    }
                 End If
             Else
                 Dim errorMessage = result.GetValue("errorMessage").Value(Of String)

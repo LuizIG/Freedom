@@ -709,18 +709,18 @@
                             <div class="col-md-4 col-md-offset-4">
                                 <div class="row">
                                     <div class="col-md-12" style="text-align:center;">
-                                        <label for="fname1" class="control-label">Domicilio Fiscal</label>
+                                        <label class="control-label">Domicilio Fiscal</label>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-3">
-                                        <p id="fname1" class="hint-text small">Calle:</p>
+                                        <p class="hint-text small">Calle:</p>
                                     </div>
                                     <div class="col-md-8">
-                                         <p id="lblCalle" runat="server"></p>
+                                         <p data-id="lblCalle" runat="server"></p>
                                     </div>
                                     <div class="col-md-1">
-                                         <span id="requeridoCalle" class="pull-left" runat="server"><i class="fa fa-exclamation"></i></span>
+                                         <span class="pull-left" runat="server"><i id="requeridoCalle" class="fa fa-exclamation"></i></span>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -728,10 +728,10 @@
                                         <p class="hint-text small">Num Exterior:</p>
                                     </div>
                                     <div class="col-md-8">
-                                         <p id="lblNoExt" runat="server"></p>
+                                         <p data-id="lblNoExt" runat="server"></p>
                                     </div>
                                     <div class="col-md-1">
-                                         <span id="requeridoNumExt" class="pull-left" runat="server"><i class="fa fa-exclamation"></i></span>
+                                         <span class="pull-left" runat="server"><i id="requeridoNumExt" class="fa fa-exclamation"></i></span>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -739,7 +739,7 @@
                                        <p class="hint-text small">Num Interior:</p>
                                     </div>
                                     <div class="col-md-8">
-                                         <p id="lblNoInt" runat="server"></p>
+                                         <p data-id="lblNoInt" runat="server"></p>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -747,7 +747,7 @@
                                         <p class="hint-text small">Entre calles:</p>
                                     </div>
                                     <div class="col-md-8">
-                                         <p id="lblCalles" runat="server"></p>
+                                         <p data-id="lblCalles" runat="server"></p>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -755,10 +755,10 @@
                                         <p class="hint-text small">Colonia:</p>
                                     </div>
                                     <div class="col-md-8">
-                                         <p id="lblColonia" runat="server"></p>
+                                         <p data-id="lblColonia" runat="server"></p>
                                     </div>
                                     <div class="col-md-1">
-                                         <span id="requeridoColonia" class="pull-left" runat="server"><i class="fa fa-exclamation"></i></span>
+                                         <span class="pull-left" runat="server"><i id="requeridoColonia" class="fa fa-exclamation"></i></span>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -766,7 +766,7 @@
                                         <p class="hint-text small">CP:</p>
                                     </div>
                                     <div class="col-md-8">
-                                         <p id="lblCP" runat="server"></p>
+                                         <p data-id="lblCP" runat="server"></p>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -774,7 +774,7 @@
                                         <p class="hint-text small">Pais:</p>
                                     </div>
                                     <div class="col-md-8">
-                                         <p id="lblPais" runat="server"></p>
+                                         <p data-id="lblPais" runat="server"></p>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -782,7 +782,7 @@
                                         <p class="hint-text small">Estado:</p>
                                     </div>
                                     <div class="col-md-8">
-                                         <p id="lblEstado" runat="server"></p>
+                                         <p data-id="lblEstado" runat="server"></p>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -790,7 +790,7 @@
                                         <p class="hint-text small">Municipio:</p>
                                     </div>
                                     <div class="col-md-8">
-                                         <p id="lblMunicipio" runat="server"></p>
+                                         <p data-id="lblMunicipio" runat="server"></p>
                                     </div>
                                 </div>
                             </div>
@@ -808,10 +808,10 @@
                                         <p class="hint-text small">Calle:</p>
                                     </div>
                                     <div class="col-md-8">
-                                         <p id="lblCalleEmision" runat="server"></p>
+                                         <p data-id="lblCalleEmision" runat="server"></p>
                                     </div>
                                     <div class="col-md-1">
-                                         <span id="requeridoCalleEmision" class="pull-left" runat="server"><i class="fa fa-exclamation"></i></span>
+                                         <span class="pull-left" runat="server"><i id="requeridoCalleEmision" class="fa fa-exclamation"></i></span>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -819,10 +819,10 @@
                                         <p class="hint-text small">Num Exterior:</p>
                                     </div>
                                     <div class="col-md-8">
-                                         <p id="lblNumExtEmision" runat="server"></p>
+                                         <p data-id="lblNumExtEmision" runat="server"></p>
                                     </div>
                                     <div class="col-md-1">
-                                         <span id="requeridoNumExtEmision" class="pull-left" runat="server"><i class="fa fa-exclamation"></i></span>
+                                         <span class="pull-left" runat="server"><i id="requeridoNumExtEmision" class="fa fa-exclamation"></i></span>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -830,7 +830,7 @@
                                        <p class="hint-text small">Num Interior:</p>
                                     </div>
                                     <div class="col-md-8">
-                                         <p id="lblNumIntEmision" runat="server"></p>
+                                         <p data-id="lblNumIntEmision" runat="server"></p>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -838,7 +838,7 @@
                                         <p class="hint-text small">Entre calles:</p>
                                     </div>
                                     <div class="col-md-8">
-                                         <p id="lblCallesEmision" runat="server"></p>
+                                         <p data-id="lblCallesEmision" runat="server"></p>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -846,10 +846,10 @@
                                         <p class="hint-text small">Colonia:</p>
                                     </div>
                                     <div class="col-md-8">
-                                         <p id="lblColoniaEmision" runat="server"></p>
+                                         <p data-id="lblColoniaEmision" runat="server"></p>
                                     </div>
                                     <div class="col-md-1">
-                                         <span id="requeridoColoniaEmision" class="pull-left" runat="server"><i class="fa fa-exclamation"></i></span>
+                                         <span class="pull-left" runat="server"><i id="requeridoColoniaEmision" class="fa fa-exclamation"></i></span>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -857,7 +857,7 @@
                                         <p class="hint-text small">CP:</p>
                                     </div>
                                     <div class="col-md-8">
-                                         <p id="lblCPEmision" runat="server"></p>
+                                         <p data-id="lblCPEmision" runat="server"></p>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -865,7 +865,7 @@
                                         <p class="hint-text small">Pais:</p>
                                     </div>
                                     <div class="col-md-8">
-                                         <p id="lblPaisEmision" runat="server"></p>
+                                         <p data-id="lblPaisEmision" runat="server"></p>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -873,7 +873,7 @@
                                         <p class="hint-text small">Estado:</p>
                                     </div>
                                     <div class="col-md-8">
-                                         <p id="lblEstadoEmision" runat="server"></p>
+                                         <p data-id="lblEstadoEmision" runat="server"></p>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -881,7 +881,7 @@
                                         <p class="hint-text small">Municipio:</p>
                                     </div>
                                     <div class="col-md-8">
-                                         <p id="lblMunicipioEmision" runat="server"></p>
+                                         <p data-id="lblMunicipioEmision" runat="server"></p>
                                     </div>
                                 </div>
                             </div>
@@ -899,10 +899,10 @@
                                         <p class="hint-text small">Nombre:</p>
                                     </div>
                                     <div class="col-md-8">
-                                         <p id="lblNombreComercial" runat="server"></p>
+                                         <p data-id="lblNombreComercial" runat="server"></p>
                                     </div>
                                     <div class="col-md-1">
-                                         <span id="requeridoNombreComercial" class="pull-left" runat="server"><i class="fa fa-exclamation"></i></span>
+                                         <span class="pull-left" runat="server"><i id="requeridoNombreComercial" class="fa fa-exclamation"></i></span>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -910,7 +910,7 @@
                                         <p class="hint-text small">Logotipo:</p>
                                     </div>
                                     <div class="col-md-8">
-                                         <p id="lblLogotipo" runat="server"></p>
+                                         <p data-id="lblLogotipo" runat="server"></p>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -918,10 +918,10 @@
                                         <p class="hint-text small">Mensaje Adicional: </p>
                                     </div>
                                     <div class="col-md-8">
-                                         <p id="lblMensaje" runat="server"></p>
+                                         <p data-id="lblMensaje" runat="server"></p>
                                     </div>
                                     <div class="col-md-1">
-                                         <span id="requeridoMensaje" class="pull-left" runat="server"><i class="fa fa-exclamation"></i></span>
+                                         <span class="pull-left" runat="server"><i id="requeridoMensaje" class="fa fa-exclamation"></i></span>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -929,7 +929,7 @@
                                        <p class="hint-text small">Telefonos: </p>
                                     </div>
                                     <div class="col-md-8">
-                                         <p id="lblTelefonos" runat="server"></p>
+                                         <p data-id="lblTelefonos" runat="server"></p>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -937,7 +937,7 @@
                                        <p class="hint-text small">Correo: </p>
                                     </div>
                                     <div class="col-md-8">
-                                         <p id="lblCorreoFactura" runat="server"></p>
+                                         <p data-id="lblCorreoFactura" runat="server"></p>
                                     </div>
                                 </div>
                             </div>
@@ -955,10 +955,10 @@
                                         <p class="hint-text small">Clave Privada:</p>
                                     </div>
                                     <div class="col-md-8">
-                                         <p id="lblClavePrivada" runat="server"></p>
+                                         <p data-id="lblClavePrivada" runat="server"></p>
                                     </div>
                                     <div class="col-md-1">
-                                         <span id="requeridoClavePrivada" class="pull-left" runat="server"><i class="fa fa-exclamation"></i></span>
+                                         <span class="pull-left" runat="server"><i id="requeridoClavePrivada" class="fa fa-exclamation"></i></span>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -966,10 +966,10 @@
                                         <p class="hint-text small">Contraseña:</p>
                                     </div>
                                     <div class="col-md-8">
-                                         <p id="lblContraseñaLlavePrivada" runat="server"></p>
+                                         <p data-id="lblContraseñaLlavePrivada" runat="server"></p>
                                     </div>
                                     <div class="col-md-1">
-                                         <span id="requeridoContraseñaLlavePrivada" class="pull-left" runat="server"><i class="fa fa-exclamation"></i></span>
+                                         <span class="pull-left" runat="server"><i id="requeridoContraseñaLlavePrivada" class="fa fa-exclamation"></i></span>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -977,10 +977,10 @@
                                         <p class="hint-text small">Sello Digital: </p>
                                     </div>
                                     <div class="col-md-8">
-                                         <p id="lblSelloDigital" runat="server"></p>
+                                         <p data-id="lblSelloDigital" runat="server"></p>
                                     </div>
                                     <div class="col-md-1">
-                                         <span id="requeridoSelloDigital" class="pull-left" runat="server"><i class="fa fa-exclamation"></i></span>
+                                         <span class="pull-left" runat="server"><i id="requeridoSelloDigital" class="fa fa-exclamation"></i></span>
                                     </div>
                                 </div>
                             </div>
@@ -998,10 +998,10 @@
                                         <p class="hint-text small">Contactos:</p>
                                     </div>
                                     <div class="col-md-8">
-                                         <p id="lblContactos" runat="server"></p>
+                                         <p data-id="lblContactos" runat="server"></p>
                                     </div>
                                     <div class="col-md-1">
-                                         <span id="requeridoContactos" class="pull-left" runat="server"><i class="fa fa-exclamation"></i></span>
+                                         <span class="pull-left" runat="server"><i id="requeridoContactos" class="fa fa-exclamation"></i></span>
                                     </div>
                                 </div>
                             </div>
@@ -1019,10 +1019,10 @@
                                         <p class="hint-text small">Comprobante:</p>
                                     </div>
                                     <div class="col-md-8">
-                                         <p id="lblComprobante" runat="server"></p>
+                                         <p data-id="lblComprobante" runat="server"></p>
                                     </div>
                                     <div class="col-md-1">
-                                         <span id="requeridoComprobante" class="pull-left" runat="server"><i class="fa fa-exclamation"></i></span>
+                                         <span class="pull-left" runat="server"><i id="requeridoComprobante" class="fa fa-exclamation"></i></span>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -1030,10 +1030,10 @@
                                         <p class="hint-text small">Impuestos:</p>
                                     </div>
                                     <div class="col-md-8">
-                                         <p id="lblImpuestos" runat="server"></p>
+                                         <p data-id="lblImpuestos" runat="server"></p>
                                     </div>
                                     <div class="col-md-1">
-                                         <span id="requeridoImpuestos" class="pull-left" runat="server"><i class="fa fa-exclamation"></i></span>
+                                         <span class="pull-left" runat="server"><i id="requeridoImpuestos" class="fa fa-exclamation"></i></span>
                                     </div>
                                 </div>
                             </div>

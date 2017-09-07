@@ -8,7 +8,7 @@
 
     $('#lugarEmisionPart').hide();
     $("#domicilioFiscalPart").attr('class', 'col-md-6 col-md-offset-3');
-    $('#tabsEmpresa a[href="#tab1"]').tab('show');
+    $('#tabsEmpresa a[href="#tab1"]').tab('show'); 
 
     $('#cbxEmision').change(function () {
         if (this.checked) {
@@ -512,6 +512,37 @@ function GuardarDomicilio() {
             if (data.Result != true) {
                 showDialog(data.Message);
             } else {
+                var info = JSON.parse(data.Ret);
+                console.log(info[0].calle);
+                console.log(info.length);
+                $('[data-id=lblCalle]').text(info[0].calle);
+                $("#requeridoCalle").attr('class', 'fa fa-check');
+                $('[data-id=lblNoExt]').text(info[0].numeroExterno);
+                $("#requeridoNumExt").attr('class', 'fa fa-check');
+                $('[data-id=lblNoInt]').text(info[0].numeroInterno);
+                $('[data-id=lblColonia]').text(info[0].colonia);
+                $("#requeridoColonia").attr('class', 'fa fa-check');
+                $('[data-id=lblCalles]').text(info[0].entreCalles);
+                $('[data-id=lblCP]').text(info[0].cp);
+                $('[data-id=lblPais]').text(info[0].pais);
+                $('[data-id=lblEstado]').text(info[0].estado);
+                $('[data-id=lblMunicipio]').text(info[0].municipio);
+
+                if (info.length == 2) {
+                    $('[data-id=lblCalleEmision]').text(info[1].calle);
+                    $("#requeridoCalleEmision").attr('class', 'fa fa-check');
+                    $('[data-id=lblNumExtEmision]').text(info[1].numeroExterno);
+                    $("#requeridoNumExtEmision").attr('class', 'fa fa-check');
+                    $('[data-id=lblNumIntEmision]').text(info[1].numeroInterno);
+                    $('[data-id=lblColoniaEmision]').text(info[1].colonia);
+                    $("#requeridoColoniaEmision").attr('class', 'fa fa-check');
+                    $('[data-id=lblCallesEmision]').text(info[1].entreCalles);
+                    $('[data-id=lblCPEmision]').text(info[1].cp);
+                    $('[data-id=lblPaisEmision]').text(info[1].pais);
+                    $('[data-id=lblEstadoEmision]').text(info[1].estado);
+                    $('[data-id=lblMunicipioEmision]').text(info[1].municipio);
+                }
+
                 showDialog(data.Message);
                 $('#tabsEmpresa a[href="#tab3"]').tab('show');
             }
