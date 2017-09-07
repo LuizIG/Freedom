@@ -7,6 +7,7 @@
     var validacionesTabs = false;
 
     $('#lugarEmisionPart').hide();
+    $('#resumenLugarEmision').hide();
     $("#domicilioFiscalPart").attr('class', 'col-md-6 col-md-offset-3');
     $('#tabsEmpresa a[href="#tab1"]').tab('show'); 
 
@@ -16,12 +17,14 @@
             $('#btnGuardarDomicilio').show();
             $('#btnAnteriorTab2A').show();
             $('#lugarEmisionPart').fadeOut('fast');
+            $('#resumenLugarEmision').hide();
         } 
         else {
             $("#domicilioFiscalPart").attr('class', 'col-md-6');
             $('#lugarEmisionPart').fadeIn('fast');
             $('#btnGuardarDomicilio').hide();
             $('#btnAnteriorTab2A').hide();
+            $('#resumenLugarEmision').show();
         } 
     });
 
@@ -79,6 +82,10 @@
 
     $('#btnGuardarImpuestos').click(function (e) {
         GuardarImpuestos();
+    });
+
+    $('#btnFinalizar').click(function (e) {
+        window.location.replace("Configuracion/Empresa.aspx");
     });
 
 
@@ -486,7 +493,6 @@ function GuardarEmpresa() {
                 $('#refImpuestos').attr('href', '#tab6');
                 $('#refCheck').attr('href', '#tab7');
                 $('#tabsEmpresa a[href="#tab2"]').tab('show');
-                //window.location.replace("Configuracion/Empresa.aspx");
             }
         },
         error: function (xmlHttpRequest, textStatus, errorThrown) {
@@ -513,8 +519,6 @@ function GuardarDomicilio() {
                 showDialog(data.Message);
             } else {
                 var info = JSON.parse(data.Ret);
-                console.log(info[0].calle);
-                console.log(info.length);
                 $('[data-id=lblCalle]').text(info[0].calle);
                 $("#requeridoCalle").attr('class', 'fa fa-check');
                 $('[data-id=lblNoExt]').text(info[0].numeroExterno);
@@ -632,6 +636,11 @@ function GuardarContactos() {
             if (data.Result != true) {
                 showDialog(data.Message);
             } else {
+                var info = data.Ret;
+                
+                $('[data-id=lblContactos]').html(info);
+                $("#requeridoContactos").attr('class', 'fa fa-check');
+
                 showDialog(data.Message);
                 $('#tabsEmpresa a[href="#tab6"]').tab('show');
             }
@@ -645,13 +654,16 @@ function GuardarContactos() {
 function GuardarImpuestos() {
     var retValue = [];
     var selected = [];
+    var impuestos = [];
     var item = {};
 
     $('#tblImpuestos input[type="checkbox"]').each(function () {
         if ($(this).prop('checked') == true) {
             var trow = $(this).parents('tr');
             var id = trow.find('input[name="lblTipoImpuestoId"]').val();
+            var impuesto = trow.find('input[name="lblTipoImpuesto"]').val();
             selected.push(id);
+            impuestos.push(impuesto);
         }
     });
 
@@ -661,8 +673,21 @@ function GuardarImpuestos() {
     retValue.push(item);
 
     item = {};
-    var tipoComprobante = $("[data-id=cbxComprobante] option:selected").val();
+    item["ParamName"] = "Impuesto";
+    item["ParamType"] = "NVARCHAR";
+    item["ParamValue"] = impuestos
+    retValue.push(item);
+
+    item = {};
+    var tipoComprobanteId = $("[data-id=cbxComprobante] option:selected").val();
     item["ParamName"] = "TipoComprobanteId";
+    item["ParamType"] = "NVARCHAR";
+    item["ParamValue"] = tipoComprobanteId
+    retValue.push(item);
+
+    item = {};
+    var tipoComprobante = $("[data-id=cbxComprobante] option:selected").text();
+    item["ParamName"] = "TipoComprobante";
     item["ParamType"] = "NVARCHAR";
     item["ParamValue"] = tipoComprobante
     retValue.push(item);
@@ -688,6 +713,20 @@ function GuardarImpuestos() {
             if (data.Result != true) {
                 showDialog(data.Message);
             } else {
+                var info = JSON.parse(data.Ret);
+
+                var impuestos = "";
+                info.forEach(function (item) {
+                    impuestos += item.TipoImpuesto + "<br/>";
+                });
+
+                console.log(impuestos);
+
+                $('[data-id=lblComprobante]').text(info[0].TipoComprobante);
+                $("#requeridoComprobante").attr('class', 'fa fa-check');
+                $('[data-id=lblImpuestos]').html(impuestos);
+                $("#requeridoImpuestos").attr('class', 'fa fa-check');
+
                 showDialog(data.Message);
                 $('#tabsEmpresa a[href="#tab7"]').tab('show');
             }
@@ -732,6 +771,14 @@ function GuardarCertificados() {
             if (data.Result != true) {
                 showDialog(data.Message);
             } else {
+                var info = JSON.parse(data.Ret);
+                $('[data-id=lblClavePrivada]').text(info.llavePrivada);
+                $("#requeridoClavePrivada").attr('class', 'fa fa-check');
+                $('[data-id=lblContraseñaLlavePrivada]').text(info.llavePublica);
+                $("#requeridoContraseñaLlavePrivada").attr('class', 'fa fa-check');
+                $('[data-id=lblSelloDigital]').text(info.certificado);
+                $("#requeridoSelloDigital").attr('class', 'fa fa-check');
+
                 showDialog(data.Message);
                 $('#tabsEmpresa a[href="#tab5"]').tab('show');
             }
@@ -886,6 +933,15 @@ function GuardarPersonalizacion() {
             if (data.Result != true) {
                 showDialog(data.Message);
             } else {
+                var info = JSON.parse(data.Ret);
+                $('[data-id=lblNombreComercial]').text(info.nombreComercial);
+                $("#requeridoNombreComercial").attr('class', 'fa fa-check');
+                $('[data-id=lblLogotipo]').text(info.logo);
+                $('[data-id=lblMensaje]').text(info.mensajeFactura);
+                $("#requeridoMensaje").attr('class', 'fa fa-check');
+                $('[data-id=lblTelefonos]').text(info.telefonoFactura);
+                $('[data-id=lblCorreoFactura]').text(info.correoFactura);
+
                 showDialog(data.Message);
                 $('#tabsEmpresa a[href="#tab4"]').tab('show');
             }

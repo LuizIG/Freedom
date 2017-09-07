@@ -619,7 +619,7 @@
                                                                     <asp:Label ID="TextBox2" runat="server" Text='<%# Eval("Familia") %>' />
                                                                 </td>
                                                                 <td class="v-align-middle" style="text-align:center; padding: 0px !important;">
-                                                                    <asp:Label ID="Label1" runat="server" Text='<%# Eval("TipoImpuesto") %>' />
+                                                                    <input name="lblTipoImpuesto" type="hidden" value='<%# Eval("TipoImpuesto") %>'>
                                                                 </td>
                                                             </tr>  
                                                         </ItemTemplate>
@@ -796,7 +796,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group row">
+                        <div class="form-group row" id="resumenLugarEmision">
                             <div class="col-md-4 col-md-offset-4">
                                 <div class="row">
                                     <div class="col-md-12" style="text-align:center;">

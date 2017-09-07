@@ -158,12 +158,13 @@
                         <div class="brand inline">
                             <img src='<%= ResolveUrl("~/Assets/img/logo.png")%>' alt="logo" data-src='<%= ResolveUrl("~/Assets/img/logo.png")%>' data-src-retina='<%= ResolveUrl("~/Assets/img/logo_2x.png")%>' width="78" height="22" />
                         </div>
+                        <a href="#" class="search-link hidden-md-down" data-toggle="search"><i class="pg-search"></i>Type anywhere to <span class="bold">search</span></a>
                     </div>
                 </div>
+               
                 <!-- RIGHT SIDE -->
-                <div class="pull-right full-height visible-sm visible-xs">
-                    <!-- START ACTION BAR -->
-                    <!-- END ACTION BAR -->
+                <div class="full-height visible-sm visible-xs">
+                    
                 </div>
             </div>
             <!-- END MOBILE CONTROLS -->

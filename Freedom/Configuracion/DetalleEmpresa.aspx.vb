@@ -313,6 +313,7 @@ Public Class DetalleEmpresa
 
             Dim page = New FreedomPage()
             Dim loginsession = page.UserSession
+            Dim nombresContactos = ""
             Dim contactos = DirectCast(HttpContext.Current.Session("tblContactos"), DataTable)
 
             For Each row As DataRow In contactos.Rows
@@ -326,6 +327,7 @@ Public Class DetalleEmpresa
                     .tipoContacto = row("TipoContacto")
                 }
 
+                nombresContactos += row("NombreContacto") + "<br/>"
                 Dim data = JsonConvert.SerializeObject(contacto)
                 Dim req = PostRequest("api/ContactoEmpresa", data, loginsession.Token)
                 Dim result = JObject.Parse(req)
@@ -346,7 +348,7 @@ Public Class DetalleEmpresa
             Return New ServiceResult() With {
                 .Result = True,
                 .Message = "Contactos guardados",
-                .Ret = ""
+                .Ret = nombresContactos
             }
         Catch ex As Exception
             Return New ServiceResult() With {
@@ -362,19 +364,28 @@ Public Class DetalleEmpresa
         Try
             Dim parametros As List(Of Parametros) = StringToValue(value, GetType(List(Of Parametros)))
             Dim tipoComprobanteId = If(parametros.Where(Function(x) x.ParamName.ToUpper() = "TIPOCOMPROBANTEID").ToList()(0).ParamValue.ToString() <> "", parametros.Where(Function(x) x.ParamName.ToUpper() = "TIPOCOMPROBANTEID").ToList()(0).ParamValue.ToString(), "")
+            Dim tipoComprobante = If(parametros.Where(Function(x) x.ParamName.ToUpper() = "TIPOCOMPROBANTE").ToList()(0).ParamValue.ToString() <> "", parametros.Where(Function(x) x.ParamName.ToUpper() = "TIPOCOMPROBANTE").ToList()(0).ParamValue.ToString(), "")
+            Dim impuestoValue = If(parametros.Where(Function(x) x.ParamName.ToUpper() = "IMPUESTO").ToList()(0).ParamValue.ToString() <> "", parametros.Where(Function(x) x.ParamName.ToUpper() = "IMPUESTO").ToList()(0).ParamValue, "")
             Dim impuestoIdValue = If(parametros.Where(Function(x) x.ParamName.ToUpper() = "IMPUESTOID").ToList()(0).ParamValue.ToString() <> "", parametros.Where(Function(x) x.ParamName.ToUpper() = "IMPUESTOID").ToList()(0).ParamValue, "")
             Dim page = New FreedomPage()
             Dim loginsession = page.UserSession
 
             Dim impuestos = DirectCast(impuestoIdValue, IList)
+            Dim valorImpuestos = DirectCast(impuestoValue, IList)
+
+            Dim list = New List(Of ConfiguracionImpuesto)
 
             If impuestos.Count > 0 Then
                 For Each impuestoId As String In impuestoIdValue
                     Dim configImpuesto = New ConfiguracionImpuesto() With {
                         .idEmpresa = page.EmpresaId,
                         .idTipoComprobante = Convert.ToInt32(tipoComprobanteId),
+                        .TipoComprobante = tipoComprobante,
+                        .TipoImpuesto = impuestoValue.ToString(),
                         .idTipoImpuesto = Convert.ToInt32(impuestoId)
                     }
+
+                    list.Add(configImpuesto)
 
                     Dim data = JsonConvert.SerializeObject(configImpuesto)
                     Dim req = PostRequest("api/ConfiguracionImpuesto", data, loginsession.Token)
@@ -396,9 +407,12 @@ Public Class DetalleEmpresa
                 Dim configImpuesto = New ConfiguracionImpuesto() With {
                     .idEmpresa = page.EmpresaId,
                     .idTipoComprobante = Convert.ToInt32(tipoComprobanteId),
+                    .TipoComprobante = tipoComprobante,
+                    .TipoImpuesto = "",
                     .idTipoImpuesto = 0
                 }
 
+                list.Add(configImpuesto)
                 Dim data = JsonConvert.SerializeObject(configImpuesto)
                 Dim req = PostRequest("api/ConfiguracionImpuesto", data, loginsession.Token)
                 Dim result = JObject.Parse(req)
@@ -416,10 +430,11 @@ Public Class DetalleEmpresa
                 End If
             End If
 
+            Dim retData = JsonConvert.SerializeObject(list)
             Return New ServiceResult() With {
                     .Result = True,
                     .Message = "Configuración de impuestos guardada",
-                    .Ret = ""
+                    .Ret = retData
                 }
         Catch ex As Exception
             Return New ServiceResult() With {
