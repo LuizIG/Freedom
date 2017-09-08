@@ -1,4 +1,5 @@
 ﻿<%@ Page Title="" Language="vb" AutoEventWireup="false" MasterPageFile="~/Site.Master" CodeBehind="DetalleEmpresa.aspx.vb" Inherits="Freedom.DetalleEmpresa" %>
+<%--<%@ MasterType VirtualPath="~/Site.Master" %>--%>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 <ul class="breadcrumb">

@@ -4,7 +4,7 @@
         cargarEstadosEmision(1);
     });
     
-    var validacionesTabs = false;
+    var validacionesTabs = true;
 
     $('#lugarEmisionPart').hide();
     $('#resumenLugarEmision').hide();
@@ -477,6 +477,7 @@ function GuardarEmpresa() {
                 showDialog(data.Message);
             } else {
                 var info = JSON.parse(data.Ret);
+                $('[name=lblEmpresa]').text(info.NombreEmpresa);
                 $('[data-id=lblNombreEmpresa]').text(info.NombreEmpresa);
                 $("#requeridoNombre").attr('class', 'fa fa-check');
                 $('[data-id=lblRFC]').text(info.RFC);
@@ -652,7 +653,7 @@ function GuardarContactos() {
 }
 
 function GuardarImpuestos() {
-    var retValue = [];
+    var retValue = []; 
     var selected = [];
     var impuestos = [];
     var item = {};

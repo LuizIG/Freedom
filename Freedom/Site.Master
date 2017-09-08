@@ -145,29 +145,45 @@
             <div class="container-fluid relative">
                 <!-- LEFT SIDE -->
                 <div class="pull-left full-height visible-sm visible-xs">
-                    <!-- START ACTION BAR -->
                     <div class="header-inner">
                         <a href="#" class="btn-link toggle-sidebar visible-sm-inline-block visible-xs-inline-block padding-5" data-toggle="sidebar">
                             <span class="icon-set menu-hambuger"></span>
                         </a>
                     </div>
-                    <!-- END ACTION BAR -->
                 </div>
                 <div class="pull-center hidden-md hidden-lg">
                     <div class="header-inner">
                         <div class="brand inline">
                             <img src='<%= ResolveUrl("~/Assets/img/logo.png")%>' alt="logo" data-src='<%= ResolveUrl("~/Assets/img/logo.png")%>' data-src-retina='<%= ResolveUrl("~/Assets/img/logo_2x.png")%>' width="78" height="22" />
                         </div>
-                        <a href="#" class="search-link hidden-md-down" data-toggle="search"><i class="pg-search"></i>Type anywhere to <span class="bold">search</span></a>
                     </div>
                 </div>
-               
-                <!-- RIGHT SIDE -->
-                <div class="full-height visible-sm visible-xs">
+                <div class="pull-right full-height visible-sm visible-xs">
                     
                 </div>
             </div>
-            <!-- END MOBILE CONTROLS -->
+            <div class="pull-center" style="text-align:center;">
+                <div class="dropdown">
+	                <h5 runat="server" id="lblEmpresa" name="lblEmpresa" data-toggle="dropdown" style="cursor: pointer;"></h5>
+	                <div class="dropdown-menu notification-toggle" role="menu" aria-labelledby="notification-center" style="left:600px;">
+		                <div class="notification-panel" style="width:180px;">
+			                <div class="notification-body scrollable">
+                                <asp:Repeater ID="repListaEmpresas" runat="server">
+	                                <ItemTemplate>
+                                        <div class="notification-item unread clearfix">
+					                        <div class="heading open">
+						                        <a href="#" class="text-black pull-left">
+                                                    <asp:Label ID="lblNombreEmpresa" CssClass="bold" runat="server" Text='<%# Eval("NombreEmpresa") %>' />
+						                        </a>
+					                        </div>
+				                        </div>
+	                                </ItemTemplate>
+                                </asp:Repeater>
+			                </div>
+		                </div>
+	                </div>
+                </div>
+            </div>
             <div class=" pull-left sm-table hidden-xs hidden-sm">
                 <div class="header-inner">
                     <div class="brand inline">
