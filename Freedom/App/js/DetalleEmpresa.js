@@ -3,8 +3,15 @@
         cargarEstados(1);
         cargarEstadosEmision(1);
     });
-    
+
+    var editar = $("#txtEditarEmpresa").val();
     var validacionesTabs = true;
+
+    if (editar == "True") {
+        validacionesTabs = false;
+    } else {
+        validacionesTabs = true;
+    }
 
     $('#lugarEmisionPart').hide();
     $('#resumenLugarEmision').hide();
@@ -60,7 +67,7 @@
     });
 
     $('#btnTriggerAgregaContacto').click(function (e) {
-        console.log("in")
+        console.log("in");
         if (validarContacto()) {
             $("#btnAgregarContacto").click();
             return true;
@@ -85,7 +92,7 @@
     });
 
     $('#btnFinalizar').click(function (e) {
-        window.location.replace("Configuracion/Empresa.aspx");
+        window.location.replace("Empresas.aspx");
     });
 
 
@@ -119,10 +126,10 @@
         $('#tabsEmpresa a[href="#tab5"]').tab('show');
     });
 
-    $('#btnAnteriorTab7').click(function (e) {
-        e.preventDefault();
-        $('#tabsEmpresa a[href="#tab6"]').tab('show');
-    });
+    //$('#btnAnteriorTab7').click(function (e) {
+    //    e.preventDefault();
+    //    $('#tabsEmpresa a[href="#tab6"]').tab('show');
+    //});
 
     if (validacionesTabs) {
         $('#tabDomicilio').click(function (e) {
@@ -141,9 +148,9 @@
             validarInfoGeneral();
         });
 
-        $('#tabImpuestos').click(function (e) {
-            validarInfoGeneral();
-        });
+        //$('#tabImpuestos').click(function (e) {
+        //    validarInfoGeneral();
+        //});
 
         $('#tabCheck').click(function (e) {
             validarInfoGeneral();
@@ -153,8 +160,8 @@
         $('#refPersonalizacion').attr('href', '#tab3');
         $('#refCertificados').attr('href', '#tab4');
         $('#refContactos').attr('href', '#tab5');
-        $('#refImpuestos').attr('href', '#tab6');
-        $('#refCheck').attr('href', '#tab7');
+        //$('#refImpuestos').attr('href', '#tab6');
+        $('#refCheck').attr('href', '#tab6');
     }
     
 });
@@ -491,8 +498,8 @@ function GuardarEmpresa() {
                 $('#refPersonalizacion').attr('href', '#tab3');
                 $('#refCertificados').attr('href', '#tab4');
                 $('#refContactos').attr('href', '#tab5');
-                $('#refImpuestos').attr('href', '#tab6');
-                $('#refCheck').attr('href', '#tab7');
+                //$('#refImpuestos').attr('href', '#tab6');
+                $('#refCheck').attr('href', '#tab6');
                 $('#tabsEmpresa a[href="#tab2"]').tab('show');
             }
         },
@@ -670,27 +677,27 @@ function GuardarImpuestos() {
 
     item["ParamName"] = "ImpuestoId";
     item["ParamType"] = "NVARCHAR";
-    item["ParamValue"] = selected
+    item["ParamValue"] = selected;
     retValue.push(item);
 
     item = {};
     item["ParamName"] = "Impuesto";
     item["ParamType"] = "NVARCHAR";
-    item["ParamValue"] = impuestos
+    item["ParamValue"] = impuestos;
     retValue.push(item);
 
     item = {};
     var tipoComprobanteId = $("[data-id=cbxComprobante] option:selected").val();
     item["ParamName"] = "TipoComprobanteId";
     item["ParamType"] = "NVARCHAR";
-    item["ParamValue"] = tipoComprobanteId
+    item["ParamValue"] = tipoComprobanteId;
     retValue.push(item);
 
     item = {};
     var tipoComprobante = $("[data-id=cbxComprobante] option:selected").text();
     item["ParamName"] = "TipoComprobante";
     item["ParamType"] = "NVARCHAR";
-    item["ParamValue"] = tipoComprobante
+    item["ParamValue"] = tipoComprobante;
     retValue.push(item);
 
     var retValueJson = "";
@@ -773,11 +780,19 @@ function GuardarCertificados() {
                 showDialog(data.Message);
             } else {
                 var info = JSON.parse(data.Ret);
-                $('[data-id=lblClavePrivada]').text(info.llavePrivada);
+                var llavePrivada = "No";
+                var llavePublica = "No";
+                var certificado = "No";
+
+                if (info.llavePrivada != "") { llavePrivada = "Si"; }
+                if (info.llavePublica != "") { llavePublica = "Si"; }
+                if (info.certificado != "") { certificado = "Si"; }
+
+                $('[data-id=lblClavePrivada]').text(llavePrivada);
                 $("#requeridoClavePrivada").attr('class', 'fa fa-check');
-                $('[data-id=lblContraseñaLlavePrivada]').text(info.llavePublica);
+                $('[data-id=lblContraseñaLlavePrivada]').text(llavePublica);
                 $("#requeridoContraseñaLlavePrivada").attr('class', 'fa fa-check');
-                $('[data-id=lblSelloDigital]').text(info.certificado);
+                $('[data-id=lblSelloDigital]').text(certificado);
                 $("#requeridoSelloDigital").attr('class', 'fa fa-check');
 
                 showDialog(data.Message);
@@ -886,25 +901,25 @@ function getPersonalizarParams() {
     item = {};
     item["ParamName"] = "Logo";
     item["ParamType"] = "NVARCHAR";
-    item["ParamValue"] = $("#binaryLogo").val();;
+    item["ParamValue"] = $("#binaryLogo").val();
     retValue.push(item);
 
     item = {};
     item["ParamName"] = "MensajeFactura";
     item["ParamType"] = "NVARCHAR";
-    item["ParamValue"] = $("#txtMensaje").val();;
+    item["ParamValue"] = $("#txtMensaje").val();
     retValue.push(item);
 
     item = {};
     item["ParamName"] = "TelefonoFactura";
     item["ParamType"] = "NVARCHAR";
-    item["ParamValue"] = $("#txtTelefonos").val();;
+    item["ParamValue"] = $("#txtTelefonos").val();
     retValue.push(item);
 
     item = {};
     item["ParamName"] = "CorreoFactura";
     item["ParamType"] = "NVARCHAR";
-    item["ParamValue"] = $("#txtCorreo").val();;
+    item["ParamValue"] = $("#txtCorreo").val();
     retValue.push(item);
 
 

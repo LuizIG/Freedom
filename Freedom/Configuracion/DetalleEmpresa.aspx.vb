@@ -12,16 +12,21 @@ Public Class DetalleEmpresa
         SelectMenuItem("menu_span_configuracion_sistema")
         SelectMenuItem("menu_span_configuracion_sistema_empresa")
 
-        If Not IsPostBack Then
-            Session("tblContactos") = Nothing
-        End If
-
         MaintainScrollPositionOnPostBack = True
 
         CargarRegimenFiscal()
         CargarPaises()
-        CargarTipoImpuesto()
-        CargarComprobante()
+        'CargarTipoImpuesto()
+        'CargarComprobante()
+
+        If Not IsPostBack Then
+            Session("tblContactos") = Nothing
+        End If
+
+        If EditEmpresa Then
+            CargarPagina()
+            txtEditarEmpresa.Text = "True"
+        End If
     End Sub
 
     <WebMethod(EnableSession:=True)>
@@ -281,7 +286,7 @@ Public Class DetalleEmpresa
                 Return New ServiceResult() With {
                     .Result = True,
                     .Message = "Certificados guardados",
-                    .Ret = ""
+                    .Ret = data
                 }
             Else
                 Dim errorMessage = result.GetValue("errorMessage").Value(Of String)
@@ -563,46 +568,110 @@ Public Class DetalleEmpresa
         End If
     End Sub
 
-    Public Sub CargarTipoImpuesto()
-        Dim req = GetRequest("api/TipoImpuesto", UserSession.Token)
+    'Public Sub CargarTipoImpuesto()
+    '    Dim req = GetRequest("api/TipoImpuesto", UserSession.Token)
+    '    Dim result = JObject.Parse(req)
+    '    Dim statusCode = result.GetValue("statusCode").Value(Of Integer)
+
+    '    If (statusCode >= 200 And statusCode < 400) Then
+    '        Dim detail = result.GetValue("detail").Value(Of JArray)
+    '        Dim tipoImpuesto As List(Of TipoImpuesto) = StringToValue(detail.ToString(), GetType(List(Of TipoImpuesto)))
+
+    '        repImpuestos.DataSource = tipoImpuesto
+    '        repImpuestos.DataBind()
+    '    End If
+    'End Sub
+
+    'Public Sub CargarComprobante()
+    '    Dim req = GetRequest("api/TipoComprobanteEsquemaFiscal?esquemafiscal=CFDI", UserSession.Token)
+    '    Dim result = JObject.Parse(req)
+    '    Dim statusCode = result.GetValue("statusCode").Value(Of Integer)
+
+    '    If (statusCode >= 200 And statusCode < 400) Then
+    '        Dim detail = result.GetValue("detail").Value(Of JArray)
+    '        Dim comprobantes As List(Of Comprobante) = StringToValue(detail.ToString(), GetType(List(Of Comprobante)))
+
+    '        cbxComprobante.DataSource = comprobantes
+    '        cbxComprobante.DataValueField = "TipoComprobanteId"
+    '        cbxComprobante.DataTextField = "TipoComprobante"
+    '        cbxComprobante.DataBind()
+    '    End If
+    'End Sub
+
+    Public Sub CargarPagina()
+        CargarEmpresa()
+        CargarContactos()
+    End Sub
+
+    Public Sub CargarEmpresa()
+        Dim url = "api/Empresas/" & EmpresaId & "?idOrganizacion=" & UserSession.OrganizacionId
+        Dim req = GetRequest(url, UserSession.Token)
         Dim result = JObject.Parse(req)
         Dim statusCode = result.GetValue("statusCode").Value(Of Integer)
 
         If (statusCode >= 200 And statusCode < 400) Then
             Dim detail = result.GetValue("detail").Value(Of JArray)
-            Dim tipoImpuesto As List(Of TipoImpuesto) = StringToValue(detail.ToString(), GetType(List(Of TipoImpuesto)))
+            Dim empresa As List(Of EmpresaResult) = StringToValue(detail.ToString(), GetType(List(Of EmpresaResult)))
 
-            repImpuestos.DataSource = tipoImpuesto
-            repImpuestos.DataBind()
+            txtNombre.Text = empresa(0).NombreEmpresa
+            txtRFC.Text = empresa(0).RFC
+            'cbxRegimenFiscal.Items.FindByValue(empresa(0).).Selected = True
+            txtCURP.Text = empresa(0).CURP
+
+            txtCalle.Text = If(empresa(0).Calle_Fiscal, "")
+            txtNumExt.Text = If(empresa(0).NumeroExterno_Fiscal, "")
+            txtNumInt.Text = If(empresa(0).NumeroInterno_Fiscal, "")
+            txtCalles.Text = If(empresa(0).EntreCalles_Fiscal, "")
+            txtColonia.Text = If(empresa(0).Colonia_Fiscal, "")
+            txtCP.Text = If(empresa(0).CP_Fiscal, "")
+            cbxPais.Items.FindByText(If(empresa(0).Pais_Fiscal, "MEXICO")).Selected = True
+            'cbxEstado.Items.FindByValue(If(empresa(0).EstadoId_Fiscal = 0, 1, empresa(0).EstadoId_Fiscal)).Selected = True
+            txtMunicipio.Text = If(empresa(0).Municipio_Fiscal, "")
+
+            txtCalleEmision.Text = If(empresa(0).Calle_Emision, "")
+            txtNumExtEmision.Text = If(empresa(0).NumeroExterno_Emision, "")
+            txtNumIntEmision.Text = If(empresa(0).NumeroInterno_Emision, "")
+            txtCallesEmision.Text = If(empresa(0).EntreCalles_Emision, "")
+            txtColoniaEmision.Text = If(empresa(0).Colonia_Emision, "")
+            txtCPEmision.Text = If(empresa(0).CP_Emision, "")
+            cbxPaisEmision.Items.FindByText(If(empresa(0).Pais_Emision, "MEXICO")).Selected = True
+            'cbxEstadoEmision.Items.FindByValue(If(empresa(0).EstadoId_Emision = 0, 1, empresa(0).EstadoId_Emision)).Selected = True
+            txtMunicipioEmision.Text = If(empresa(0).Municipio_Emision, "")
         End If
     End Sub
 
-    Public Sub CargarComprobante()
-        Dim req = GetRequest("api/TipoComprobanteEsquemaFiscal?esquemafiscal=CFDI", UserSession.Token)
+    Public Sub CargarContactos()
+        Dim url = "api/ContactoEmpresa?idEmpresa=" & EmpresaId & "&idOrganizacion=" & UserSession.OrganizacionId
+        Dim req = GetRequest(url, UserSession.Token)
         Dim result = JObject.Parse(req)
         Dim statusCode = result.GetValue("statusCode").Value(Of Integer)
 
         If (statusCode >= 200 And statusCode < 400) Then
             Dim detail = result.GetValue("detail").Value(Of JArray)
-            Dim comprobantes As List(Of Comprobante) = StringToValue(detail.ToString(), GetType(List(Of Comprobante)))
+            Dim contactos As List(Of ContactoEmpresa) = StringToValue(detail.ToString(), GetType(List(Of ContactoEmpresa)))
+            Dim tbl = New DataTable()
 
-            cbxComprobante.DataSource = comprobantes
-            cbxComprobante.DataValueField = "TipoComprobanteId"
-            cbxComprobante.DataTextField = "TipoComprobante"
-            cbxComprobante.DataBind()
+            If Session("tblContactos") Is Nothing Then
+                tbl.Columns.Add("NombreContacto")
+                tbl.Columns.Add("TipoContacto")
+                tbl.Columns.Add("TelefonoFijo")
+                tbl.Columns.Add("TelefonoMovil")
+                tbl.Columns.Add("Correo")
+                tbl.Columns.Add("Puesto")
+
+                For Each contacto As ContactoEmpresa In contactos
+                    tbl.Rows.Add(contacto.nombre, contacto.tipoContacto, contacto.telefono, contacto.telefonoMovil, contacto.correoElectronico, contacto.puesto)
+                Next
+
+                tbl.AcceptChanges()
+                repContactos.DataSource = tbl
+                repContactos.DataBind()
+                Session("tblContactos") = tbl
+            End If
         End If
     End Sub
 
     Protected Sub btnAgregarContacto_Click(sender As Object, e As EventArgs)
         CargarTablaContactos()
-    End Sub
-
-    Protected Sub btnUploadCertificado_Click(sender As Object, e As EventArgs)
-        'fuSelloDigital.PostedFile
-        'If fuSelloDigital.HasFile Then
-        '    'Dim address = Server.MapPath("") + "\\" + fuSelloDigital.FileName
-        '    'fuSelloDigital.SaveAs(address)
-        '    txtSelloDigital.Text = fuSelloDigital.FileName
-        'End If
     End Sub
 End Class

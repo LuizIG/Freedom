@@ -70,6 +70,7 @@
     <Compile Include="Entities\ContactoEmpresa.vb" />
     <Compile Include="Entities\DomicilioEmpresa.vb" />
     <Compile Include="Entities\Empresa.vb" />
+    <Compile Include="Entities\EmpresaResult.vb" />
     <Compile Include="Entities\PersonalizacionEmpresa.vb" />
     <Compile Include="Entities\UserInfo.vb" />
     <Compile Include="Entities\Organizacion.vb" />

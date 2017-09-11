@@ -1,5 +1,6 @@
 ﻿Imports System.Web.Services
 Imports Model
+Imports Newtonsoft.Json
 Imports Newtonsoft.Json.Linq
 
 Public Class Empresa
@@ -30,5 +31,66 @@ Public Class Empresa
         Else
 
         End If
+    End Sub
+
+    <WebMethod(EnableSession:=True)>
+    Public Shared Function EliminarEmpresa(empresaId As String) As ServiceResult
+        Try
+            Dim page = New FreedomPage()
+            Dim loginsession = page.UserSession
+
+            Dim url = "api/Empresas?idEmpresa=" & Convert.ToInt32(empresaId) & "&idOrganizacion=" & loginsession.OrganizacionId
+            Dim req = DeleteRequest(url, loginsession.Token)
+            Dim result = JObject.Parse(req)
+            Dim statusCode = result.GetValue("statusCode").Value(Of Integer)
+
+            If (statusCode >= 200 And statusCode < 400) Then
+
+                Return New ServiceResult() With {
+                    .Result = True,
+                    .Message = "Empresa eliminada",
+                    .Ret = ""
+                }
+            Else
+                Dim errorMessage = result.GetValue("errorMessage").Value(Of String)
+                Return New ServiceResult() With {
+                    .Result = False,
+                    .Message = errorMessage,
+                    .Ret = ""
+                }
+            End If
+        Catch ex As Exception
+            Return New ServiceResult() With {
+                .Result = False,
+                .Message = ex.Message,
+                .Ret = ""
+            }
+        End Try
+    End Function
+
+    <WebMethod(EnableSession:=True)>
+    Public Shared Function EditarEmpresa(empresaId As String) As ServiceResult
+        Try
+            Dim page = New FreedomPage()
+            page.EditEmpresa = True
+            page.EmpresaId = CInt(empresaId)
+
+            Return New ServiceResult() With {
+                .Result = True,
+                .Message = "",
+                .Ret = ""
+            }
+        Catch ex As Exception
+            Return New ServiceResult() With {
+                .Result = False,
+                .Message = ex.Message,
+                .Ret = ""
+            }
+        End Try
+    End Function
+
+    Protected Sub btnNuevaEmpresa_Click(sender As Object, e As EventArgs)
+        EditEmpresa = False
+        Response.Redirect("DetalleEmpresa.aspx")
     End Sub
 End Class

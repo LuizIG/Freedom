@@ -23,6 +23,15 @@ Partial Public Class DetalleEmpresa
     Protected WithEvents script As Global.System.Web.UI.ScriptManager
     
     '''<summary>
+    '''Control txtEditarEmpresa.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents txtEditarEmpresa As Global.System.Web.UI.WebControls.TextBox
+    
+    '''<summary>
     '''Control txtNombre.
     '''</summary>
     '''<remarks>
@@ -417,22 +426,4 @@ Partial Public Class DetalleEmpresa
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
     Protected WithEvents btnAgregarContacto As Global.System.Web.UI.WebControls.Button
-    
-    '''<summary>
-    '''Control cbxComprobante.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents cbxComprobante As Global.System.Web.UI.HtmlControls.HtmlSelect
-    
-    '''<summary>
-    '''Control repImpuestos.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents repImpuestos As Global.System.Web.UI.WebControls.Repeater
 End Class

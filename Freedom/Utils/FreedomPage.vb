@@ -2,15 +2,23 @@
 Imports System.Net
 Imports System.Web.Script.Serialization
 Imports Model
+Imports Newtonsoft.Json
 Imports Newtonsoft.Json.Linq
 
 Public Class FreedomPage
     Inherits System.Web.UI.Page
 
-    Public Shared Function StringToValue(value As String, type As Type) As Object
-        Dim jss = New JavaScriptSerializer()
-        Dim result As Object = jss.Deserialize(value, type)
-        Return result
+    Public Shared Function StringToValue(value As String, tipo As Type) As Object
+        Dim settings = New JsonSerializerSettings() With {
+            .NullValueHandling = NullValueHandling.Ignore,
+            .MissingMemberHandling = MissingMemberHandling.Ignore
+        }
+
+        Return JsonConvert.DeserializeObject(value, tipo, settings)
+
+        'Dim jss = New JavaScriptSerializer()
+        'Dim result As Object = jss.Deserialize(value, tipo)
+        'Return result
     End Function
 
     Public Function GetUserInfo() As UserInfo
@@ -44,6 +52,19 @@ Public Class FreedomPage
         End Get
         Set
             Session("EmpresaId") = Value
+        End Set
+    End Property
+
+    Public Property EditEmpresa() As Boolean
+        Get
+            If Session("EditarEmpresa") Is Nothing Then
+                Return Nothing
+            Else
+                Return CBool(Session("EditarEmpresa"))
+            End If
+        End Get
+        Set
+            Session("EditarEmpresa") = Value
         End Set
     End Property
 

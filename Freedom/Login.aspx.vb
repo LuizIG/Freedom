@@ -109,7 +109,7 @@ Public Class Login
                             Dim ticket As New FormsAuthenticationTicket(2,
                                                             reg.Email,
                                                             System.DateTime.Now,
-                                                            System.DateTime.Now.AddDays(1),
+                                                            System.DateTime.Now.AddDays(15),
                                                             False,
                                                             userData,
                                                             FormsAuthentication.FormsCookiePath)
@@ -185,7 +185,7 @@ Public Class Login
                     Dim ticket As New FormsAuthenticationTicket(1,
                                                                 usr,
                                                                 System.DateTime.Now,
-                                                                System.DateTime.Now.AddDays(1),
+                                                                System.DateTime.Now.AddDays(15),
                                                                 esPersistente,
                                                                 userData,
                                                                 FormsAuthentication.FormsCookiePath)

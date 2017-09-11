@@ -28,9 +28,9 @@
                 <li class="nav-item" id="tabContactos" data-id="tabContactos">
 				    <a class data-toggle="tab" id="refContactos" href="javascript:void(0);" role="tab"><i class="fa fa-users tab-icon"></i> <span>Contactos</span></a>
 			    </li>
-                <li class="nav-item" id="tabImpuestos" data-id="tabImpuestos">
+                <%--<li class="nav-item" id="tabImpuestos" data-id="tabImpuestos">
 				    <a class data-toggle="tab" id="refImpuestos" href="javascript:void(0);" role="tab"><i class="fa fa-line-chart tab-icon"></i> <span>Impuestos</span></a>
-			    </li>
+			    </li>--%>
 			    <li class="nav-item" id="tabCheck">
 				    <a class data-toggle="tab" id="refCheck" href="javascript:void(0);" role="tab"><i class="fa fa-check tab-icon"></i> <span>Resúmen</span></a>
 			    </li>
@@ -46,6 +46,7 @@
 								    </div>
 							    </div>
 							    <div class="panel-body">
+                                    <asp:TextBox ID="txtEditarEmpresa" runat="server" ClientIDMode="Static" style="visibility:hidden; display: none"></asp:TextBox>
 								        <div class="form-group form-group-default required">
 									        <label>Nombre</label>
 									        <asp:TextBox ID="txtNombre" runat="server" class="form-control"
@@ -575,7 +576,7 @@
 					    </div>
 				    </div>
 			    </div>
-                <div class="tab-pane slide-left padding-20 sm-no-padding" id="tab6">
+                <%--<div class="tab-pane slide-left padding-20 sm-no-padding" id="tab6">
 				    <div class="row row-same-height">
 					    <div class="col-md-6 col-md-offset-3">
 						    <div class="panel panel-default">
@@ -596,7 +597,7 @@
                                             <table class="table table-hover dataTable no-footer" style="padding: 0px !important;" id="tblImpuestos" role="grid">
                                                 <thead>
                                                     <tr role="row">
-                                                        <th style="width: 100px; text-align:center; visibility:hidden;" class="sorting" Visible="false" tabindex="0" aria-controls="tblImpuestos" rowspan="1" colspan="1" aria-label="Title: activate to sort column descending">Id</th>
+                                                        <th style="width: 1px; text-align:center; visibility:hidden;" class="sorting" Visible="false" tabindex="0" aria-controls="tblImpuestos" rowspan="1" colspan="1" aria-label="Title: activate to sort column descending">Id</th>
                                                         <th style="width: 150px; text-align:center;" class="sorting" tabindex="0" aria-controls="tblImpuestos" rowspan="1" colspan="1" aria-label="Title: activate to sort column descending">Seleccionar</th>
                                                         <th style="width: 150px; text-align:center;" class="sorting" tabindex="0" aria-controls="tblImpuestos" rowspan="1" colspan="1" aria-label="Key: activate to sort column ascending">Clasificación</th>
                                                         <th style="width: 120px; text-align:center;" class="sorting" tabindex="0" aria-controls="tblImpuestos" rowspan="1" colspan="1" aria-label="Condensed: activate to sort column ascending">Familia</th>
@@ -647,8 +648,8 @@
 						    </div>
 					    </div>
 				    </div>
-			    </div>
-                <div class="tab-pane slide-left padding-20 sm-no-padding" id="tab7">
+			    </div>--%>
+                <div class="tab-pane slide-left padding-20 sm-no-padding" id="tab6">
                     <div class="row">
                         <div class="col-md-12" style="text-align:center;">
                             <h1>Resúmen de registro</h1>
@@ -1008,7 +1009,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group row">
+                        <%--<div class="form-group row">
                             <div class="col-md-4 col-md-offset-4">
                                 <div class="row">
                                     <div class="col-md-12" style="text-align:center;">
@@ -1038,7 +1039,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div>--%>
 
                     </div>
                     
@@ -1052,7 +1053,7 @@
 						        </button>
 					        </li>
 					        <li class="previous">
-						        <button class="btn btn-default btn-cons pull-right" type="button" id="btnAnteriorTab7">
+						        <button class="btn btn-default btn-cons pull-right" type="button" id="btnAnteriorTab6">
 						        <span>Anterior</span>
 					        </button>
 					        </li>
