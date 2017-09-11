@@ -26,6 +26,9 @@ Public Class DetalleEmpresa
         If EditEmpresa Then
             CargarPagina()
             txtEditarEmpresa.Text = "True"
+            lblTitulo.Text = "Editar empresa"
+        Else
+            lblTitulo.Text = "Nueva empresa"
         End If
     End Sub
 
@@ -55,8 +58,18 @@ Public Class DetalleEmpresa
                 .OrganizacionId = loginsession.OrganizacionId.ToString()
             }
 
+            Dim req = ""
+            Dim msjRet = ""
             Dim data = JsonConvert.SerializeObject(empresa)
-            Dim req = PostRequest("api/Empresas", data, loginsession.Token)
+
+            If page.EditEmpresa Then
+                req = PutRequest("api/Empresas", loginsession.Token, data)
+                msjRet = "Información general actualizada"
+            Else
+                req = PostRequest("api/Empresas", data, loginsession.Token)
+                msjRet = "Información general guardada"
+            End If
+
             Dim result = JObject.Parse(req)
             Dim statusCode = result.GetValue("statusCode").Value(Of Integer)
 
@@ -68,7 +81,7 @@ Public Class DetalleEmpresa
 
                 Return New ServiceResult() With {
                     .Result = True,
-                    .Message = "Información general guardada",
+                    .Message = msjRet,
                     .Ret = data
                 }
             Else

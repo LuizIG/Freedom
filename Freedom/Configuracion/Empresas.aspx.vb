@@ -45,7 +45,6 @@ Public Class Empresa
             Dim statusCode = result.GetValue("statusCode").Value(Of Integer)
 
             If (statusCode >= 200 And statusCode < 400) Then
-
                 Return New ServiceResult() With {
                     .Result = True,
                     .Message = "Empresa eliminada",

@@ -22,7 +22,7 @@
                     <table class="table table-hover demo-table-dynamic table-responsive-block" id="tblEmpresas">
                         <thead>
                             <tr role="row">
-                                <th style="width: 1px; text-align:center; visibility:hidden;" class="sorting" tabindex="0" aria-controls="tblEmpresas" rowspan="1" colspan="1" aria-label="Title: activate to sort column descending">Id</th>
+                                <th style="width: 1px; visibility:hidden;" class="sorting" tabindex="0" aria-controls="tblEmpresas" rowspan="1" colspan="1" aria-label="Title: activate to sort column descending">Id</th>
                                 <th style="width: 250px; text-align:center;" class="sorting" tabindex="0" aria-controls="tblEmpresas" rowspan="1" colspan="1" aria-label="Title: activate to sort column descending">Nombre de Empresa</th>
                                 <th style="width: 150px; text-align:center;" class="sorting" tabindex="0" aria-controls="tblEmpresas" rowspan="1" colspan="1" aria-label="Key: activate to sort column ascending">Alias</th>
                                 <th style="width: 120px; text-align:center;" class="sorting" tabindex="0" aria-controls="tblEmpresas" rowspan="1" colspan="1" aria-label="Condensed: activate to sort column ascending">RFC</th>
@@ -60,10 +60,11 @@
                                     </td>
                                       <td class="v-align-middle" style="text-align:center;">
                                          <span><i id="editaEmpresa" data-id="editaEmpresa" style="cursor: pointer;" class="fa fa-pencil"></i></span>
-                                         <asp:CheckBox runat="server" ID="chkImpuestos" CssClass="editChecked" data-id="chkImpuestos" ClientIDMode="Static" style="visibility:hidden; display: none"/>
+                                         <asp:CheckBox runat="server" ID="chkImpuestos" style="visibility:hidden; display: none" CssClass="editChecked" data-id="chkImpuestos" ClientIDMode="Static"/>
                                     </td>
                                     <td class="v-align-middle" style="text-align:center;">
                                          <span><i id="eliminaEmpresa" data-id="eliminaEmpresa" style="cursor: pointer;" class="fa fa-trash"></i></span>
+                                        <asp:CheckBox runat="server" ID="chkDeleteEmpresa" style="visibility:hidden; display: none" CssClass="deleteChecked" data-id="chkDeleteEmpresa" ClientIDMode="Static"/>
                                     </td>
                                 </tr>  
                                 </ItemTemplate>

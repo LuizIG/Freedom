@@ -1,19 +1,15 @@
 ﻿$(function () {
 
     $('[data-id=editaEmpresa]').click(function (e) {
-        //$(this).parent().siblings(".editChecked").checked(true);
         var trow = $(this).parent().siblings(".editChecked");
-        console.log(trow);
-        var valor = trow.find('input[type="checkbox"]').val();
-        valor.prop('checked') = true;
-        console.log(valor);
-        //$('#tblEmpresas input[type="checkbox"]').each(function () {
-        //    $(this).checked(true);
-        //});
+        var valor = trow.find('input[type="checkbox"]').is(':checked');
+        trow.find('input[type="checkbox"]').prop('checked', true);
         showConfirmDialog("Editar Empresa", "Deseas editar esta empresa?", "Aceptar", editarEmpresa);
     });
 
     $('[data-id=eliminaEmpresa]').click(function (e) {
+        var trow = $(this).parent().siblings(".deleteChecked");
+        trow.find('input[type="checkbox"]').prop('checked', true);
         showConfirmDialog("Eliminar Empresa", "Deseas eliminar esta empresa?", "Aceptar", eliminarEmpresa);
     });
 
@@ -21,18 +17,11 @@
 
 function editarEmpresa() {
     var empresaId = "";
-    $('#tblEmpresas input[type="checkbox"]').each(function () {
+    $('#tblEmpresas #chkImpuestos').each(function () {
         if ($(this).prop('checked') == true) {
             var trow = $(this).parents('tr');
             empresaId = trow.find('input[name="lblEmpresaId"]').val();
         }
-
-        //var trow = $(this).parents('tr');
-        //empresaId = trow.find('input[name="lblEmpresaId"]').val();
-
-        //if (empresaId != "") {
-        //    return false;
-        //}
     });
 
     var dataj = "{empresaId: '" + empresaId + "'}";
@@ -57,9 +46,11 @@ function editarEmpresa() {
 
 function eliminarEmpresa() {
     var empresaId = "";
-    $('#tblEmpresas [data-id=eliminaEmpresa]').each(function () {
-        var trow = $(this).parents('tr');
-        empresaId = trow.find('input[name="lblEmpresaId"]').val();
+    $('#tblEmpresas #chkDeleteEmpresa').each(function () {
+        if ($(this).prop('checked') == true) {
+            var trow = $(this).parents('tr');
+            empresaId = trow.find('input[name="lblEmpresaId"]').val();
+        }
     });
 
     var dataj = "{empresaId: '" + empresaId + "'}";
@@ -75,6 +66,7 @@ function eliminarEmpresa() {
             data = ret.d;
 
             showDialog(data.Message);
+            window.location.replace("Empresas.aspx");
         },
         error: function (xmlHttpRequest, textStatus, errorThrown) {
             showDialog("Error " + url + ": " + textStatus + ' [' + xmlHttpRequest.responseText + '] ' + errorThrown, ' -- ');

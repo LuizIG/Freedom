@@ -6,7 +6,7 @@
     <li>
         <a href='<%= ResolveUrl("~/Configuracion/Empresas.aspx")%>'>Empresas</a>
     </li>
-    <li><a href="#" class="active">Nueva empresa</a>
+    <li><a href="#" class="active"><asp:Label runat="server" ID="lblTitulo" ClientIDMode="Static"></asp:Label></a>
     </li>
 </ul>
 <asp:ScriptManager ID="script" runat="server" EnablePartialRendering="true">
@@ -333,7 +333,7 @@
 											    </div>
 										    </div>
 									    </div>
-                                        <div class="padding-20 sm-padding-5 sm-m-b-20 sm-m-t-20 bg-white clearfix">
+                                        <%--<div class="padding-20 sm-padding-5 sm-m-b-20 sm-m-t-20 bg-white clearfix">
 				                            <ul class="pager wizard no-style">
 					                            <li class="next">
                                                         <button class="btn btn-success btn-cons btn-animated from-left fa fa-envelope pull-right" id="btnPersonalizarCorreo" type="button">
@@ -341,7 +341,7 @@
 						                            </button>
 					                            </li>
 				                            </ul>
-			                            </div><br />
+			                            </div>--%><br />
                                         <div class="padding-20 sm-padding-5 sm-m-b-20 sm-m-t-20 bg-white clearfix">
 				                            <ul class="pager wizard no-style">
 					                            <li class="next">
