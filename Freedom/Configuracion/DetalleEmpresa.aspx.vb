@@ -135,7 +135,18 @@ Public Class DetalleEmpresa
             }
 
             Dim data = JsonConvert.SerializeObject(domicilio)
-            Dim req = PostRequest("api/DomicilioEmpresa", data, loginsession.Token)
+
+            Dim req = ""
+            Dim msjRet = ""
+
+            If page.EditEmpresa Then
+                req = PutRequest("api/DomicilioEmpresa", loginsession.Token, data)
+                msjRet = "Domicilio Fiscal actualizado"
+            Else
+                req = PostRequest("api/DomicilioEmpresa", data, loginsession.Token)
+                msjRet = "Domicilio Fiscal guardada"
+            End If
+
             Dim result = JObject.Parse(req)
             Dim statusCode = result.GetValue("statusCode").Value(Of Integer)
 
@@ -167,7 +178,15 @@ Public Class DetalleEmpresa
                         }
 
                     data = JsonConvert.SerializeObject(lugarEmision)
-                    req = PostRequest("api/DomicilioEmpresa", data, loginsession.Token)
+
+                    If page.EditEmpresa Then
+                        req = PutRequest("api/DomicilioEmpresa", loginsession.Token, data)
+                        msjRet = "Lugar de Emision actualizado"
+                    Else
+                        req = PostRequest("api/DomicilioEmpresa", data, loginsession.Token)
+                        msjRet = "Lugar de Emision guardada"
+                    End If
+
                     result = JObject.Parse(req)
                     statusCode = result.GetValue("statusCode").Value(Of Integer)
 
@@ -244,7 +263,18 @@ Public Class DetalleEmpresa
             }
 
             Dim data = JsonConvert.SerializeObject(personalizacion)
-            Dim req = PostRequest("api/CertificadoEmpresa", data, loginsession.Token)
+
+            Dim req = ""
+            Dim msjRet = ""
+
+            If page.EditEmpresa Then
+                req = PutRequest("api/CertificadoEmpresa", loginsession.Token, data)
+                msjRet = "Personalización actualizado"
+            Else
+                req = PostRequest("api/CertificadoEmpresa", data, loginsession.Token)
+                msjRet = "Personalización guardada"
+            End If
+
             Dim result = JObject.Parse(req)
             Dim statusCode = result.GetValue("statusCode").Value(Of Integer)
 
@@ -333,6 +363,7 @@ Public Class DetalleEmpresa
             Dim loginsession = page.UserSession
             Dim nombresContactos = ""
             Dim contactos = DirectCast(HttpContext.Current.Session("tblContactos"), DataTable)
+            Dim msjRet = ""
 
             For Each row As DataRow In contactos.Rows
                 Dim contacto = New ContactoEmpresa() With {
@@ -346,8 +377,18 @@ Public Class DetalleEmpresa
                 }
 
                 nombresContactos += row("NombreContacto") + "<br/>"
+
+                Dim req = ""
                 Dim data = JsonConvert.SerializeObject(contacto)
-                Dim req = PostRequest("api/ContactoEmpresa", data, loginsession.Token)
+
+                If page.EditEmpresa Then
+                    req = PutRequest("api/ContactoEmpresa", loginsession.Token, data)
+                    msjRet = "Contactos actualizados"
+                Else
+                    req = PostRequest("api/ContactoEmpresa", data, loginsession.Token)
+                    msjRet = "Contactos guardados"
+                End If
+
                 Dim result = JObject.Parse(req)
                 Dim statusCode = result.GetValue("statusCode").Value(Of Integer)
 
@@ -365,7 +406,7 @@ Public Class DetalleEmpresa
 
             Return New ServiceResult() With {
                 .Result = True,
-                .Message = "Contactos guardados",
+                .Message = msjRet,
                 .Ret = nombresContactos
             }
         Catch ex As Exception
@@ -613,6 +654,7 @@ Public Class DetalleEmpresa
 
     Public Sub CargarPagina()
         CargarEmpresa()
+        CargarDomicilio()
         CargarContactos()
     End Sub
 
@@ -630,6 +672,38 @@ Public Class DetalleEmpresa
             txtRFC.Text = empresa(0).RFC
             'cbxRegimenFiscal.Items.FindByValue(empresa(0).).Selected = True
             txtCURP.Text = empresa(0).CURP
+
+            'txtCalle.Text = If(empresa(0).Calle_Fiscal, "")
+            'txtNumExt.Text = If(empresa(0).NumeroExterno_Fiscal, "")
+            'txtNumInt.Text = If(empresa(0).NumeroInterno_Fiscal, "")
+            'txtCalles.Text = If(empresa(0).EntreCalles_Fiscal, "")
+            'txtColonia.Text = If(empresa(0).Colonia_Fiscal, "")
+            'txtCP.Text = If(empresa(0).CP_Fiscal, "")
+            'cbxPais.Items.FindByText(If(empresa(0).Pais_Fiscal, "MEXICO")).Selected = True
+            ''cbxEstado.Items.FindByValue(If(empresa(0).EstadoId_Fiscal = 0, 1, empresa(0).EstadoId_Fiscal)).Selected = True
+            'txtMunicipio.Text = If(empresa(0).Municipio_Fiscal, "")
+
+            'txtCalleEmision.Text = If(empresa(0).Calle_Emision, "")
+            'txtNumExtEmision.Text = If(empresa(0).NumeroExterno_Emision, "")
+            'txtNumIntEmision.Text = If(empresa(0).NumeroInterno_Emision, "")
+            'txtCallesEmision.Text = If(empresa(0).EntreCalles_Emision, "")
+            'txtColoniaEmision.Text = If(empresa(0).Colonia_Emision, "")
+            'txtCPEmision.Text = If(empresa(0).CP_Emision, "")
+            'cbxPaisEmision.Items.FindByText(If(empresa(0).Pais_Emision, "MEXICO")).Selected = True
+            ''cbxEstadoEmision.Items.FindByValue(If(empresa(0).EstadoId_Emision = 0, 1, empresa(0).EstadoId_Emision)).Selected = True
+            'txtMunicipioEmision.Text = If(empresa(0).Municipio_Emision, "")
+        End If
+    End Sub
+
+    Public Sub CargarDomicilio()
+        Dim url = "api/DomicilioEmpresa?idEmpresa=" & EmpresaId
+        Dim req = GetRequest(url, UserSession.Token)
+        Dim result = JObject.Parse(req)
+        Dim statusCode = result.GetValue("statusCode").Value(Of Integer)
+
+        If (statusCode >= 200 And statusCode < 400) Then
+            Dim detail = result.GetValue("detail").Value(Of JArray)
+            Dim empresa As List(Of EmpresaResult) = StringToValue(detail.ToString(), GetType(List(Of EmpresaResult)))
 
             txtCalle.Text = If(empresa(0).Calle_Fiscal, "")
             txtNumExt.Text = If(empresa(0).NumeroExterno_Fiscal, "")

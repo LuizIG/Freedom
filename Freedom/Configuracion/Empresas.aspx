@@ -16,8 +16,8 @@
             <div class="clearfix"></div>
         </div>
         <div class="panel-body">
-            <div class="table-responsive">
-                <div id="condensedTable_wrapper" class="dataTables_wrapper no-footer">
+            <%--<div class="table-responsive">
+                <div id="condensedTable_wrapper" class="dataTables_wrapper no-footer">--%>
                     <%--<table class="table table-hover dataTable no-footer" id="tblEmpresas" role="grid">--%>
                     <table class="table table-hover demo-table-dynamic table-responsive-block" id="tblEmpresas">
                         <thead>
@@ -58,9 +58,9 @@
                                     <td class="v-align-middle" style="text-align:center;">
                                             <asp:Label ID="Label3" runat="server" Text='<%# Eval("CertificadoDigital") %>' />
                                     </td>
-                                      <td class="v-align-middle" style="text-align:center;">
+                                      <td class="v-align-middle editarEmpresa" style="text-align:center;">
                                          <span><i id="editaEmpresa" data-id="editaEmpresa" style="cursor: pointer;" class="fa fa-pencil"></i></span>
-                                         <asp:CheckBox runat="server" ID="chkImpuestos" style="visibility:hidden; display: none" CssClass="editChecked" data-id="chkImpuestos" ClientIDMode="Static"/>
+                                         <asp:CheckBox runat="server" ID="chkImpuestos" style="visibility:hidden; display: none;" CssClass="editChecked" data-id="chkImpuestos" ClientIDMode="Static"/>
                                     </td>
                                     <td class="v-align-middle" style="text-align:center;">
                                          <span><i id="eliminaEmpresa" data-id="eliminaEmpresa" style="cursor: pointer;" class="fa fa-trash"></i></span>
@@ -71,8 +71,8 @@
                             </asp:Repeater>
                         </tbody>     
                     </table>
-                </div>
-            </div>
+                <%--</div>
+            </div>--%>
         </div>
     </div>
 

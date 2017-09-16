@@ -302,6 +302,24 @@ Partial Public Class DetalleEmpresa
     Protected WithEvents txtCorreo As Global.System.Web.UI.WebControls.TextBox
     
     '''<summary>
+    '''Control txtTitulo.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents txtTitulo As Global.System.Web.UI.WebControls.TextBox
+    
+    '''<summary>
+    '''Control txtContenido.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents txtContenido As Global.System.Web.UI.WebControls.TextBox
+    
+    '''<summary>
     '''Control txtClavePrivada.
     '''</summary>
     '''<remarks>

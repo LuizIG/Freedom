@@ -1,13 +1,12 @@
 ﻿$(function () {
 
-    $('[data-id=editaEmpresa]').click(function (e) {
+    $('#tblEmpresas').on("click", "[data-id=editaEmpresa]", function (e) {
         var trow = $(this).parent().siblings(".editChecked");
-        var valor = trow.find('input[type="checkbox"]').is(':checked');
         trow.find('input[type="checkbox"]').prop('checked', true);
         showConfirmDialog("Editar Empresa", "Deseas editar esta empresa?", "Aceptar", editarEmpresa);
     });
 
-    $('[data-id=eliminaEmpresa]').click(function (e) {
+    $('#tblEmpresas').on("click", "[data-id=eliminaEmpresa]", function (e) {
         var trow = $(this).parent().siblings(".deleteChecked");
         trow.find('input[type="checkbox"]').prop('checked', true);
         showConfirmDialog("Eliminar Empresa", "Deseas eliminar esta empresa?", "Aceptar", eliminarEmpresa);

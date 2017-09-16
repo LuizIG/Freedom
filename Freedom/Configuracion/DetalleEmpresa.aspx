@@ -333,6 +333,22 @@
 											    </div>
 										    </div>
 									    </div>
+                                        <div class="form-group form-group-default required">
+									        <label>Titulo Correo</label>
+									        <asp:TextBox ID="txtTitulo" runat="server" class="form-control"
+											        name="usuario" ClientIDMode="Static" Text="Factura Electrónica: [@SerieFolio]">
+									        </asp:TextBox>
+								        </div>
+                                        <div class="form-group form-group-default required">
+									        <label>Contenido Correo</label>
+									        <asp:TextBox ID="txtContenido" runat="server" class="form-control" TextMode="MultiLine" ClientIDMode="Static" Height="160px"
+                                                Text="Buen día,
+Agradecemos confirmar la recepción de los archivos PDF y XML al mismo correo electrónico que remite el presente, para cumplir con las políticas corporativas de la empresa.
+En caso de no ser el contacto adecuado para el seguimiento de cobranza agradeceremos su comunicación. 
+
+*** Confirme la validez de sus comprobantes fiscales digitales en: http://www.endorse.com.mx">
+									        </asp:TextBox>
+								        </div>
                                         <%--<div class="padding-20 sm-padding-5 sm-m-b-20 sm-m-t-20 bg-white clearfix">
 				                            <ul class="pager wizard no-style">
 					                            <li class="next">

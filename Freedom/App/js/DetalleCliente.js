@@ -19,25 +19,25 @@
         }
     });
 
-    $('#tabFormasPago').click(function (e) {
-        if (validarDomicilioFiscal()) {
-            $('#refFormasPago').attr('href', '#tab4');
-        } else {
-            $('#refFormasPago').attr('href', 'javascript:void(0);');
-        }
-    });
+    //$('#tabFormasPago').click(function (e) {
+    //    if (validarDomicilioFiscal()) {
+    //        $('#refFormasPago').attr('href', '#tab4');
+    //    } else {
+    //        $('#refFormasPago').attr('href', 'javascript:void(0);');
+    //    }
+    //});
 
-    $('#tabCheck').click(function (e) {
-        if (validarInfoGeneral()) {
-            if (validarDomicilioFiscal()) {
-                $('#refCheck').attr('href', '#tab4');
-            } else {
-                $('#refCheck').attr('href', 'javascript:void(0);');
-            }
-        } else {
-            $('#refCheck').attr('href', 'javascript:void(0);');
-        }
-    });
+    //$('#tabCheck').click(function (e) {
+    //    if (validarInfoGeneral()) {
+    //        if (validarDomicilioFiscal()) {
+    //            $('#refCheck').attr('href', '#tab4');
+    //        } else {
+    //            $('#refCheck').attr('href', 'javascript:void(0);');
+    //        }
+    //    } else {
+    //        $('#refCheck').attr('href', 'javascript:void(0);');
+    //    }
+    //});
 
     $('#btnSiguienteTab1').click(function (e) {
         if (validarInfoGeneral()) {

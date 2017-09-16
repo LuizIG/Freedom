@@ -16,15 +16,15 @@
 
     // Initialize datatable showing a search box at the top right corner
     var initTableWithSearch = function() {
-        var table = $('#tableWithSearch');
+        var table = $('#tblEmpresas');
 
         var settings = {
             "sDom": "<t><'row'<p i>>",
-            "destroy": true,
+            //"destroy": true,
             "scrollCollapse": true,
             "oLanguage": {
                 "sLengthMenu": "_MENU_ ",
-                "sInfo": "Showing <b>_START_ to _END_</b> of _TOTAL_ entries"
+                "sInfo": "Mostrando <b>_START_ a _END_</b> de _TOTAL_ registros"
             },
             "iDisplayLength": 5
         };
@@ -32,9 +32,9 @@
         table.dataTable(settings);
 
         // search box for table
-        $('#search-table').keyup(function() {
-            table.fnFilter($(this).val());
-        });
+        //$('#search-table').keyup(function() {
+        //    table.fnFilter($(this).val());
+        //});
     }
 
     // Initialize datatable with ability to add rows dynamically
@@ -48,7 +48,7 @@
             "scrollCollapse": true,
             "oLanguage": {
                 "sLengthMenu": "_MENU_ ",
-                "sInfo": "Showing <b>_START_ to _END_</b> of _TOTAL_ entries"
+                "sInfo": "Mostrando <b>_START_ a _END_</b> de _TOTAL_ registros"
             },
             "iDisplayLength": 5
         };
@@ -83,7 +83,7 @@
             "scrollCollapse": true,
             "oLanguage": {
                 "sLengthMenu": "_MENU_ ",
-                "sInfo": "Showing <b>_START_ to _END_</b> of _TOTAL_ entries"
+                "sInfo": "Mostrando <b>_START_ a _END_</b> de _TOTAL_ registros"
             },
             "iDisplayLength": 5,
             "oTableTools": {
