@@ -119,11 +119,11 @@
                                     <span id="menu_span_configuracion_facturacion_cliente" runat="server" class="icon-thumbnail">C</span>
                                 </li>
                                 <li>
-                                    <a href="javascript:;">Series y Folios</a>
+                                    <a href='<%= ResolveUrl("~/Configuracion/SeriesFolios.aspx")%>'>Series y Folios</a>
                                     <span id="menu_span_configuracion_facturacion_series" runat="server" class="icon-thumbnail">S y F</span>
                                 </li>
                                 <li>
-                                    <a href="javascript:;">Productos</a>
+                                    <a href='<%= ResolveUrl("~/Configuracion/Productos.aspx")%>'>Productos</a>
                                     <span id="menu_span_configuracion_facturacion_productos" runat="server" class="icon-thumbnail">P</span>
                                 </li>
                                 <li>
@@ -270,7 +270,6 @@
 		    </div>
 	    </div>
     </div>
-
 
     
 

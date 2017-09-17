@@ -69,7 +69,6 @@
     });
 
     $('#btnTriggerAgregaContacto').click(function (e) {
-        console.log("in");
         if (validarContacto()) {
             $("#btnAgregarContacto").click();
             return true;
