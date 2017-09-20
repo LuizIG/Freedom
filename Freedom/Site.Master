@@ -163,7 +163,16 @@
                 </div>
             </div>
             <div class="pull-center" style="text-align:center;">
-                <div class="dropdown">
+                <div class="col-sm-2 col-md-offset-5">
+                     <div class="form-group form-group-default" style="padding-top:0px; padding-bottom: 2px; border: 0px;">
+					    <label>Empresa</label>
+					    <select class="full-width full-height select2-hidden-accessible" name="empresa" data-init-plugin="select2" 
+						    runat="server" id="cbxEmpresa" data-id="cbxEmpresa" tabindex="-1" aria-hidden="true" >
+					    </select>
+				    </div>
+                </div>
+               
+                <%--<div class="dropdown">
 	                <h5 runat="server" id="lblEmpresa" name="lblEmpresa" data-toggle="dropdown" style="cursor: pointer;"></h5>
 	                <div class="dropdown-menu notification-toggle" role="menu" aria-labelledby="notification-center" style="left:600px;">
 		                <div class="notification-panel" style="width:180px;">
@@ -182,7 +191,7 @@
 			                </div>
 		                </div>
 	                </div>
-                </div>
+                </div>--%>
             </div>
             <div class=" pull-left sm-table hidden-xs hidden-sm">
                 <div class="header-inner">

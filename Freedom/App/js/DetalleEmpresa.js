@@ -77,7 +77,12 @@
     });
 
     $('#btnGuardarPersonalizar').click(function (e) {
-        GuardarPersonalizacion();
+        if (validarPersonalizacion()) {
+            GuardarPersonalizacion();
+            return true;
+        } else {
+            return false;
+        }
     });
 
     $('#btnGuardarCertificados').click(function (e) {
@@ -467,6 +472,17 @@ function validarContacto() {
     return true;
 }
 
+function validarPersonalizacion() {
+    var nombreComercial = $("#txtNombreComercial").val();
+
+    if (nombreComercial == "") {
+        showDialog("Es necesario ingresar el nombre comercial de la empresa");
+        return false;
+    }
+
+    return true;
+}
+
 function GuardarEmpresa() {
     var parameters = getInfoParams();
     var dataj = "{value: '" + parameters + "'}";
@@ -485,7 +501,8 @@ function GuardarEmpresa() {
                 showDialog(data.Message);
             } else {
                 var info = JSON.parse(data.Ret);
-                $('[name=lblEmpresa]').text(info.NombreEmpresa);
+                //$('[name=lblEmpresa]').text(info.NombreEmpresa);
+                $("#cbxEmpresa").find("option[text=" + info.NombreEmpresa + "]").attr("selected", true);
                 $('[data-id=lblNombreEmpresa]').text(info.NombreEmpresa);
                 $("#requeridoNombre").attr('class', 'fa fa-check');
                 $('[data-id=lblRFC]').text(info.RFC);
@@ -923,6 +940,18 @@ function getPersonalizarParams() {
     item["ParamValue"] = $("#txtCorreo").val();
     retValue.push(item);
 
+    item = {};
+    item["ParamName"] = "TituloCorreo";
+    item["ParamType"] = "NVARCHAR";
+    item["ParamValue"] = $("#txtTitulo").val();
+    retValue.push(item);
+
+    item = {};
+    item["ParamName"] = "ContenidoCorreo";
+    item["ParamType"] = "NVARCHAR";
+    item["ParamValue"] = $("#txtContenido").val();
+    retValue.push(item);
+
 
     $("#binaryLogo").val("");
 
@@ -951,9 +980,13 @@ function GuardarPersonalizacion() {
                 showDialog(data.Message);
             } else {
                 var info = JSON.parse(data.Ret);
+
+                var logo = "No";
+                if (info.logo != "") { logo = "Si"; }
+
                 $('[data-id=lblNombreComercial]').text(info.nombreComercial);
                 $("#requeridoNombreComercial").attr('class', 'fa fa-check');
-                $('[data-id=lblLogotipo]').text(info.logo);
+                $('[data-id=lblLogotipo]').text(logo);
                 $('[data-id=lblMensaje]').text(info.mensajeFactura);
                 $("#requeridoMensaje").attr('class', 'fa fa-check');
                 $('[data-id=lblTelefonos]').text(info.telefonoFactura);

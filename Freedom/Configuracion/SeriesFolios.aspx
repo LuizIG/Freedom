@@ -83,9 +83,10 @@
 			<div class="modal-body">
 				<div class="row">
 					<div class="col-sm-6">
-						<div class="form-group form-group-default">
+						<div class="form-group form-group-default" style="z-index:5000; position:relative;">
 							<label>Comprobante</label>
-							<select class="full-width full-height select2-hidden-accessible" name="comprobante" data-init-plugin="select2" runat="server" id="cbxComprobante" data-id="cbxComprobante" tabindex="-1" aria-hidden="true">
+							<select class="full-width full-height select2-hidden-accessible" name="comprobante" data-init-plugin="select2" runat="server" 
+                                id="cbxComprobante" data-id="cbxComprobante" tabindex="-1" aria-hidden="true">
 							</select>
 						</div>
 					</div>
@@ -126,7 +127,7 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button id="btnAgregarFolio" type="button" style="visibility:hidden; display: none" data-dismiss="modal" class="btn btn-primary btn-cons"></button>
+				<button id="btnAgregarFolio" type="button" style="visibility:hidden; display: none" runat="server" onserverclick="btnAgregarFolio_ServerClick" data-dismiss="modal" class="btn btn-primary btn-cons"></button>
                 <button id="btnTrigger" type="button" class="btn btn-primary btn-cons">Agregar</button>
 				<button type="button" class="btn btn-cons" data-dismiss="modal">Cancelar</button>
 			</div>

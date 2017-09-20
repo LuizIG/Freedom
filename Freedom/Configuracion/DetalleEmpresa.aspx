@@ -172,7 +172,7 @@
 										</asp:TextBox>
 									</div>
 									<div class="checkbox check-primary">
-										<input type="checkbox" value="1" id="cbxEmision" data-id="cbxEmision" checked="checked"/>
+										<input type="checkbox" value="1" id="cbxEmision" data-id="cbxEmision" runat="server" checked="checked"/>
 										<label for="cbxEmision">¿Usar como lugar de emisión?</label>
 									</div>
                                     <div class="padding-20 sm-padding-5 sm-m-b-20 sm-m-t-20 bg-white clearfix">

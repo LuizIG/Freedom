@@ -248,6 +248,8 @@ Public Class DetalleEmpresa
             Dim mensajeFactura = If(parametros.Where(Function(x) x.ParamName.ToUpper() = "MENSAJEFACTURA").ToList()(0).ParamValue.ToString() <> "", parametros.Where(Function(x) x.ParamName.ToUpper() = "MENSAJEFACTURA").ToList()(0).ParamValue.ToString(), "")
             Dim telefonoFactura = If(parametros.Where(Function(x) x.ParamName.ToUpper() = "TELEFONOFACTURA").ToList()(0).ParamValue.ToString() <> "", parametros.Where(Function(x) x.ParamName.ToUpper() = "TELEFONOFACTURA").ToList()(0).ParamValue.ToString(), "")
             Dim correoFactura = If(parametros.Where(Function(x) x.ParamName.ToUpper() = "CORREOFACTURA").ToList()(0).ParamValue.ToString() <> "", parametros.Where(Function(x) x.ParamName.ToUpper() = "CORREOFACTURA").ToList()(0).ParamValue.ToString(), "")
+            Dim tituloCorreo = If(parametros.Where(Function(x) x.ParamName.ToUpper() = "TITULOCORREO").ToList()(0).ParamValue.ToString() <> "", parametros.Where(Function(x) x.ParamName.ToUpper() = "TITULOCORREO").ToList()(0).ParamValue.ToString(), "")
+            Dim contenidoCorreo = If(parametros.Where(Function(x) x.ParamName.ToUpper() = "CONTENIDOCORREO").ToList()(0).ParamValue.ToString() <> "", parametros.Where(Function(x) x.ParamName.ToUpper() = "CONTENIDOCORREO").ToList()(0).ParamValue.ToString(), "")
 
             Dim page = New FreedomPage()
             Dim loginsession = page.UserSession
@@ -257,9 +259,11 @@ Public Class DetalleEmpresa
                 .idOrganizacion = loginsession.OrganizacionId,
                 .nombreComercial = nombreComercial,
                 .logo = logo,
-                .mensajeFactura = mensajeFactura,
-                .telefonoFactura = telefonoFactura,
-                .correoFactura = correoFactura
+                .mensajeAdicionalFactura = mensajeFactura,
+                .telefono = telefonoFactura,
+                .correo = correoFactura,
+                .tituloCorreo = tituloCorreo,
+                .cuerpoCorreo = contenidoCorreo
             }
 
             Dim data = JsonConvert.SerializeObject(personalizacion)
@@ -268,10 +272,10 @@ Public Class DetalleEmpresa
             Dim msjRet = ""
 
             If page.EditEmpresa Then
-                req = PutRequest("api/CertificadoEmpresa", loginsession.Token, data)
+                req = PutRequest("api/ConfiguracionEmpresa", loginsession.Token, data)
                 msjRet = "Personalización actualizado"
             Else
-                req = PostRequest("api/CertificadoEmpresa", data, loginsession.Token)
+                req = PostRequest("api/ConfiguracionEmpresa", data, loginsession.Token)
                 msjRet = "Personalización guardada"
             End If
 
@@ -282,7 +286,7 @@ Public Class DetalleEmpresa
                 Return New ServiceResult() With {
                     .Result = True,
                     .Message = "Personalización guardada",
-                    .Ret = ""
+                    .Ret = data
                 }
             Else
                 Dim errorMessage = result.GetValue("errorMessage").Value(Of String)
@@ -655,6 +659,7 @@ Public Class DetalleEmpresa
     Public Sub CargarPagina()
         CargarEmpresa()
         CargarDomicilio()
+        CargarPersonalizacion()
         CargarContactos()
     End Sub
 
@@ -668,30 +673,53 @@ Public Class DetalleEmpresa
             Dim detail = result.GetValue("detail").Value(Of JArray)
             Dim empresa As List(Of EmpresaResult) = StringToValue(detail.ToString(), GetType(List(Of EmpresaResult)))
 
-            txtNombre.Text = empresa(0).NombreEmpresa
-            txtRFC.Text = empresa(0).RFC
-            'cbxRegimenFiscal.Items.FindByValue(empresa(0).).Selected = True
-            txtCURP.Text = empresa(0).CURP
+            If empresa.Count > 0 Then
+                txtNombre.Text = empresa(0).NombreEmpresa
+                txtRFC.Text = empresa(0).RFC
+                'cbxRegimenFiscal.Items.FindByValue(empresa(0).).Selected = True
+                txtCURP.Text = empresa(0).CURP
 
-            'txtCalle.Text = If(empresa(0).Calle_Fiscal, "")
-            'txtNumExt.Text = If(empresa(0).NumeroExterno_Fiscal, "")
-            'txtNumInt.Text = If(empresa(0).NumeroInterno_Fiscal, "")
-            'txtCalles.Text = If(empresa(0).EntreCalles_Fiscal, "")
-            'txtColonia.Text = If(empresa(0).Colonia_Fiscal, "")
-            'txtCP.Text = If(empresa(0).CP_Fiscal, "")
-            'cbxPais.Items.FindByText(If(empresa(0).Pais_Fiscal, "MEXICO")).Selected = True
-            ''cbxEstado.Items.FindByValue(If(empresa(0).EstadoId_Fiscal = 0, 1, empresa(0).EstadoId_Fiscal)).Selected = True
-            'txtMunicipio.Text = If(empresa(0).Municipio_Fiscal, "")
+                'txtCalle.Text = If(empresa(0).Calle_Fiscal, "")
+                'txtNumExt.Text = If(empresa(0).NumeroExterno_Fiscal, "")
+                'txtNumInt.Text = If(empresa(0).NumeroInterno_Fiscal, "")
+                'txtCalles.Text = If(empresa(0).EntreCalles_Fiscal, "")
+                'txtColonia.Text = If(empresa(0).Colonia_Fiscal, "")
+                'txtCP.Text = If(empresa(0).CP_Fiscal, "")
+                'cbxPais.Items.FindByText(If(empresa(0).Pais_Fiscal, "MEXICO")).Selected = True
+                ''cbxEstado.Items.FindByValue(If(empresa(0).EstadoId_Fiscal = 0, 1, empresa(0).EstadoId_Fiscal)).Selected = True
+                'txtMunicipio.Text = If(empresa(0).Municipio_Fiscal, "")
 
-            'txtCalleEmision.Text = If(empresa(0).Calle_Emision, "")
-            'txtNumExtEmision.Text = If(empresa(0).NumeroExterno_Emision, "")
-            'txtNumIntEmision.Text = If(empresa(0).NumeroInterno_Emision, "")
-            'txtCallesEmision.Text = If(empresa(0).EntreCalles_Emision, "")
-            'txtColoniaEmision.Text = If(empresa(0).Colonia_Emision, "")
-            'txtCPEmision.Text = If(empresa(0).CP_Emision, "")
-            'cbxPaisEmision.Items.FindByText(If(empresa(0).Pais_Emision, "MEXICO")).Selected = True
-            ''cbxEstadoEmision.Items.FindByValue(If(empresa(0).EstadoId_Emision = 0, 1, empresa(0).EstadoId_Emision)).Selected = True
-            'txtMunicipioEmision.Text = If(empresa(0).Municipio_Emision, "")
+                'txtCalleEmision.Text = If(empresa(0).Calle_Emision, "")
+                'txtNumExtEmision.Text = If(empresa(0).NumeroExterno_Emision, "")
+                'txtNumIntEmision.Text = If(empresa(0).NumeroInterno_Emision, "")
+                'txtCallesEmision.Text = If(empresa(0).EntreCalles_Emision, "")
+                'txtColoniaEmision.Text = If(empresa(0).Colonia_Emision, "")
+                'txtCPEmision.Text = If(empresa(0).CP_Emision, "")
+                'cbxPaisEmision.Items.FindByText(If(empresa(0).Pais_Emision, "MEXICO")).Selected = True
+                ''cbxEstadoEmision.Items.FindByValue(If(empresa(0).EstadoId_Emision = 0, 1, empresa(0).EstadoId_Emision)).Selected = True
+                'txtMunicipioEmision.Text = If(empresa(0).Municipio_Emision, "")
+            End If
+        End If
+    End Sub
+
+    Public Sub CargarPersonalizacion()
+        Dim url = "api/ConfiguracionEmpresa/" & EmpresaId & "?idOrganizacion=" & UserSession.OrganizacionId
+        Dim req = GetRequest(url, UserSession.Token)
+        Dim result = JObject.Parse(req)
+        Dim statusCode = result.GetValue("statusCode").Value(Of Integer)
+
+        If (statusCode >= 200 And statusCode < 400) Then
+            Dim detail = result.GetValue("detail").Value(Of JArray)
+            Dim personalizacion As List(Of PersonalizacionEmpresa) = StringToValue(detail.ToString(), GetType(List(Of PersonalizacionEmpresa)))
+
+            If personalizacion.Count > 0 Then
+                txtNombreComercial.Text = If(personalizacion(0).nombreComercial, "")
+                txtMensaje.Text = If(personalizacion(0).mensajeAdicionalFactura, "")
+                txtTelefonos.Text = If(personalizacion(0).telefono, "")
+                txtCorreo.Text = If(personalizacion(0).correo, "")
+                txtTitulo.Text = If(personalizacion(0).tituloCorreo, "")
+                txtContenido.Text = If(personalizacion(0).cuerpoCorreo, "")
+            End If
         End If
     End Sub
 
@@ -703,27 +731,32 @@ Public Class DetalleEmpresa
 
         If (statusCode >= 200 And statusCode < 400) Then
             Dim detail = result.GetValue("detail").Value(Of JArray)
-            Dim empresa As List(Of EmpresaResult) = StringToValue(detail.ToString(), GetType(List(Of EmpresaResult)))
+            'Dim domicilio As List(Of DomicilioEmpresa) = StringToValue(detail.ToString(), GetType(List(Of DomicilioEmpresa)))
 
-            txtCalle.Text = If(empresa(0).Calle_Fiscal, "")
-            txtNumExt.Text = If(empresa(0).NumeroExterno_Fiscal, "")
-            txtNumInt.Text = If(empresa(0).NumeroInterno_Fiscal, "")
-            txtCalles.Text = If(empresa(0).EntreCalles_Fiscal, "")
-            txtColonia.Text = If(empresa(0).Colonia_Fiscal, "")
-            txtCP.Text = If(empresa(0).CP_Fiscal, "")
-            cbxPais.Items.FindByText(If(empresa(0).Pais_Fiscal, "MEXICO")).Selected = True
-            'cbxEstado.Items.FindByValue(If(empresa(0).EstadoId_Fiscal = 0, 1, empresa(0).EstadoId_Fiscal)).Selected = True
-            txtMunicipio.Text = If(empresa(0).Municipio_Fiscal, "")
+            'If domicilio.Count > 0 Then
+            '    txtCalle.Text = If(domicilio(0).calle, "")
+            '    txtNumExt.Text = If(domicilio(0).numeroExterno, "")
+            '    txtNumInt.Text = If(domicilio(0).numeroInterno, "")
+            '    txtCalles.Text = If(domicilio(0).entreCalles, "")
+            '    txtColonia.Text = If(domicilio(0).colonia, "")
+            '    txtCP.Text = If(domicilio(0).cp, "")
+            '    cbxPais.Items.FindByText("MEXICO").Selected = True
+            '    cbxEstado.Items.FindByValue(If(domicilio(0).estadoId = 0, 1, domicilio(0).estadoId)).Selected = True
+            '    txtMunicipio.Text = If(domicilio(0).municipio, "")
+            '    cbxEmision.Checked = domicilio(0).emisionFlg
 
-            txtCalleEmision.Text = If(empresa(0).Calle_Emision, "")
-            txtNumExtEmision.Text = If(empresa(0).NumeroExterno_Emision, "")
-            txtNumIntEmision.Text = If(empresa(0).NumeroInterno_Emision, "")
-            txtCallesEmision.Text = If(empresa(0).EntreCalles_Emision, "")
-            txtColoniaEmision.Text = If(empresa(0).Colonia_Emision, "")
-            txtCPEmision.Text = If(empresa(0).CP_Emision, "")
-            cbxPaisEmision.Items.FindByText(If(empresa(0).Pais_Emision, "MEXICO")).Selected = True
-            'cbxEstadoEmision.Items.FindByValue(If(empresa(0).EstadoId_Emision = 0, 1, empresa(0).EstadoId_Emision)).Selected = True
-            txtMunicipioEmision.Text = If(empresa(0).Municipio_Emision, "")
+            '    If domicilio(0).emisionFlg Then
+            '        txtCalleEmision.Text = If(domicilio(1).calle, "")
+            '        txtNumExtEmision.Text = If(domicilio(1).numeroExterno, "")
+            '        txtNumIntEmision.Text = If(domicilio(1).numeroInterno, "")
+            '        txtCallesEmision.Text = If(domicilio(1).entreCalles, "")
+            '        txtColoniaEmision.Text = If(domicilio(1).colonia, "")
+            '        txtCPEmision.Text = If(domicilio(1).cp, "")
+            '        cbxPaisEmision.Items.FindByText("MEXICO").Selected = True
+            '        cbxEstadoEmision.Items.FindByValue(If(domicilio(1).estadoId = 0, 1, domicilio(1).estadoId)).Selected = True
+            '        txtMunicipioEmision.Text = If(domicilio(1).municipio, "")
+            '    End If
+            'End If
         End If
     End Sub
 
@@ -738,22 +771,24 @@ Public Class DetalleEmpresa
             Dim contactos As List(Of ContactoEmpresa) = StringToValue(detail.ToString(), GetType(List(Of ContactoEmpresa)))
             Dim tbl = New DataTable()
 
-            If Session("tblContactos") Is Nothing Then
-                tbl.Columns.Add("NombreContacto")
-                tbl.Columns.Add("TipoContacto")
-                tbl.Columns.Add("TelefonoFijo")
-                tbl.Columns.Add("TelefonoMovil")
-                tbl.Columns.Add("Correo")
-                tbl.Columns.Add("Puesto")
+            If contactos.Count > 0 Then
+                If Session("tblContactos") Is Nothing Then
+                    tbl.Columns.Add("NombreContacto")
+                    tbl.Columns.Add("TipoContacto")
+                    tbl.Columns.Add("TelefonoFijo")
+                    tbl.Columns.Add("TelefonoMovil")
+                    tbl.Columns.Add("Correo")
+                    tbl.Columns.Add("Puesto")
 
-                For Each contacto As ContactoEmpresa In contactos
-                    tbl.Rows.Add(contacto.nombre, contacto.tipoContacto, contacto.telefono, contacto.telefonoMovil, contacto.correoElectronico, contacto.puesto)
-                Next
+                    For Each contacto As ContactoEmpresa In contactos
+                        tbl.Rows.Add(contacto.nombre, contacto.tipoContacto, contacto.telefono, contacto.telefonoMovil, contacto.correoElectronico, contacto.puesto)
+                    Next
 
-                tbl.AcceptChanges()
-                repContactos.DataSource = tbl
-                repContactos.DataBind()
-                Session("tblContactos") = tbl
+                    tbl.AcceptChanges()
+                    repContactos.DataSource = tbl
+                    repContactos.DataBind()
+                    Session("tblContactos") = tbl
+                End If
             End If
         End If
     End Sub

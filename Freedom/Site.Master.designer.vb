@@ -167,22 +167,13 @@ Partial Public Class SiteMaster
     Protected WithEvents menu_span_configuracion_facturacion_empleados As Global.System.Web.UI.HtmlControls.HtmlGenericControl
     
     '''<summary>
-    '''Control lblEmpresa.
+    '''Control cbxEmpresa.
     '''</summary>
     '''<remarks>
     '''Campo generado automáticamente.
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
-    Protected WithEvents lblEmpresa As Global.System.Web.UI.HtmlControls.HtmlGenericControl
-    
-    '''<summary>
-    '''Control repListaEmpresas.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents repListaEmpresas As Global.System.Web.UI.WebControls.Repeater
+    Protected WithEvents cbxEmpresa As Global.System.Web.UI.HtmlControls.HtmlSelect
     
     '''<summary>
     '''Control btnLogout.
