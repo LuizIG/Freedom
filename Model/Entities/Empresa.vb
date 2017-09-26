@@ -1,4 +1,14 @@
 ﻿Public Class Empresa
+    Public Property IdEmpresa() As Integer
+        Get
+            Return m_IdEmpresa
+        End Get
+        Set
+            m_IdEmpresa = Value
+        End Set
+    End Property
+    Private m_IdEmpresa As Integer
+
     Public Property EmpresaId() As Integer
         Get
             Return m_EmpresaId

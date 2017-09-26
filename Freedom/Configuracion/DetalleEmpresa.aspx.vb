@@ -6,6 +6,58 @@ Imports Newtonsoft.Json.Linq
 Public Class DetalleEmpresa
     Inherits FreedomPage
 
+    Public Property EditarDomicilio() As Boolean
+        Get
+            If Session("EditarDomicilio") Is Nothing Then
+                Return Nothing
+            Else
+                Return CBool(Session("EditarDomicilio"))
+            End If
+        End Get
+        Set
+            Session("EditarDomicilio") = Value
+        End Set
+    End Property
+
+    Public Property EditarPersonalizacion() As Boolean
+        Get
+            If Session("EditarPersonalizacion") Is Nothing Then
+                Return Nothing
+            Else
+                Return CBool(Session("EditarPersonalizacion"))
+            End If
+        End Get
+        Set
+            Session("EditarPersonalizacion") = Value
+        End Set
+    End Property
+
+    Public Property EditarContactos() As Boolean
+        Get
+            If Session("EditarContactos") Is Nothing Then
+                Return Nothing
+            Else
+                Return CBool(Session("EditarContactos"))
+            End If
+        End Get
+        Set
+            Session("EditarContactos") = Value
+        End Set
+    End Property
+
+    Public Property NombresContactos() As String
+        Get
+            If Session("NombresContactos") Is Nothing Then
+                Return String.Empty
+            Else
+                Return Session("NombresContactos").ToString()
+            End If
+        End Get
+        Set
+            Session("NombresContactos") = Value
+        End Set
+    End Property
+
     Protected Overrides Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs)
         MyBase.Page_Load(sender, e)
         SelectMenuItem("menu_span_configuracion")
@@ -21,12 +73,17 @@ Public Class DetalleEmpresa
 
         If Not IsPostBack Then
             Session("tblContactos") = Nothing
+            UpdateEmpresa = False
+            IdDomicilio = 0
+            IdContacto = 0
         End If
 
         If EditEmpresa Then
             CargarPagina()
             txtEditarEmpresa.Text = "True"
             lblTitulo.Text = "Editar empresa"
+
+            ScriptManager.RegisterStartupScript(Me.Page, Me.GetType(), "script", "UpdateResumen('" + NombresContactos + "');", True)
         Else
             lblTitulo.Text = "Nueva empresa"
         End If
@@ -48,6 +105,7 @@ Public Class DetalleEmpresa
             Dim loginsession = page.UserSession
 
             Dim empresa = New Model.Empresa() With {
+                .IdEmpresa = page.EmpresaId,
                 .NombreEmpresa = nombre,
                 .RFC = rfc,
                 .RegimenFiscalId = regimendFiscalId,
@@ -75,9 +133,13 @@ Public Class DetalleEmpresa
 
             If (statusCode >= 200 And statusCode < 400) Then
                 Dim detail = result.GetValue("detail").Value(Of JObject)
-                Dim empresaId = detail.GetValue("Id").Value(Of String)
 
-                page.EmpresaId = Convert.ToInt32(empresaId)
+                If Not page.EditEmpresa Then
+                    Dim empresaId = detail.GetValue("Id").Value(Of String)
+
+                    page.UpdateEmpresa = True
+                    page.EmpresaId = Convert.ToInt32(empresaId)
+                End If
 
                 Return New ServiceResult() With {
                     .Result = True,
@@ -117,9 +179,11 @@ Public Class DetalleEmpresa
             Dim esLugarEmision = If(parametros.Where(Function(x) x.ParamName.ToUpper() = "LUGAREMISION").ToList()(0).ParamValue.ToString() <> "", parametros.Where(Function(x) x.ParamName.ToUpper() = "LUGAREMISION").ToList()(0).ParamValue.ToString(), "")
 
             Dim page = New FreedomPage()
+            Dim pageDet = New DetalleEmpresa()
             Dim loginsession = page.UserSession
 
             Dim domicilio = New DomicilioEmpresa() With {
+                .IdDomicilio = page.IdDomicilio,
                 .IdEmpresa = page.EmpresaId,
                 .calle = calle,
                 .numeroExterno = numExt,
@@ -139,12 +203,12 @@ Public Class DetalleEmpresa
             Dim req = ""
             Dim msjRet = ""
 
-            If page.EditEmpresa Then
+            If page.EditEmpresa AndAlso pageDet.EditarDomicilio Then
                 req = PutRequest("api/DomicilioEmpresa", loginsession.Token, data)
                 msjRet = "Domicilio Fiscal actualizado"
             Else
                 req = PostRequest("api/DomicilioEmpresa", data, loginsession.Token)
-                msjRet = "Domicilio Fiscal guardada"
+                msjRet = "Domicilio Fiscal guardado"
             End If
 
             Dim result = JObject.Parse(req)
@@ -163,6 +227,7 @@ Public Class DetalleEmpresa
                     pais = If(parametros.Where(Function(x) x.ParamName.ToUpper() = "PAISEMISION").ToList()(0).ParamValue.ToString() <> "", parametros.Where(Function(x) x.ParamName.ToUpper() = "PAISEMISION").ToList()(0).ParamValue.ToString(), "")
 
                     Dim lugarEmision = New DomicilioEmpresa() With {
+                        .IdDomicilio = page.IdDomicilio,
                             .IdEmpresa = page.EmpresaId,
                             .calle = calle,
                             .numeroExterno = numExt,
@@ -179,12 +244,12 @@ Public Class DetalleEmpresa
 
                     data = JsonConvert.SerializeObject(lugarEmision)
 
-                    If page.EditEmpresa Then
+                    If page.EditEmpresa AndAlso pageDet.EditarDomicilio Then
                         req = PutRequest("api/DomicilioEmpresa", loginsession.Token, data)
-                        msjRet = "Lugar de Emision actualizado"
+                        msjRet = "Domicilio Fiscal y Lugar de Emision actualizados"
                     Else
                         req = PostRequest("api/DomicilioEmpresa", data, loginsession.Token)
-                        msjRet = "Lugar de Emision guardada"
+                        msjRet = "Domicilio Fiscal y Lugar de Emision guardados"
                     End If
 
                     result = JObject.Parse(req)
@@ -199,7 +264,7 @@ Public Class DetalleEmpresa
                         data = JsonConvert.SerializeObject(list)
                         Return New ServiceResult() With {
                             .Result = True,
-                            .Message = "Domicilio Fiscal y lugar de emisión guardados",
+                            .Message = msjRet,
                             .Ret = data
                         }
                     Else
@@ -218,7 +283,7 @@ Public Class DetalleEmpresa
                     data = JsonConvert.SerializeObject(list)
                     Return New ServiceResult() With {
                         .Result = True,
-                        .Message = "Domicilio Fiscal guardado",
+                        .Message = msjRet,
                         .Ret = data
                     }
                 End If
@@ -251,6 +316,7 @@ Public Class DetalleEmpresa
             Dim tituloCorreo = If(parametros.Where(Function(x) x.ParamName.ToUpper() = "TITULOCORREO").ToList()(0).ParamValue.ToString() <> "", parametros.Where(Function(x) x.ParamName.ToUpper() = "TITULOCORREO").ToList()(0).ParamValue.ToString(), "")
             Dim contenidoCorreo = If(parametros.Where(Function(x) x.ParamName.ToUpper() = "CONTENIDOCORREO").ToList()(0).ParamValue.ToString() <> "", parametros.Where(Function(x) x.ParamName.ToUpper() = "CONTENIDOCORREO").ToList()(0).ParamValue.ToString(), "")
 
+            Dim pageDet = New DetalleEmpresa()
             Dim page = New FreedomPage()
             Dim loginsession = page.UserSession
 
@@ -271,7 +337,7 @@ Public Class DetalleEmpresa
             Dim req = ""
             Dim msjRet = ""
 
-            If page.EditEmpresa Then
+            If page.EditEmpresa AndAlso pageDet.EditarPersonalizacion Then
                 req = PutRequest("api/ConfiguracionEmpresa", loginsession.Token, data)
                 msjRet = "Personalización actualizado"
             Else
@@ -363,6 +429,7 @@ Public Class DetalleEmpresa
                 }
             End If
 
+            Dim pageDet = New DetalleEmpresa()
             Dim page = New FreedomPage()
             Dim loginsession = page.UserSession
             Dim nombresContactos = ""
@@ -385,7 +452,7 @@ Public Class DetalleEmpresa
                 Dim req = ""
                 Dim data = JsonConvert.SerializeObject(contacto)
 
-                If page.EditEmpresa Then
+                If page.EditEmpresa AndAlso pageDet.EditarContactos Then
                     req = PutRequest("api/ContactoEmpresa", loginsession.Token, data)
                     msjRet = "Contactos actualizados"
                 Else
@@ -678,26 +745,6 @@ Public Class DetalleEmpresa
                 txtRFC.Text = empresa(0).RFC
                 'cbxRegimenFiscal.Items.FindByValue(empresa(0).).Selected = True
                 txtCURP.Text = empresa(0).CURP
-
-                'txtCalle.Text = If(empresa(0).Calle_Fiscal, "")
-                'txtNumExt.Text = If(empresa(0).NumeroExterno_Fiscal, "")
-                'txtNumInt.Text = If(empresa(0).NumeroInterno_Fiscal, "")
-                'txtCalles.Text = If(empresa(0).EntreCalles_Fiscal, "")
-                'txtColonia.Text = If(empresa(0).Colonia_Fiscal, "")
-                'txtCP.Text = If(empresa(0).CP_Fiscal, "")
-                'cbxPais.Items.FindByText(If(empresa(0).Pais_Fiscal, "MEXICO")).Selected = True
-                ''cbxEstado.Items.FindByValue(If(empresa(0).EstadoId_Fiscal = 0, 1, empresa(0).EstadoId_Fiscal)).Selected = True
-                'txtMunicipio.Text = If(empresa(0).Municipio_Fiscal, "")
-
-                'txtCalleEmision.Text = If(empresa(0).Calle_Emision, "")
-                'txtNumExtEmision.Text = If(empresa(0).NumeroExterno_Emision, "")
-                'txtNumIntEmision.Text = If(empresa(0).NumeroInterno_Emision, "")
-                'txtCallesEmision.Text = If(empresa(0).EntreCalles_Emision, "")
-                'txtColoniaEmision.Text = If(empresa(0).Colonia_Emision, "")
-                'txtCPEmision.Text = If(empresa(0).CP_Emision, "")
-                'cbxPaisEmision.Items.FindByText(If(empresa(0).Pais_Emision, "MEXICO")).Selected = True
-                ''cbxEstadoEmision.Items.FindByValue(If(empresa(0).EstadoId_Emision = 0, 1, empresa(0).EstadoId_Emision)).Selected = True
-                'txtMunicipioEmision.Text = If(empresa(0).Municipio_Emision, "")
             End If
         End If
     End Sub
@@ -710,15 +757,18 @@ Public Class DetalleEmpresa
 
         If (statusCode >= 200 And statusCode < 400) Then
             Dim detail = result.GetValue("detail").Value(Of JArray)
-            Dim personalizacion As List(Of PersonalizacionEmpresa) = StringToValue(detail.ToString(), GetType(List(Of PersonalizacionEmpresa)))
+            Dim personalizacion As List(Of PersonalizacionResult) = StringToValue(detail.ToString(), GetType(List(Of PersonalizacionResult)))
 
             If personalizacion.Count > 0 Then
-                txtNombreComercial.Text = If(personalizacion(0).nombreComercial, "")
-                txtMensaje.Text = If(personalizacion(0).mensajeAdicionalFactura, "")
-                txtTelefonos.Text = If(personalizacion(0).telefono, "")
-                txtCorreo.Text = If(personalizacion(0).correo, "")
-                txtTitulo.Text = If(personalizacion(0).tituloCorreo, "")
-                txtContenido.Text = If(personalizacion(0).cuerpoCorreo, "")
+                EditarPersonalizacion = True
+                txtNombreComercial.Text = If(personalizacion(0).NombreComercial, "")
+                txtMensaje.Text = If(personalizacion(0).MensajeAdicionalFactura, "")
+                txtTelefonos.Text = If(personalizacion(0).Telefono, "")
+                txtCorreo.Text = If(personalizacion(0).CorreoElectronico, "")
+                txtTitulo.Text = If(personalizacion(0).TituloCorreo, "")
+                txtContenido.Text = If(personalizacion(0).CuerpoCorreo, "")
+            Else
+                EditarPersonalizacion = False
             End If
         End If
     End Sub
@@ -731,32 +781,36 @@ Public Class DetalleEmpresa
 
         If (statusCode >= 200 And statusCode < 400) Then
             Dim detail = result.GetValue("detail").Value(Of JArray)
-            'Dim domicilio As List(Of DomicilioEmpresa) = StringToValue(detail.ToString(), GetType(List(Of DomicilioEmpresa)))
+            Dim domicilio As List(Of DomicilioResult) = StringToValue(detail.ToString(), GetType(List(Of DomicilioResult)))
 
-            'If domicilio.Count > 0 Then
-            '    txtCalle.Text = If(domicilio(0).calle, "")
-            '    txtNumExt.Text = If(domicilio(0).numeroExterno, "")
-            '    txtNumInt.Text = If(domicilio(0).numeroInterno, "")
-            '    txtCalles.Text = If(domicilio(0).entreCalles, "")
-            '    txtColonia.Text = If(domicilio(0).colonia, "")
-            '    txtCP.Text = If(domicilio(0).cp, "")
-            '    cbxPais.Items.FindByText("MEXICO").Selected = True
-            '    cbxEstado.Items.FindByValue(If(domicilio(0).estadoId = 0, 1, domicilio(0).estadoId)).Selected = True
-            '    txtMunicipio.Text = If(domicilio(0).municipio, "")
-            '    cbxEmision.Checked = domicilio(0).emisionFlg
+            If domicilio.Count > 0 Then
+                EditarDomicilio = True
+                IdDomicilio = domicilio(0).DomicilioId
+                txtCalle.Text = If(domicilio(0).Calle, "")
+                txtNumExt.Text = If(domicilio(0).NumeroExterno, "")
+                txtNumInt.Text = If(domicilio(0).NumeroInterno, "")
+                txtCalles.Text = If(domicilio(0).EntreCalles, "")
+                txtColonia.Text = If(domicilio(0).Colonia, "")
+                txtCP.Text = If(domicilio(0).CP, "")
+                cbxPais.Items.FindByText("MEXICO").Selected = True
+                'cbxEstado.Items.FindByValue(If(domicilio(0).EstadoId = 0, 1, domicilio(0).EstadoId)).Selected = True
+                txtMunicipio.Text = If(domicilio(0).Municipio, "")
+                cbxEmision.Checked = domicilio(0).EmisionFlg
 
-            '    If domicilio(0).emisionFlg Then
-            '        txtCalleEmision.Text = If(domicilio(1).calle, "")
-            '        txtNumExtEmision.Text = If(domicilio(1).numeroExterno, "")
-            '        txtNumIntEmision.Text = If(domicilio(1).numeroInterno, "")
-            '        txtCallesEmision.Text = If(domicilio(1).entreCalles, "")
-            '        txtColoniaEmision.Text = If(domicilio(1).colonia, "")
-            '        txtCPEmision.Text = If(domicilio(1).cp, "")
-            '        cbxPaisEmision.Items.FindByText("MEXICO").Selected = True
-            '        cbxEstadoEmision.Items.FindByValue(If(domicilio(1).estadoId = 0, 1, domicilio(1).estadoId)).Selected = True
-            '        txtMunicipioEmision.Text = If(domicilio(1).municipio, "")
-            '    End If
-            'End If
+                If Not domicilio(0).EmisionFlg Then
+                    txtCalleEmision.Text = If(domicilio(1).Calle, "")
+                    txtNumExtEmision.Text = If(domicilio(1).NumeroExterno, "")
+                    txtNumIntEmision.Text = If(domicilio(1).NumeroInterno, "")
+                    txtCallesEmision.Text = If(domicilio(1).EntreCalles, "")
+                    txtColoniaEmision.Text = If(domicilio(1).Colonia, "")
+                    txtCPEmision.Text = If(domicilio(1).CP, "")
+                    cbxPaisEmision.Items.FindByText("MEXICO").Selected = True
+                    'cbxEstadoEmision.Items.FindByValue(If(domicilio(1).EstadoId = 0, 1, domicilio(1).EstadoId)).Selected = True
+                    txtMunicipioEmision.Text = If(domicilio(1).Municipio, "")
+                End If
+            Else
+                EditarDomicilio = False
+            End If
         End If
     End Sub
 
@@ -768,11 +822,14 @@ Public Class DetalleEmpresa
 
         If (statusCode >= 200 And statusCode < 400) Then
             Dim detail = result.GetValue("detail").Value(Of JArray)
-            Dim contactos As List(Of ContactoEmpresa) = StringToValue(detail.ToString(), GetType(List(Of ContactoEmpresa)))
+            Dim contactos As List(Of ContactoResult) = StringToValue(detail.ToString(), GetType(List(Of ContactoResult)))
             Dim tbl = New DataTable()
 
             If contactos.Count > 0 Then
+                EditarContactos = True
+
                 If Session("tblContactos") Is Nothing Then
+                    tbl.Columns.Add("Id")
                     tbl.Columns.Add("NombreContacto")
                     tbl.Columns.Add("TipoContacto")
                     tbl.Columns.Add("TelefonoFijo")
@@ -780,8 +837,11 @@ Public Class DetalleEmpresa
                     tbl.Columns.Add("Correo")
                     tbl.Columns.Add("Puesto")
 
-                    For Each contacto As ContactoEmpresa In contactos
-                        tbl.Rows.Add(contacto.nombre, contacto.tipoContacto, contacto.telefono, contacto.telefonoMovil, contacto.correoElectronico, contacto.puesto)
+                    NombresContactos = ""
+
+                    For Each contacto As ContactoResult In contactos
+                        NombresContactos += contacto.Nombre + "<br/>"
+                        tbl.Rows.Add(contacto.ContactoId, contacto.Nombre, contacto.TipoContacto, contacto.TelefonoFijo, contacto.TelefonoMovil, contacto.CorreoElectronico, contacto.Puesto)
                     Next
 
                     tbl.AcceptChanges()
@@ -789,11 +849,17 @@ Public Class DetalleEmpresa
                     repContactos.DataBind()
                     Session("tblContactos") = tbl
                 End If
+            Else
+                EditarContactos = False
             End If
         End If
     End Sub
 
     Protected Sub btnAgregarContacto_Click(sender As Object, e As EventArgs)
         CargarTablaContactos()
+    End Sub
+
+    Protected Sub btnTriggerUpdate_Click(sender As Object, e As EventArgs)
+        'CargarEmpresas(UserSession.OrganizacionId)
     End Sub
 End Class

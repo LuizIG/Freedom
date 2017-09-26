@@ -23,15 +23,6 @@ Partial Public Class DetalleEmpresa
     Protected WithEvents lblTitulo As Global.System.Web.UI.WebControls.Label
     
     '''<summary>
-    '''Control script.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents script As Global.System.Web.UI.ScriptManager
-    
-    '''<summary>
     '''Control txtEditarEmpresa.
     '''</summary>
     '''<remarks>
@@ -75,6 +66,15 @@ Partial Public Class DetalleEmpresa
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
     Protected WithEvents txtCURP As Global.System.Web.UI.WebControls.TextBox
+    
+    '''<summary>
+    '''Control btnTriggerUpdate.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents btnTriggerUpdate As Global.System.Web.UI.WebControls.Button
     
     '''<summary>
     '''Control txtCalle.

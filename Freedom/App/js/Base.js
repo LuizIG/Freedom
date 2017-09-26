@@ -1,4 +1,8 @@
-﻿function showDialog(msg) {
+﻿$(function () {
+
+});
+
+function showDialog(msg) {
     $('#msgModalSmall').text(msg);
     $('#modalSmall').modal('show');
 }

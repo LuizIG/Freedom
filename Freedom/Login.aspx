@@ -91,7 +91,7 @@
                                             </div>
                                             <div class="col-md-6 text-right">
                                                 <button class="btn btn-primary btn-cons m-t-10 pull-right" id="btnLogin" type="button">
-							                        <span>Siguiente</span>
+							                        <span>Ingresar</span>
 						                        </button>
                                             </div>
                                         </div>

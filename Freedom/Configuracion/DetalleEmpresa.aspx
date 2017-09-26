@@ -9,8 +9,8 @@
     <li><a href="#" class="active"><asp:Label runat="server" ID="lblTitulo" ClientIDMode="Static"></asp:Label></a>
     </li>
 </ul>
-<asp:ScriptManager ID="script" runat="server" EnablePartialRendering="true">
-</asp:ScriptManager>
+<%--<asp:ScriptManager ID="script" runat="server" EnablePartialRendering="true">
+</asp:ScriptManager>--%>
 	    <div id="rootwizard">
             <ul class="nav nav-tabs nav-tabs-linetriangle nav-tabs-separator nav-stack-sm" id="tabsEmpresa" role="tablist" data-init-reponsive-tabs="dropdownfx">
 			    <li class="nav-item" id="tabInfo">
@@ -85,9 +85,14 @@
                                         <div class="padding-20 sm-padding-5 sm-m-b-20 sm-m-t-20 bg-white clearfix">
 				                            <ul class="pager wizard no-style">
 					                            <li class="next">
-						                            <button class="btn btn-primary btn-cons btn-animated from-left fa fa-home pull-right" id="btnGuardarInfo" type="button">
-							                            <span>Guardar</span>
-						                            </button>
+                                                    <asp:UpdatePanel runat="server">
+                                                        <ContentTemplate>
+                                                            <button class="btn btn-primary btn-cons btn-animated from-left fa fa-home pull-right" id="btnGuardarInfo" type="button">
+							                                    <span>Guardar</span>
+						                                    </button>
+                                                            <asp:Button runat="server" ID="btnTriggerUpdate" style="visibility:hidden; display: none" ClientIDMode="Static" OnClick="btnTriggerUpdate_Click" />
+                                                        </ContentTemplate>
+                                                    </asp:UpdatePanel>
 					                            </li>
 				                            </ul>
 			                            </div>

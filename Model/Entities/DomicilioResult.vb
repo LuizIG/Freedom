@@ -1,35 +1,35 @@
-﻿Public Class DomicilioEmpresa
-    Public Property IdEmpresa() As Integer
+﻿Public Class DomicilioResult
+    Public Property EmpresaId() As Integer
         Get
-            Return m_IdEmpresa
+            Return m_EmpresaId
         End Get
         Set
-            m_IdEmpresa = Value
+            m_EmpresaId = Value
         End Set
     End Property
-    Private m_IdEmpresa As Integer
+    Private m_EmpresaId As Integer
 
-    Public Property IdDomicilio() As Integer
+    Public Property DomicilioId() As Integer
         Get
-            Return m_IdDomicilio
+            Return m_DomicilioId
         End Get
         Set
-            m_IdDomicilio = Value
+            m_DomicilioId = Value
         End Set
     End Property
-    Private m_IdDomicilio As Integer
+    Private m_DomicilioId As Integer
 
-    Public Property calle() As String
+    Public Property Calle() As String
         Get
-            Return m_calle
+            Return m_Calle
         End Get
         Set
-            m_calle = Value
+            m_Calle = Value
         End Set
     End Property
-    Private m_calle As String
+    Private m_Calle As String
 
-    Public Property numeroExterno() As String
+    Public Property NumeroExterno() As String
         Get
             Return m_numeroExterno
         End Get
@@ -39,7 +39,7 @@
     End Property
     Private m_numeroExterno As String
 
-    Public Property numeroInterno() As String
+    Public Property NumeroInterno() As String
         Get
             Return m_numeroInterno
         End Get
@@ -49,7 +49,7 @@
     End Property
     Private m_numeroInterno As String
 
-    Public Property entreCalles() As String
+    Public Property EntreCalles() As String
         Get
             Return m_entreCalles
         End Get
@@ -59,7 +59,7 @@
     End Property
     Private m_entreCalles As String
 
-    Public Property colonia() As String
+    Public Property Colonia() As String
         Get
             Return m_colonia
         End Get
@@ -69,7 +69,7 @@
     End Property
     Private m_colonia As String
 
-    Public Property cp() As String
+    Public Property CP() As String
         Get
             Return m_cp
         End Get
@@ -79,7 +79,7 @@
     End Property
     Private m_cp As String
 
-    Public Property municipio() As String
+    Public Property Municipio() As String
         Get
             Return m_municipio
         End Get
@@ -89,7 +89,7 @@
     End Property
     Private m_municipio As String
 
-    Public Property estadoId() As Integer
+    Public Property EstadoId() As Integer
         Get
             Return m_estadoId
         End Get
@@ -99,7 +99,7 @@
     End Property
     Private m_estadoId As Integer
 
-    Public Property fiscalFlg() As Boolean
+    Public Property FiscalFlg() As Boolean
         Get
             Return m_fiscalFlg
         End Get
@@ -109,7 +109,7 @@
     End Property
     Private m_fiscalFlg As Boolean
 
-    Public Property emisionFlg() As Boolean
+    Public Property EmisionFlg() As Boolean
         Get
             Return m_emisionFlg
         End Get
@@ -118,14 +118,4 @@
         End Set
     End Property
     Private m_emisionFlg As Boolean
-
-    Public Property activoFlg() As Boolean
-        Get
-            Return m_activoFlg
-        End Get
-        Set
-            m_activoFlg = Value
-        End Set
-    End Property
-    Private m_activoFlg As Boolean
 End Class

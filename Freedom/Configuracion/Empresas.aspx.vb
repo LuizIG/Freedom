@@ -26,7 +26,7 @@ Public Class Empresa
             Dim detail = result.GetValue("detail").Value(Of JArray)
             Dim empresas As List(Of Model.Empresa) = StringToValue(detail.ToString(), GetType(List(Of Model.Empresa)))
 
-            repEmpresas.DataSource = empresas
+            repEmpresas.DataSource = empresas.OrderByDescending(Function(x) x.EmpresaDefault).ThenBy(Function(x) x.IdEmpresa)
             repEmpresas.DataBind()
         Else
 

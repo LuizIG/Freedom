@@ -172,6 +172,177 @@
     
 });
 
+function UpdateResumen(contactos) {
+
+    // I N F O  G E N E R A L
+    var nombre = $("#txtNombre").val();
+    var rfc = $("#txtRFC").val();
+    var regFiscal = $("[data-id=cbxRegimenFiscal] option:selected").text();
+    var curp = $("#txtCURP").val();
+
+    if (nombre != "") {
+        $('[data-id=lblNombreEmpresa]').text(nombre);
+        $("#requeridoNombre").attr('class', 'fa fa-check');
+    }
+
+    if (rfc != "") {
+        $('[data-id=lblRFC]').text(rfc);
+        $("#requeridoRFC").attr('class', 'fa fa-check');
+    }
+
+    if (regFiscal != "") {
+        $('[data-id=lblRegimen]').text(regFiscal);
+        $("#requeridoRegimen").attr('class', 'fa fa-check');
+    }
+
+    if (curp != "") {
+        $('[data-id=lblCURP]').text(curp);
+    }
+
+    
+    // D O M I C I L I O
+    var calle = $("#txtCalle").val();
+    var numExt = $("#txtNumExt").val();
+    var numInt = $("#txtNumInt").val();
+    var calles = $("#txtCalles").val();
+    var colonia = $("#txtColonia").val();
+    var cp = $("#txtCP").val();
+    var municipio = $("#txtMunicipio").val();
+    var estado = $("[data-id=cbxEstado] option:selected").text();
+    var pais = $("[data-id=cbxPais] option:selected").text();
+    //var esLugarEmision = $("[data-id=cbxEmision]").is(':checked');
+    
+    var calleEmision = $("#txtCalleEmision").val();
+    var numExtEmision = $("#txtNumExtEmision").val();
+    var numIntEmision = $("#txtNumIntEmision").val();
+    var callesEmision = $("#txtCallesEmision").val();
+    var coloniaEmision = $("#txtColoniaEmision").val();
+    var cpEmision = $("#txtCPEmision").val();
+    var municipioEmision = $("#txtMunicipioEmision").val();
+    var estadoEmision = $("[data-id=cbxEstadoEmision] option:selected").text();
+    var paisEmision = $("[data-id=cbxPaisEmision] option:selected").text();
+
+    if (calle != "") {
+        $('[data-id=lblCalle]').text(calle);
+        $("#requeridoCalle").attr('class', 'fa fa-check');
+    }
+
+    if (numExt != "") {
+        $('[data-id=lblNoExt]').text(numExt);
+        $("#requeridoNumExt").attr('class', 'fa fa-check');
+    }
+
+    if (numInt != "") {
+        $('[data-id=lblNoInt]').text(numInt);
+    }
+
+    if (calles != "") {
+        $('[data-id=lblCalles]').text(calles);
+    }
+
+    if (cp != "") {
+        $('[data-id=lblCP]').text(cp);
+    }
+
+    if (municipio != "") {
+        $('[data-id=lblMunicipio]').text(municipio);
+    }
+
+    if (pais != "") {
+        $('[data-id=lblPais]').text(pais);
+    }
+
+    if (estado != "") {
+        $('[data-id=lblEstado]').text(estado);
+    }
+
+    if (colonia != "") {
+        $('[data-id=lblColonia]').text(colonia);
+        $("#requeridoColonia").attr('class', 'fa fa-check');
+    }
+    
+    if (calleEmision != "") {
+        $('#resumenLugarEmision').show();
+        $('[data-id=lblCalleEmision]').text(calleEmision);
+        $("#requeridoCalleEmision").attr('class', 'fa fa-check');
+    }
+
+    if (numExtEmision != "") {
+        $('[data-id=lblNumExtEmision]').text(numExtEmision);
+        $("#requeridoNumExtEmision").attr('class', 'fa fa-check');
+    }
+
+    if (numIntEmision != "") {
+        $('[data-id=lblNumIntEmision]').text(numIntEmision);
+    }
+
+    if (callesEmision != "") {
+        $('[data-id=lblCallesEmision]').text(callesEmision);
+    }
+
+    if (cpEmision != "") {
+        $('[data-id=lblCPEmision]').text(cpEmision);
+    }
+
+    if (municipioEmision != "") {
+        $('[data-id=lblMunicipioEmision]').text(municipioEmision);
+    }
+
+    if (paisEmision != "") {
+        $('[data-id=lblPaisEmision]').text(paisEmision);
+    }
+
+    if (estadoEmision != "") {
+        $('[data-id=lblEstadoEmision]').text(estadoEmision);
+    }
+
+    if (coloniaEmision != "") {
+        $('[data-id=lblColoniaEmision]').text(coloniaEmision);
+        $("#requeridoColoniaEmision").attr('class', 'fa fa-check');
+    }
+    
+    // P E R S O N A L I Z A C I O N
+    var nombreComercial = $("#txtNombreComercial").val();
+    var mensaje = $("#txtMensaje").val();
+    var telefonosPer = $("#txtTelefonos").val();
+    var correoPer = $("#txtCorreo").val();
+    var tituloCorreo = $("#txtTitulo").val();
+    var contenidoCorreo = $("#txtContenido").val();
+
+    if (nombreComercial != "") {
+        $('[data-id=lblNombreComercial]').text(nombreComercial);
+        $("#requeridoNombreComercial").attr('class', 'fa fa-check');
+    }
+
+    if (mensaje != "") {
+        $('[data-id=lblMensaje]').text(mensaje);
+        $("#requeridoMensaje").attr('class', 'fa fa-check');
+    }
+
+    if (telefonosPer != "") {
+        $('[data-id=lblTelefonos]').text(telefonosPer);
+    }
+
+    if (correoPer != "") {
+        $('[data-id=lblCorreoFactura]').text(correoPer);
+    }
+
+    //if (tituloCorreo != "") {
+        
+    //}
+
+    //if (contenidoCorreo != "") {
+        
+    //}
+
+
+    // C O N T A C T O S
+     if (contactos != "") {
+         $('[data-id=lblContactos]').html(contactos);
+         $("#requeridoContactos").attr('class', 'fa fa-check');
+     }
+}
+
 function getInfoParams() {
     var retValue = [];
     var item = {};
@@ -501,8 +672,8 @@ function GuardarEmpresa() {
                 showDialog(data.Message);
             } else {
                 var info = JSON.parse(data.Ret);
-                //$('[name=lblEmpresa]').text(info.NombreEmpresa);
-                $("#cbxEmpresa").find("option[text=" + info.NombreEmpresa + "]").attr("selected", true);
+
+                $("#btnTriggerUpdate").click();
                 $('[data-id=lblNombreEmpresa]').text(info.NombreEmpresa);
                 $("#requeridoNombre").attr('class', 'fa fa-check');
                 $('[data-id=lblRFC]').text(info.RFC);
@@ -510,7 +681,7 @@ function GuardarEmpresa() {
                 $('[data-id=lblRegimen]').text(info.RegimenFiscal);
                 $("#requeridoRegimen").attr('class', 'fa fa-check');
                 $('[data-id=lblCURP]').text(info.CURP);
-
+                
                 showDialog(data.Message);
                 $('#refDomicilio').attr('href', '#tab2');
                 $('#refPersonalizacion').attr('href', '#tab3');

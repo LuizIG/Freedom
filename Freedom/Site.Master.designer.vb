@@ -23,6 +23,24 @@ Partial Public Class SiteMaster
     Protected WithEvents head As Global.System.Web.UI.WebControls.ContentPlaceHolder
     
     '''<summary>
+    '''Control form2.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents form2 As Global.System.Web.UI.HtmlControls.HtmlForm
+    
+    '''<summary>
+    '''Control script.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents script As Global.System.Web.UI.ScriptManager
+    
+    '''<summary>
     '''Control menu_span_inicio.
     '''</summary>
     '''<remarks>
@@ -167,13 +185,13 @@ Partial Public Class SiteMaster
     Protected WithEvents menu_span_configuracion_facturacion_empleados As Global.System.Web.UI.HtmlControls.HtmlGenericControl
     
     '''<summary>
-    '''Control cbxEmpresa.
+    '''Control ComboEmpresas.
     '''</summary>
     '''<remarks>
     '''Campo generado automáticamente.
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
-    Protected WithEvents cbxEmpresa As Global.System.Web.UI.HtmlControls.HtmlSelect
+    Protected WithEvents ComboEmpresas As Global.Freedom.ComboEmpresas
     
     '''<summary>
     '''Control btnLogout.
@@ -183,15 +201,6 @@ Partial Public Class SiteMaster
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
     Protected WithEvents btnLogout As Global.System.Web.UI.HtmlControls.HtmlButton
-    
-    '''<summary>
-    '''Control form1.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents form1 As Global.System.Web.UI.HtmlControls.HtmlForm
     
     '''<summary>
     '''Control MainContent.
