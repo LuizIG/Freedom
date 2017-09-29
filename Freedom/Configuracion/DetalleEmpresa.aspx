@@ -177,7 +177,7 @@
 										</asp:TextBox>
 									</div>
 									<div class="checkbox check-primary">
-										<input type="checkbox" value="1" id="cbxEmision" data-id="cbxEmision" runat="server" checked="checked"/>
+										<input type="checkbox" id="cbxEmision" value="1" data-id="cbxEmision" checked="checked"/>
 										<label for="cbxEmision">¿Usar como lugar de emisión?</label>
 									</div>
                                     <div class="padding-20 sm-padding-5 sm-m-b-20 sm-m-t-20 bg-white clearfix">
@@ -305,18 +305,27 @@
 											        name="usuario" ClientIDMode="Static" placeholder="Nombre Comercial">
 									        </asp:TextBox>
 								        </div>
-                                        <div class="form-group form-group-default input-group" style="padding-left:10px">
-                                            <div class="form-input-group">
-                                                <label style="color:#626262;">Logotipo</label>
-										        <asp:TextBox ID="txtLogo" ForeColor="Black" BackColor="Window" ReadOnly="true" runat="server" placeholder="Logotipo de su empresa" class="form-control" ClientIDMode="Static">
-									            </asp:TextBox>
-                                                <asp:TextBox ID="binaryLogo" runat="server" ClientIDMode="Static" style="visibility:hidden; display: none"></asp:TextBox>
+                                        <div class="row">
+										    <div class="col-sm-8" style="height:150px; display: flex; align-items: center;">
+                                                <div class="form-group form-group-default input-group" style="padding-left:10px">
+                                                    <div class="form-input-group">
+                                                        <label style="color:#626262;">Logotipo</label>
+										                <asp:TextBox ID="txtLogo" ForeColor="Black" BackColor="Window" ReadOnly="true" runat="server" placeholder="Logotipo de su empresa (150 x 150)" class="form-control" ClientIDMode="Static">
+									                    </asp:TextBox>
+                                                        <asp:TextBox ID="binaryLogo" runat="server" ClientIDMode="Static" style="visibility:hidden; display: none"></asp:TextBox>
+                                                    </div>
+                                                    <asp:FileUpload ID="fuLogo" accept=".jpg" onchange='selectLogo(event)' style="visibility:hidden; display: none" runat="server" class="btn btn-primary" ClientIDMode="Static"/>
+                                                    <div class="input-group-addon btn btn-primary" onclick="showLogoFileDialog()">
+                                                        <i class="fa fa-search"></i>
+                                                    </div>
+										        </div>
                                             </div>
-                                            <asp:FileUpload ID="fuLogo" accept=".jpg" onchange='selectLogo(event)' style="visibility:hidden; display: none" runat="server" class="btn btn-primary" ClientIDMode="Static"/>
-                                            <div class="input-group-addon btn btn-primary" onclick="showLogoFileDialog()">
-                                                <i class="fa fa-search"></i>
+                                            <div class="col-sm-4">
+                                                <div style="height:150px; width:150px; border: 0.2px solid #626262; display: flex; align-items: center;">
+                                                    <img src="" style="max-height:100%; max-width:100%;" id='output' data-id="output" runat="server" title="Tamaño sugerido de 150x150">
+                                                </div>
                                             </div>
-										</div>
+                                        </div><br />
 								        <div class="form-group form-group-default required">
 									        <label>Mensaje adicional en factura</label>
 									        <asp:TextBox ID="txtMensaje" runat="server" placeholder="Mensaje adicional que requiera incluir en su factura" class="form-control" TextMode="MultiLine" ClientIDMode="Static" Height="70px">
@@ -428,15 +437,6 @@ En caso de no ser el contacto adecuado para el seguimiento de cobranza agradecer
                                     <div class="padding-20 sm-padding-5 sm-m-b-20 sm-m-t-20 bg-white clearfix">
 				                        <ul class="pager wizard no-style">
 					                        <li class="next">
-						                        <button class="btn btn-complete btn-cons btn-animated from-left fa fa-home pull-right" id="btnValidarCertificado" type="button">
-							                        <span>Valida Certificado</span>
-						                        </button>
-					                        </li>
-				                        </ul>
-			                        </div>
-                                    <div class="padding-20 sm-padding-5 sm-m-b-20 sm-m-t-20 bg-white clearfix">
-				                        <ul class="pager wizard no-style">
-					                        <li class="next">
 						                        <button class="btn btn-primary btn-cons btn-animated from-left fa fa-save pull-right" id="btnGuardarCertificados" type="button">
 							                        <span>Guardar</span>
 						                        </button>
@@ -471,37 +471,53 @@ En caso de no ser el contacto adecuado para el seguimiento de cobranza agradecer
                                                     <table class="table table-hover dataTable no-footer" id="tblContactos" role="grid">
                                                         <thead>
                                                             <tr role="row">
-                                                                <th style="width: 250px;" class="sorting" tabindex="0" aria-controls="tblContactos" rowspan="1" colspan="1" aria-label="Title: activate to sort column descending">Nombre</th>
-                                                                <th style="width: 150px;" class="sorting" tabindex="0" aria-controls="tblContactos" rowspan="1" colspan="1" aria-label="Key: activate to sort column ascending">Teléfono Fijo</th>
-                                                                <th style="width: 120px;" class="sorting" tabindex="0" aria-controls="tblContactos" rowspan="1" colspan="1" aria-label="Condensed: activate to sort column ascending">Teléfono Móvil</th>
-                                                                <th style="width: 120px;" class="sorting" tabindex="0" aria-controls="tblContactos" rowspan="1" colspan="1" aria-label="Condensed: activate to sort column ascending">Correo Electrónico</th>
-                                                                <th style="width: 120px;" class="sorting" tabindex="0" aria-controls="tblContactos" rowspan="1" colspan="1" aria-label="Condensed: activate to sort column ascending">Puesto</th>
-                                                                <th style="width: 120px;" class="sorting" tabindex="0" aria-controls="tblContactos" rowspan="1" colspan="1" aria-label="Condensed: activate to sort column ascending">Tipo Contacto</th>
+                                                                <th style="width: 1px; visibility:hidden;" class="sorting" tabindex="0" aria-controls="tblContactos" rowspan="1" colspan="1" aria-label="Title: activate to sort column descending">Id</th>
+                                                                <th style="width: 250px; text-align:center;" class="sorting" tabindex="0" aria-controls="tblContactos" rowspan="1" colspan="1" aria-label="Title: activate to sort column descending">Nombre</th>
+                                                                <th style="width: 150px; text-align:center;" class="sorting" tabindex="0" aria-controls="tblContactos" rowspan="1" colspan="1" aria-label="Key: activate to sort column ascending">Teléfono Fijo</th>
+                                                                <th style="width: 120px; text-align:center;" class="sorting" tabindex="0" aria-controls="tblContactos" rowspan="1" colspan="1" aria-label="Condensed: activate to sort column ascending">Teléfono Móvil</th>
+                                                                <th style="width: 120px; text-align:center;" class="sorting" tabindex="0" aria-controls="tblContactos" rowspan="1" colspan="1" aria-label="Condensed: activate to sort column ascending">Correo Electrónico</th>
+                                                                <th style="width: 120px; text-align:center;" class="sorting" tabindex="0" aria-controls="tblContactos" rowspan="1" colspan="1" aria-label="Condensed: activate to sort column ascending">Puesto</th>
+                                                                <th style="width: 120px; text-align:center;" class="sorting" tabindex="0" aria-controls="tblContactos" rowspan="1" colspan="1" aria-label="Condensed: activate to sort column ascending">Tipo Contacto</th>
+                                                                <th style="width: 80px; text-align:center;" class="sorting" tabindex="0" aria-controls="tblContactos" rowspan="1" colspan="1" aria-label="Condensed: activate to sort column ascending">Editar</th>
+                                                                <th style="width: 80px; text-align:center;" class="sorting" tabindex="0" aria-controls="tblContactos" rowspan="1" colspan="1" aria-label="Condensed: activate to sort column ascending">Eliminar</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            <asp:Repeater ID="repContactos" runat="server">
+                                                            <asp:Repeater ID="repContactos" runat="server" OnItemCommand="repContactos_ItemCommand">
                                                                 <ItemTemplate>
                                                                     <tr role="row">
-                                                                    <td class="v-align-middle semi-bold sorting_1">
-                                                                        <asp:Label ID="txtName" runat="server" Text='<%# Eval("NombreContacto") %>' />
-                                                                    </td>
-                                                                    <td class="v-align-middle">
-                                                                        <asp:Label ID="TextBox1" runat="server" Text='<%# Eval("TelefonoFijo") %>' />
-                                                                    </td>
-                                                                    <td class="v-align-middle semi-bold">
-                                                                        <asp:Label ID="TextBox2" runat="server" Text='<%# Eval("TelefonoMovil") %>' />
-                                                                    </td>
-                                                                    <td class="v-align-middle">
-                                                                            <asp:Label ID="Label1" runat="server" Text='<%# Eval("Correo") %>' />
-                                                                    </td>
-                                                                    <td class="v-align-middle">
-                                                                            <asp:Label ID="Label2" runat="server" Text='<%# Eval("Puesto") %>' />
-                                                                    </td>
-                                                                    <td class="v-align-middle">
-                                                                            <asp:Label ID="Label3" runat="server" Text='<%# Eval("TipoContacto") %>' />
-                                                                    </td>
-                                                                </tr>  
+                                                                        <td class="v-align-middle">
+                                                                            <input name="lblContactoId" type="hidden" value='<%# Eval("ContactoId") %>'>
+                                                                            <asp:TextBox ID="txtContactoId" ClientIDMode="Static" style="visibility:hidden; display: none" Text='<%# Eval("ContactoId") %>'></asp:TextBox>
+                                                                        </td>
+                                                                        <td class="v-align-middle semi-bold sorting_1">
+                                                                            <asp:Label ID="txtName" runat="server" Text='<%# Eval("NombreContacto") %>' />
+                                                                        </td>
+                                                                        <td class="v-align-middle">
+                                                                            <asp:Label ID="TextBox1" runat="server" Text='<%# Eval("TelefonoFijo") %>' />
+                                                                        </td>
+                                                                        <td class="v-align-middle semi-bold">
+                                                                            <asp:Label ID="TextBox2" runat="server" Text='<%# Eval("TelefonoMovil") %>' />
+                                                                        </td>
+                                                                        <td class="v-align-middle">
+                                                                                <asp:Label ID="Label1" runat="server" Text='<%# Eval("Correo") %>' />
+                                                                        </td>
+                                                                        <td class="v-align-middle">
+                                                                                <asp:Label ID="Label2" runat="server" Text='<%# Eval("Puesto") %>' />
+                                                                        </td>
+                                                                        <td class="v-align-middle">
+                                                                                <asp:Label ID="Label3" runat="server" Text='<%# Eval("TipoContacto") %>' />
+                                                                        </td>
+                                                                        <td class="v-align-middle editarEmpresa" style="text-align:center;">
+                                                                             <span><i id="editaContacto" data-id="editaContacto" style="cursor: pointer;" class="fa fa-pencil fa-lg"></i></span>
+                                                                             <asp:CheckBox runat="server" ID="chkEditContacto" style="visibility:hidden; display: none;" CssClass="editChecked" data-id="chkEditContacto" ClientIDMode="Static"/>
+                                                                            <asp:LinkButton ID="btnEditarContacto" runat="server" onclick="btnEditarContacto_Click" style="visibility:hidden; display: none;" CommandName="Edit"></asp:LinkButton>
+                                                                        </td>
+                                                                        <td class="v-align-middle" style="text-align:center;">
+                                                                             <span><i id="eliminaContacto" data-id="eliminaContacto" style="cursor: pointer;" class="fa fa-trash fa-lg"></i></span>
+                                                                            <asp:CheckBox runat="server" ID="chkDeleteContacto" style="visibility:hidden; display: none" CssClass="deleteChecked" data-id="chkDeleteContacto" ClientIDMode="Static"/>
+                                                                        </td>
+                                                                    </tr>  
                                                                 </ItemTemplate>
                                                             </asp:Repeater>
                                                         </tbody>     

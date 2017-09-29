@@ -59,11 +59,11 @@
                                             <asp:Label ID="Label3" runat="server" Text='<%# Eval("CertificadoDigital") %>' />
                                     </td>
                                       <td class="v-align-middle editarEmpresa" style="text-align:center;">
-                                         <span><i id="editaEmpresa" data-id="editaEmpresa" style="cursor: pointer;" class="fa fa-pencil"></i></span>
+                                         <span><i id="editaEmpresa" data-id="editaEmpresa" style="cursor: pointer;" class="fa fa-pencil fa-lg"></i></span>
                                          <asp:CheckBox runat="server" ID="chkImpuestos" style="visibility:hidden; display: none;" CssClass="editChecked" data-id="chkImpuestos" ClientIDMode="Static"/>
                                     </td>
                                     <td class="v-align-middle" style="text-align:center;">
-                                         <span><i id="eliminaEmpresa" data-id="eliminaEmpresa" style="cursor: pointer;" class="fa fa-trash"></i></span>
+                                         <span><i id="eliminaEmpresa" data-id="eliminaEmpresa" style="cursor: pointer;" class="fa fa-trash fa-lg"></i></span>
                                         <asp:CheckBox runat="server" ID="chkDeleteEmpresa" style="visibility:hidden; display: none" CssClass="deleteChecked" data-id="chkDeleteEmpresa" ClientIDMode="Static"/>
                                     </td>
                                 </tr>  

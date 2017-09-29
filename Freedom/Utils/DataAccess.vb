@@ -16,7 +16,7 @@ Module DataAccess
         Return GetData(request)
     End Function
 
-    Public Function DeleteRequest(url As String, token As String, Optional ByVal contentType As String = "application/json") As String
+    Public Function DeleteRequest(url As String, token As String, Optional ByVal data As String = "", Optional ByVal contentType As String = "application/json") As String
         Dim request = CreateRequest(SERVER_HOST & url, "DELETE", token, contentType)
         Return GetData(request)
     End Function

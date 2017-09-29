@@ -3,7 +3,7 @@
     $('#tblEmpresas').on("click", "[data-id=editaEmpresa]", function (e) {
         var trow = $(this).parent().siblings(".editChecked");
         trow.find('input[type="checkbox"]').prop('checked', true);
-        showConfirmDialog("Editar Empresa", "Deseas editar esta empresa?", "Aceptar", editarEmpresa);
+        editarEmpresa();
     });
 
     $('#tblEmpresas').on("click", "[data-id=eliminaEmpresa]", function (e) {

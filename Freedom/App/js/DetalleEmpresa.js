@@ -4,6 +4,17 @@
         cargarEstadosEmision(1);
     });
 
+    $('#tblContactos').on("click", "[data-id=editaContacto]", function (e) {
+        var trow = $(this).parent().siblings(".editChecked");
+        trow.find('input[type="checkbox"]').prop('checked', true);
+        $("#btnEditarContacto").click();
+    });
+
+    $('#tblContactos').on("click", "[data-id=eliminaContacto]", function (e) {
+        var trow = $(this).parent().siblings(".deleteChecked");
+        trow.find('input[type="checkbox"]').prop('checked', true);
+        showConfirmDialog("Eliminar Contacto", "Deseas eliminar este contacto?", "Aceptar", eliminarContacto);
+    });
 
 
     var editar = $("#txtEditarEmpresa").val();
@@ -20,7 +31,7 @@
     $("#domicilioFiscalPart").attr('class', 'col-md-6 col-md-offset-3');
     $('#tabsEmpresa a[href="#tab1"]').tab('show'); 
 
-    $('#cbxEmision').change(function () {
+    $('[data-id=cbxEmision]').change(function () {
         if (this.checked) {
             $("#domicilioFiscalPart").attr('class', 'col-md-6 col-md-offset-3');
             $('#btnGuardarDomicilio').show();
@@ -173,7 +184,6 @@
 });
 
 function UpdateResumen(contactos) {
-
     // I N F O  G E N E R A L
     var nombre = $("#txtNombre").val();
     var rfc = $("#txtRFC").val();
@@ -1075,6 +1085,19 @@ var selectLogo = function (event) {
         $("#binaryLogo").val(encryptedFile);
     };
     reader.readAsArrayBuffer(input.files[0]);
+    openFile(event);
+};
+
+var openFile = function (event) {
+    var input = event.target;
+
+    var reader = new FileReader();
+    reader.onload = function () {
+        var dataURL = reader.result;
+        var output = document.getElementById('MainContent_output');
+        output.src = dataURL;
+    };
+    reader.readAsDataURL(input.files[0]);
 };
 
 function getPersonalizarParams() {
@@ -1166,6 +1189,35 @@ function GuardarPersonalizacion() {
                 showDialog(data.Message);
                 $('#tabsEmpresa a[href="#tab4"]').tab('show');
             }
+        },
+        error: function (xmlHttpRequest, textStatus, errorThrown) {
+            showDialog("Error " + url + ": " + textStatus + ' [' + xmlHttpRequest.responseText + '] ' + errorThrown, ' -- ');
+        }
+    });
+}
+
+function eliminarContacto() {
+    var contactoId = "";
+    $('#tblContactos #chkDeleteContacto').each(function () {
+        if ($(this).prop('checked') == true) {
+            var trow = $(this).parents('tr');
+            contactoId = trow.find('input[name="lblContactoId"]').val();
+        }
+    });
+
+    var dataj = "{contactoId: '" + contactoId + "'}";
+    var url = "DetalleEmpresa.aspx/EliminarContacto";
+
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: dataj,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (ret) {
+            data = ret.d;
+
+            showDialog(data.Message);
         },
         error: function (xmlHttpRequest, textStatus, errorThrown) {
             showDialog("Error " + url + ": " + textStatus + ' [' + xmlHttpRequest.responseText + '] ' + errorThrown, ' -- ');

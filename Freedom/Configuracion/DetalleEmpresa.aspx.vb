@@ -6,6 +6,7 @@ Imports Newtonsoft.Json.Linq
 Public Class DetalleEmpresa
     Inherits FreedomPage
 
+    Public IdContacto As Integer
     Public Property EditarDomicilio() As Boolean
         Get
             If Session("EditarDomicilio") Is Nothing Then
@@ -761,6 +762,14 @@ Public Class DetalleEmpresa
 
             If personalizacion.Count > 0 Then
                 EditarPersonalizacion = True
+                Dim NombreLogo = personalizacion(0).LogoTipoNombre
+
+                If Not NombreLogo = "" Then
+                    url = "http://13.59.156.149/FreedomApi/logos/" & NombreLogo
+                    output.Src = url
+                End If
+
+                txtLogo.Text = NombreLogo
                 txtNombreComercial.Text = If(personalizacion(0).NombreComercial, "")
                 txtMensaje.Text = If(personalizacion(0).MensajeAdicionalFactura, "")
                 txtTelefonos.Text = If(personalizacion(0).Telefono, "")
@@ -795,7 +804,7 @@ Public Class DetalleEmpresa
                 cbxPais.Items.FindByText("MEXICO").Selected = True
                 'cbxEstado.Items.FindByValue(If(domicilio(0).EstadoId = 0, 1, domicilio(0).EstadoId)).Selected = True
                 txtMunicipio.Text = If(domicilio(0).Municipio, "")
-                cbxEmision.Checked = domicilio(0).EmisionFlg
+                'cbxEmision.Checked = domicilio(0).EmisionFlg
 
                 If Not domicilio(0).EmisionFlg Then
                     txtCalleEmision.Text = If(domicilio(1).Calle, "")
@@ -829,7 +838,7 @@ Public Class DetalleEmpresa
                 EditarContactos = True
 
                 If Session("tblContactos") Is Nothing Then
-                    tbl.Columns.Add("Id")
+                    tbl.Columns.Add("ContactoId")
                     tbl.Columns.Add("NombreContacto")
                     tbl.Columns.Add("TipoContacto")
                     tbl.Columns.Add("TelefonoFijo")
@@ -854,6 +863,99 @@ Public Class DetalleEmpresa
             End If
         End If
     End Sub
+
+    Protected Sub repContactos_ItemCommand(source As Object, e As RepeaterCommandEventArgs) Handles repContactos.ItemCommand
+        Dim txtContactoId = TryCast(e.Item.FindControl("txtContactoId"), TextBox)
+        If txtContactoId IsNot Nothing Then
+            Dim contactoId = txtContactoId.Text
+            IdContacto = CInt(contactoId)
+        End If
+    End Sub
+
+    Protected Sub btnEditarContacto_Click(sender As Object, e As EventArgs)
+        EditarContacto()
+    End Sub
+
+    Public Function EditarContacto() As ServiceResult
+        Dim tbl = DirectCast(Session("tblContactos"), DataTable)
+
+
+    End Function
+
+    <WebMethod(EnableSession:=True)>
+    Public Shared Function EliminarContacto(contactoId As String) As ServiceResult
+        Try
+            Dim page = New FreedomPage()
+            Dim loginsession = page.UserSession
+            Dim curPage As Page = DirectCast(HttpContext.Current.Handler, Page)
+            Dim repContactos As Repeater = DirectCast(curPage.FindControl("repContactos"), Repeater)
+            Dim tbl = DirectCast(HttpContext.Current.Session("tblContactos"), DataTable)
+
+            If page.EditEmpresa Then
+                Dim contacto = New ContactoEmpresa() With {
+                    .id = Convert.ToInt32(contactoId),
+                    .idEmpresa = page.EmpresaId,
+                    .idOrganizacion = loginsession.OrganizacionId
+                }
+
+                Dim data = JsonConvert.SerializeObject(contacto)
+                Dim url = "api/ContactoEmpresa"
+                Dim req = DeleteRequest(url, loginsession.Token, data)
+                Dim result = JObject.Parse(req)
+                Dim statusCode = result.GetValue("statusCode").Value(Of Integer)
+
+                If (statusCode >= 200 And statusCode < 400) Then
+
+                    For Each row As DataRow In tbl.Rows
+                        If row("ContactoId") = contactoId Then
+                            tbl.Rows.Remove(row)
+                        End If
+                    Next
+
+                    tbl.AcceptChanges()
+                    repContactos.DataSource = tbl
+                    repContactos.DataBind()
+                    HttpContext.Current.Session("tblContactos") = tbl
+
+                    Return New ServiceResult() With {
+                        .Result = True,
+                        .Message = "Contacto eliminado",
+                        .Ret = ""
+                    }
+                Else
+                    Dim errorMessage = result.GetValue("errorMessage").Value(Of String)
+                    Return New ServiceResult() With {
+                        .Result = False,
+                        .Message = errorMessage,
+                        .Ret = ""
+                    }
+                End If
+            Else
+                For Each row As DataRow In tbl.Rows
+                    If row("ContactoId") = contactoId Then
+                        tbl.Rows.Remove(row)
+                    End If
+                Next
+
+                tbl.AcceptChanges()
+                repContactos.DataSource = tbl
+                repContactos.DataBind()
+                HttpContext.Current.Session("tblContactos") = tbl
+
+                Return New ServiceResult() With {
+                    .Result = True,
+                    .Message = "Contacto eliminado",
+                    .Ret = ""
+                }
+            End If
+        Catch ex As Exception
+            Return New ServiceResult() With {
+                .Result = False,
+                .Message = ex.Message,
+                .Ret = ""
+            }
+        End Try
+    End Function
 
     Protected Sub btnAgregarContacto_Click(sender As Object, e As EventArgs)
         CargarTablaContactos()
