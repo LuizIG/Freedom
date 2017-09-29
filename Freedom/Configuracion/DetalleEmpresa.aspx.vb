@@ -6,7 +6,7 @@ Imports Newtonsoft.Json.Linq
 Public Class DetalleEmpresa
     Inherits FreedomPage
 
-    Public IdContacto As Integer
+
     Public Property EditarDomicilio() As Boolean
         Get
             If Session("EditarDomicilio") Is Nothing Then
@@ -32,6 +32,20 @@ Public Class DetalleEmpresa
             Session("EditarPersonalizacion") = Value
         End Set
     End Property
+
+    Public Property EditContacto() As Boolean
+        Get
+            If Session("EditContacto") Is Nothing Then
+                Return Nothing
+            Else
+                Return CBool(Session("EditContacto"))
+            End If
+        End Get
+        Set
+            Session("EditContacto") = Value
+        End Set
+    End Property
+
 
     Public Property EditarContactos() As Boolean
         Get
@@ -623,27 +637,51 @@ Public Class DetalleEmpresa
         Dim correo = txtCorreoContacto.Text
         Dim puesto = txtPuesto.Text
 
-        If Session("tblContactos") Is Nothing Then
-            tbl.Columns.Add("NombreContacto")
-            tbl.Columns.Add("TipoContacto")
-            tbl.Columns.Add("TelefonoFijo")
-            tbl.Columns.Add("TelefonoMovil")
-            tbl.Columns.Add("Correo")
-            tbl.Columns.Add("Puesto")
-
-            tbl.Rows.Add(nombreContacto, tipoContacto, telFijo, telMovil, correo, puesto)
-        Else
+        If EditContacto Then
             tbl = DirectCast(Session("tblContactos"), DataTable)
-            Dim newRow = tbl.NewRow
 
-            newRow(0) = nombreContacto
-            newRow(1) = tipoContacto
-            newRow(2) = telFijo
-            newRow(3) = telMovil
-            newRow(4) = correo
-            newRow(5) = puesto
+            For Each row As DataRow In tbl.Rows
+                If CInt(row("ContactoId")) = IdContacto Then
+                    row("ContactoId") = IdContacto
+                    row("NombreContacto") = nombreContacto
+                    row("TelefonoFijo") = telFijo
+                    row("TelefonoMovil") = telMovil
+                    row("Correo") = correo
+                    row("Puesto") = puesto
+                    Exit For
+                End If
+            Next
+        Else
+            If Session("tblContactos") Is Nothing Then
+                tbl.Columns.Add("ContactoId")
+                tbl.Columns.Add("NombreContacto")
+                tbl.Columns.Add("TipoContacto")
+                tbl.Columns.Add("TelefonoFijo")
+                tbl.Columns.Add("TelefonoMovil")
+                tbl.Columns.Add("Correo")
+                tbl.Columns.Add("Puesto")
 
-            tbl.Rows.Add(newRow)
+                Dim id As Integer = 0
+
+                If tbl.Rows.Count > 0 Then
+                    id = tbl.Rows.Count
+                End If
+
+                tbl.Rows.Add(id, nombreContacto, tipoContacto, telFijo, telMovil, correo, puesto)
+            Else
+                tbl = DirectCast(Session("tblContactos"), DataTable)
+                Dim newRow = tbl.NewRow
+
+                newRow(0) = tbl.Rows.Count
+                newRow(1) = nombreContacto
+                newRow(2) = tipoContacto
+                newRow(3) = telFijo
+                newRow(4) = telMovil
+                newRow(5) = correo
+                newRow(6) = puesto
+
+                tbl.Rows.Add(newRow)
+            End If
         End If
 
         txtNombreContacto.Text = ""
@@ -864,48 +902,51 @@ Public Class DetalleEmpresa
         End If
     End Sub
 
-    Protected Sub repContactos_ItemCommand(source As Object, e As RepeaterCommandEventArgs) Handles repContactos.ItemCommand
-        Dim txtContactoId = TryCast(e.Item.FindControl("txtContactoId"), TextBox)
-        If txtContactoId IsNot Nothing Then
-            Dim contactoId = txtContactoId.Text
-            IdContacto = CInt(contactoId)
-        End If
+    Protected Sub btnEditarContacto_Click(sender As Object, e As CommandEventArgs)
+        Dim contactoId = e.CommandArgument
+        EditarContacto(CInt(contactoId))
     End Sub
 
-    Protected Sub btnEditarContacto_Click(sender As Object, e As EventArgs)
-        EditarContacto()
+    Protected Sub btnEliminarContacto_Click(sender As Object, e As CommandEventArgs)
+        Dim contactoId = e.CommandArgument
+        EliminarContacto(CInt(contactoId))
     End Sub
 
-    Public Function EditarContacto() As ServiceResult
+    Public Sub EditarContacto(contactoId As Integer)
         Dim tbl = DirectCast(Session("tblContactos"), DataTable)
 
+        For Each row As DataRow In tbl.Rows
+            If CInt(row("ContactoId")) = contactoId Then
+                txtNombreContacto.Text = row("NombreContacto")
+                txtTelefonoFijo.Text = row("TelefonoFijo")
+                txtMovil.Text = row("TelefonoMovil")
+                txtCorreoContacto.Text = row("Correo")
+                txtPuesto.Text = row("Puesto")
+                EditContacto = True
+                IdContacto = contactoId
+                Exit For
+            End If
+        Next
+    End Sub
 
-    End Function
-
-    <WebMethod(EnableSession:=True)>
-    Public Shared Function EliminarContacto(contactoId As String) As ServiceResult
+    Public Sub EliminarContacto(contactoId As String)
         Try
-            Dim page = New FreedomPage()
-            Dim loginsession = page.UserSession
-            Dim curPage As Page = DirectCast(HttpContext.Current.Handler, Page)
-            Dim repContactos As Repeater = DirectCast(curPage.FindControl("repContactos"), Repeater)
-            Dim tbl = DirectCast(HttpContext.Current.Session("tblContactos"), DataTable)
+            Dim tbl = DirectCast(Session("tblContactos"), DataTable)
 
-            If page.EditEmpresa Then
-                Dim contacto = New ContactoEmpresa() With {
+            If EditEmpresa Then
+                Dim contacto = New EliminaContacto() With {
                     .id = Convert.ToInt32(contactoId),
-                    .idEmpresa = page.EmpresaId,
-                    .idOrganizacion = loginsession.OrganizacionId
+                    .idEmpresa = EmpresaId,
+                    .idOrganizacion = UserSession.OrganizacionId
                 }
 
                 Dim data = JsonConvert.SerializeObject(contacto)
                 Dim url = "api/ContactoEmpresa"
-                Dim req = DeleteRequest(url, loginsession.Token, data)
+                Dim req = DeleteRequest(url, UserSession.Token, data)
                 Dim result = JObject.Parse(req)
                 Dim statusCode = result.GetValue("statusCode").Value(Of Integer)
 
                 If (statusCode >= 200 And statusCode < 400) Then
-
                     For Each row As DataRow In tbl.Rows
                         If row("ContactoId") = contactoId Then
                             tbl.Rows.Remove(row)
@@ -915,20 +956,12 @@ Public Class DetalleEmpresa
                     tbl.AcceptChanges()
                     repContactos.DataSource = tbl
                     repContactos.DataBind()
-                    HttpContext.Current.Session("tblContactos") = tbl
+                    Session("tblContactos") = tbl
 
-                    Return New ServiceResult() With {
-                        .Result = True,
-                        .Message = "Contacto eliminado",
-                        .Ret = ""
-                    }
+
                 Else
                     Dim errorMessage = result.GetValue("errorMessage").Value(Of String)
-                    Return New ServiceResult() With {
-                        .Result = False,
-                        .Message = errorMessage,
-                        .Ret = ""
-                    }
+
                 End If
             Else
                 For Each row As DataRow In tbl.Rows
@@ -940,22 +973,87 @@ Public Class DetalleEmpresa
                 tbl.AcceptChanges()
                 repContactos.DataSource = tbl
                 repContactos.DataBind()
-                HttpContext.Current.Session("tblContactos") = tbl
-
-                Return New ServiceResult() With {
-                    .Result = True,
-                    .Message = "Contacto eliminado",
-                    .Ret = ""
-                }
+                Session("tblContactos") = tbl
             End If
         Catch ex As Exception
-            Return New ServiceResult() With {
-                .Result = False,
-                .Message = ex.Message,
-                .Ret = ""
-            }
+
         End Try
-    End Function
+    End Sub
+
+    '<WebMethod(EnableSession:=True)>
+    'Public Shared Function EliminarContacto(contactoId As String) As ServiceResult
+    '    Try
+    '        Dim page = New FreedomPage()
+    '        Dim loginsession = page.UserSession
+    '        Dim curPage As Page = DirectCast(HttpContext.Current.Handler, Page)
+    '        Dim repContactos As Repeater = DirectCast(curPage.FindControl("repContactos"), Repeater)
+    '        Dim tbl = DirectCast(HttpContext.Current.Session("tblContactos"), DataTable)
+
+    '        If page.EditEmpresa Then
+    '            Dim contacto = New ContactoEmpresa() With {
+    '                .id = Convert.ToInt32(contactoId),
+    '                .idEmpresa = page.EmpresaId,
+    '                .idOrganizacion = loginsession.OrganizacionId
+    '            }
+
+    '            Dim data = JsonConvert.SerializeObject(contacto)
+    '            Dim url = "api/ContactoEmpresa"
+    '            Dim req = DeleteRequest(url, loginsession.Token, data)
+    '            Dim result = JObject.Parse(req)
+    '            Dim statusCode = result.GetValue("statusCode").Value(Of Integer)
+
+    '            If (statusCode >= 200 And statusCode < 400) Then
+
+    '                For Each row As DataRow In tbl.Rows
+    '                    If row("ContactoId") = contactoId Then
+    '                        tbl.Rows.Remove(row)
+    '                    End If
+    '                Next
+
+    '                tbl.AcceptChanges()
+    '                repContactos.DataSource = tbl
+    '                repContactos.DataBind()
+    '                HttpContext.Current.Session("tblContactos") = tbl
+
+    '                Return New ServiceResult() With {
+    '                    .Result = True,
+    '                    .Message = "Contacto eliminado",
+    '                    .Ret = ""
+    '                }
+    '            Else
+    '                Dim errorMessage = result.GetValue("errorMessage").Value(Of String)
+    '                Return New ServiceResult() With {
+    '                    .Result = False,
+    '                    .Message = errorMessage,
+    '                    .Ret = ""
+    '                }
+    '            End If
+    '        Else
+    '            For Each row As DataRow In tbl.Rows
+    '                If row("ContactoId") = contactoId Then
+    '                    tbl.Rows.Remove(row)
+    '                End If
+    '            Next
+
+    '            tbl.AcceptChanges()
+    '            repContactos.DataSource = tbl
+    '            repContactos.DataBind()
+    '            HttpContext.Current.Session("tblContactos") = tbl
+
+    '            Return New ServiceResult() With {
+    '                .Result = True,
+    '                .Message = "Contacto eliminado",
+    '                .Ret = ""
+    '            }
+    '        End If
+    '    Catch ex As Exception
+    '        Return New ServiceResult() With {
+    '            .Result = False,
+    '            .Message = ex.Message,
+    '            .Ret = ""
+    '        }
+    '    End Try
+    'End Function
 
     Protected Sub btnAgregarContacto_Click(sender As Object, e As EventArgs)
         CargarTablaContactos()
@@ -963,5 +1061,13 @@ Public Class DetalleEmpresa
 
     Protected Sub btnTriggerUpdate_Click(sender As Object, e As EventArgs)
         'CargarEmpresas(UserSession.OrganizacionId)
+    End Sub
+
+    Protected Sub repContactos_ItemCreated(sender As Object, e As RepeaterItemEventArgs)
+        Dim scriptMan As ScriptManager = ScriptManager.GetCurrent(Me)
+        Dim btn As LinkButton = TryCast(e.Item.FindControl("btnEditarContacto"), LinkButton)
+        If btn IsNot Nothing Then
+            scriptMan.RegisterAsyncPostBackControl(btn)
+        End If
     End Sub
 End Class

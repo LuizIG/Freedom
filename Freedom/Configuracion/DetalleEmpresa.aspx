@@ -9,8 +9,6 @@
     <li><a href="#" class="active"><asp:Label runat="server" ID="lblTitulo" ClientIDMode="Static"></asp:Label></a>
     </li>
 </ul>
-<%--<asp:ScriptManager ID="script" runat="server" EnablePartialRendering="true">
-</asp:ScriptManager>--%>
 	    <div id="rootwizard">
             <ul class="nav nav-tabs nav-tabs-linetriangle nav-tabs-separator nav-stack-sm" id="tabsEmpresa" role="tablist" data-init-reponsive-tabs="dropdownfx">
 			    <li class="nav-item" id="tabInfo">
@@ -464,7 +462,7 @@ En caso de no ser el contacto adecuado para el seguimiento de cobranza agradecer
 								    </div>
 							    </div>
 							    <div class="panel-body">
-                                    <asp:UpdatePanel runat="server" UpdateMode="Conditional">
+                                    <asp:UpdatePanel runat="server" UpdateMode="Always">
                                         <ContentTemplate>
                                             <div class="table-responsive">
                                                 <div id="condensedTable_wrapper" class="dataTables_wrapper form-inline no-footer">
@@ -483,12 +481,11 @@ En caso de no ser el contacto adecuado para el seguimiento de cobranza agradecer
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            <asp:Repeater ID="repContactos" runat="server" OnItemCommand="repContactos_ItemCommand">
+                                                            <asp:Repeater ID="repContactos" runat="server" OnItemCreated="repContactos_ItemCreated">
                                                                 <ItemTemplate>
                                                                     <tr role="row">
                                                                         <td class="v-align-middle">
                                                                             <input name="lblContactoId" type="hidden" value='<%# Eval("ContactoId") %>'>
-                                                                            <asp:TextBox ID="txtContactoId" ClientIDMode="Static" style="visibility:hidden; display: none" Text='<%# Eval("ContactoId") %>'></asp:TextBox>
                                                                         </td>
                                                                         <td class="v-align-middle semi-bold sorting_1">
                                                                             <asp:Label ID="txtName" runat="server" Text='<%# Eval("NombreContacto") %>' />
@@ -509,13 +506,12 @@ En caso de no ser el contacto adecuado para el seguimiento de cobranza agradecer
                                                                                 <asp:Label ID="Label3" runat="server" Text='<%# Eval("TipoContacto") %>' />
                                                                         </td>
                                                                         <td class="v-align-middle editarEmpresa" style="text-align:center;">
-                                                                             <span><i id="editaContacto" data-id="editaContacto" style="cursor: pointer;" class="fa fa-pencil fa-lg"></i></span>
-                                                                             <asp:CheckBox runat="server" ID="chkEditContacto" style="visibility:hidden; display: none;" CssClass="editChecked" data-id="chkEditContacto" ClientIDMode="Static"/>
-                                                                            <asp:LinkButton ID="btnEditarContacto" runat="server" onclick="btnEditarContacto_Click" style="visibility:hidden; display: none;" CommandName="Edit"></asp:LinkButton>
+                                                                            <asp:LinkButton runat="server" ID="btnEditarContacto" ForeColor="Black" ClientIDMode="Static" OnCommand="btnEditarContacto_Click" CssClass="fa fa-pencil fa-lg" CommandArgument='<%# Eval("ContactoId") %>'></asp:LinkButton>
                                                                         </td>
                                                                         <td class="v-align-middle" style="text-align:center;">
-                                                                             <span><i id="eliminaContacto" data-id="eliminaContacto" style="cursor: pointer;" class="fa fa-trash fa-lg"></i></span>
-                                                                            <asp:CheckBox runat="server" ID="chkDeleteContacto" style="visibility:hidden; display: none" CssClass="deleteChecked" data-id="chkDeleteContacto" ClientIDMode="Static"/>
+                                                                            <asp:LinkButton runat="server" ID="btnEliminarContacto" ForeColor="Black" ClientIDMode="Static" OnCommand="btnEliminarContacto_Click" CssClass="fa fa-trash fa-lg" CommandArgument='<%# Eval("ContactoId") %>'></asp:LinkButton>
+                                                                             <%--<span><i id="eliminaContacto" data-id="eliminaContacto" style="cursor: pointer;" class="fa fa-trash fa-lg"></i></span>
+                                                                            <asp:CheckBox runat="server" ID="chkDeleteContacto" style="visibility:hidden; display: none" CssClass="deleteChecked" data-id="chkDeleteContacto" ClientIDMode="Static"/>--%>
                                                                         </td>
                                                                     </tr>  
                                                                 </ItemTemplate>
@@ -582,7 +578,8 @@ En caso de no ser el contacto adecuado para el seguimiento de cobranza agradecer
 			                                </div>
                                     </ContentTemplate>
                                         <Triggers>
-                                            <asp:AsyncPostBackTrigger ControlID="btnAgregarContacto" EventName="Click" />
+                                            <asp:AsyncPostBackTrigger ControlID="repContactos"/>
+                                           <%-- <asp:AsyncPostBackTrigger ControlID="btnAgregarContacto" EventName="Click" />--%>
                                         </Triggers>
                                     </asp:UpdatePanel>
                                     <div class="padding-20 sm-padding-5 sm-m-b-20 sm-m-t-20 bg-white clearfix">

@@ -71,6 +71,7 @@
     <Compile Include="Entities\ContactoResult.vb" />
     <Compile Include="Entities\DomicilioEmpresa.vb" />
     <Compile Include="Entities\DomicilioResult.vb" />
+    <Compile Include="Entities\EliminaContacto.vb" />
     <Compile Include="Entities\Empresa.vb" />
     <Compile Include="Entities\EmpresaResult.vb" />
     <Compile Include="Entities\PersonalizacionEmpresa.vb" />

@@ -4,15 +4,15 @@
         cargarEstadosEmision(1);
     });
 
-    $('#tblContactos').on("click", "[data-id=editaContacto]", function (e) {
-        var trow = $(this).parent().siblings(".editChecked");
-        trow.find('input[type="checkbox"]').prop('checked', true);
-        $("#btnEditarContacto").click();
-    });
+    //$('#tblContactos').on("click", "[data-id=editaContacto]", function (e) {
+    //    //var trow = $(this).parent().siblings(".editChecked");
+    //    //trow.find('input[type="checkbox"]').prop('checked', true);
+    //    $("#btnEditarContacto").click();
+    //});
 
     $('#tblContactos').on("click", "[data-id=eliminaContacto]", function (e) {
-        var trow = $(this).parent().siblings(".deleteChecked");
-        trow.find('input[type="checkbox"]').prop('checked', true);
+        //var trow = $(this).parent().siblings(".deleteChecked");
+        //trow.find('input[type="checkbox"]').prop('checked', true);
         showConfirmDialog("Eliminar Contacto", "Deseas eliminar este contacto?", "Aceptar", eliminarContacto);
     });
 
@@ -1197,30 +1197,31 @@ function GuardarPersonalizacion() {
 }
 
 function eliminarContacto() {
-    var contactoId = "";
-    $('#tblContactos #chkDeleteContacto').each(function () {
-        if ($(this).prop('checked') == true) {
-            var trow = $(this).parents('tr');
-            contactoId = trow.find('input[name="lblContactoId"]').val();
-        }
-    });
+    $("#btnEliminarContacto").click();
+    //var contactoId = "";
+    //$('#tblContactos #chkDeleteContacto').each(function () {
+    //    if ($(this).prop('checked') == true) {
+    //        var trow = $(this).parents('tr');
+    //        contactoId = trow.find('input[name="lblContactoId"]').val();
+    //    }
+    //});
 
-    var dataj = "{contactoId: '" + contactoId + "'}";
-    var url = "DetalleEmpresa.aspx/EliminarContacto";
+    //var dataj = "{contactoId: '" + contactoId + "'}";
+    //var url = "DetalleEmpresa.aspx/EliminarContacto";
 
-    $.ajax({
-        type: "POST",
-        url: url,
-        data: dataj,
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: function (ret) {
-            data = ret.d;
+    //$.ajax({
+    //    type: "POST",
+    //    url: url,
+    //    data: dataj,
+    //    contentType: "application/json; charset=utf-8",
+    //    dataType: "json",
+    //    success: function (ret) {
+    //        data = ret.d;
 
-            showDialog(data.Message);
-        },
-        error: function (xmlHttpRequest, textStatus, errorThrown) {
-            showDialog("Error " + url + ": " + textStatus + ' [' + xmlHttpRequest.responseText + '] ' + errorThrown, ' -- ');
-        }
-    });
+    //        showDialog(data.Message);
+    //    },
+    //    error: function (xmlHttpRequest, textStatus, errorThrown) {
+    //        showDialog("Error " + url + ": " + textStatus + ' [' + xmlHttpRequest.responseText + '] ' + errorThrown, ' -- ');
+    //    }
+    //});
 }
