@@ -4,15 +4,7 @@
         cargarEstadosEmision(1);
     });
 
-    //$('#tblContactos').on("click", "[data-id=editaContacto]", function (e) {
-    //    //var trow = $(this).parent().siblings(".editChecked");
-    //    //trow.find('input[type="checkbox"]').prop('checked', true);
-    //    $("#btnEditarContacto").click();
-    //});
-
     $('#tblContactos').on("click", "[data-id=eliminaContacto]", function (e) {
-        //var trow = $(this).parent().siblings(".deleteChecked");
-        //trow.find('input[type="checkbox"]').prop('checked', true);
         showConfirmDialog("Eliminar Contacto", "Deseas eliminar este contacto?", "Aceptar", eliminarContacto);
     });
 

@@ -510,8 +510,8 @@ En caso de no ser el contacto adecuado para el seguimiento de cobranza agradecer
                                                                         </td>
                                                                         <td class="v-align-middle" style="text-align:center;">
                                                                             <asp:LinkButton runat="server" ID="btnEliminarContacto" ForeColor="Black" ClientIDMode="Static" OnCommand="btnEliminarContacto_Click" CssClass="fa fa-trash fa-lg" CommandArgument='<%# Eval("ContactoId") %>'></asp:LinkButton>
-                                                                             <%--<span><i id="eliminaContacto" data-id="eliminaContacto" style="cursor: pointer;" class="fa fa-trash fa-lg"></i></span>
-                                                                            <asp:CheckBox runat="server" ID="chkDeleteContacto" style="visibility:hidden; display: none" CssClass="deleteChecked" data-id="chkDeleteContacto" ClientIDMode="Static"/>--%>
+                                                                            <%-- <span><i id="eliminaContacto" data-id="eliminaContacto" style="cursor: pointer;" class="fa fa-trash fa-lg"></i></span>--%>
+                                                                           <%-- <asp:CheckBox runat="server" ID="chkDeleteContacto" style="visibility:hidden; display: none" CssClass="deleteChecked" data-id="chkDeleteContacto" ClientIDMode="Static"/>--%>
                                                                         </td>
                                                                     </tr>  
                                                                 </ItemTemplate>

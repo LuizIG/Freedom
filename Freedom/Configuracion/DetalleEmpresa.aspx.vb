@@ -957,8 +957,6 @@ Public Class DetalleEmpresa
                     repContactos.DataSource = tbl
                     repContactos.DataBind()
                     Session("tblContactos") = tbl
-
-
                 Else
                     Dim errorMessage = result.GetValue("errorMessage").Value(Of String)
 

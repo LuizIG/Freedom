@@ -83,6 +83,7 @@
     <Compile Include="Entities\ServiceResult.vb" />
     <Compile Include="Entities\TipoImpuesto.vb" />
     <Compile Include="Entities\Usuario.vb" />
+    <Compile Include="Entities\UsuarioOrganizacion.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
