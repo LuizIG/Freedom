@@ -109,7 +109,7 @@
                                     <span id="menu_span_configuracion_sistema_empresa" runat="server" class="icon-thumbnail">E</span>
                                 </li>
                                 <li>
-                                    <a href="javascript:;">Usuario</a>
+                                    <a href='<%= ResolveUrl("~/Configuracion/Usuarios.aspx")%>'>Usuario</a>
                                     <span id="menu_span_configuracion_sistema_usuario" runat="server" class="icon-thumbnail">U</span>
                                 </li>
                             </ul>

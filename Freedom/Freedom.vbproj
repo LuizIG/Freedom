@@ -161,6 +161,7 @@
     <Content Include="App\js\Loading.js" />
     <Content Include="App\js\SeriesFolios.js" />
     <Content Include="App\js\Usuario.js" />
+    <Content Include="App\js\Usuarios.js" />
     <Content Include="Assets\css\style.css" />
     <Content Include="Assets\css\style.min.css" />
     <Content Include="Assets\img\dashboard\pages_hero.jpg" />
@@ -1215,6 +1216,7 @@
     <Content Include="Configuracion\Empleados.aspx" />
     <Content Include="Configuracion\Empresas.aspx" />
     <Content Include="Configuracion\SeriesFolios.aspx" />
+    <Content Include="Configuracion\Usuarios.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="ApplicationInsights.config">
@@ -1579,6 +1581,13 @@
     </Compile>
     <Compile Include="Configuracion\SeriesFolios.aspx.vb">
       <DependentUpon>SeriesFolios.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Configuracion\Usuarios.aspx.designer.vb">
+      <DependentUpon>Usuarios.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Configuracion\Usuarios.aspx.vb">
+      <DependentUpon>Usuarios.aspx</DependentUpon>
       <SubType>ASPXCodebehind</SubType>
     </Compile>
     <Compile Include="Global.asax.vb">

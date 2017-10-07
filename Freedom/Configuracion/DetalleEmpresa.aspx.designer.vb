@@ -158,15 +158,6 @@ Partial Public Class DetalleEmpresa
     Protected WithEvents txtMunicipio As Global.System.Web.UI.WebControls.TextBox
     
     '''<summary>
-    '''Control cbxEmision.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents cbxEmision As Global.System.Web.UI.HtmlControls.HtmlInputCheckBox
-    
-    '''<summary>
     '''Control txtCalleEmision.
     '''</summary>
     '''<remarks>
@@ -282,6 +273,15 @@ Partial Public Class DetalleEmpresa
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
     Protected WithEvents fuLogo As Global.System.Web.UI.WebControls.FileUpload
+    
+    '''<summary>
+    '''Control output.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents output As Global.System.Web.UI.HtmlControls.HtmlImage
     
     '''<summary>
     '''Control txtMensaje.

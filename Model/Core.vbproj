@@ -71,6 +71,7 @@
     <Compile Include="Entities\ContactoResult.vb" />
     <Compile Include="Entities\DomicilioEmpresa.vb" />
     <Compile Include="Entities\DomicilioResult.vb" />
+    <Compile Include="Entities\EliminaContacto.vb" />
     <Compile Include="Entities\Empresa.vb" />
     <Compile Include="Entities\EmpresaResult.vb" />
     <Compile Include="Entities\PersonalizacionEmpresa.vb" />
@@ -82,6 +83,7 @@
     <Compile Include="Entities\ServiceResult.vb" />
     <Compile Include="Entities\TipoImpuesto.vb" />
     <Compile Include="Entities\Usuario.vb" />
+    <Compile Include="Entities\UsuarioOrganizacion.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
