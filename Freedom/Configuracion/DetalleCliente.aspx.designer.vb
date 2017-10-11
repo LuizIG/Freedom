@@ -14,6 +14,24 @@ Option Explicit On
 Partial Public Class DetalleCliente
     
     '''<summary>
+    '''Control lblTitulo.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents lblTitulo As Global.System.Web.UI.WebControls.Label
+    
+    '''<summary>
+    '''Control txtEditarCliente.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents txtEditarCliente As Global.System.Web.UI.WebControls.TextBox
+    
+    '''<summary>
     '''Control txtNombre.
     '''</summary>
     '''<remarks>
@@ -39,6 +57,15 @@ Partial Public Class DetalleCliente
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
     Protected WithEvents cbxRegimenFiscal As Global.System.Web.UI.HtmlControls.HtmlSelect
+    
+    '''<summary>
+    '''Control btnTriggerUpdate.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents btnTriggerUpdate As Global.System.Web.UI.WebControls.Button
     
     '''<summary>
     '''Control txtCalle.
@@ -120,6 +147,105 @@ Partial Public Class DetalleCliente
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
     Protected WithEvents txtMunicipio As Global.System.Web.UI.WebControls.TextBox
+    
+    '''<summary>
+    '''Control txtTelefonoPer.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents txtTelefonoPer As Global.System.Web.UI.WebControls.TextBox
+    
+    '''<summary>
+    '''Control txtCorreoPer.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents txtCorreoPer As Global.System.Web.UI.WebControls.TextBox
+    
+    '''<summary>
+    '''Control txtDiasCredito.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents txtDiasCredito As Global.System.Web.UI.WebControls.TextBox
+    
+    '''<summary>
+    '''Control repContactos.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents repContactos As Global.System.Web.UI.WebControls.Repeater
+    
+    '''<summary>
+    '''Control txtNombreContacto.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents txtNombreContacto As Global.System.Web.UI.WebControls.TextBox
+    
+    '''<summary>
+    '''Control cbxTipoContacto.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents cbxTipoContacto As Global.System.Web.UI.HtmlControls.HtmlSelect
+    
+    '''<summary>
+    '''Control txtTelefonoFijo.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents txtTelefonoFijo As Global.System.Web.UI.WebControls.TextBox
+    
+    '''<summary>
+    '''Control txtMovil.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents txtMovil As Global.System.Web.UI.WebControls.TextBox
+    
+    '''<summary>
+    '''Control txtCorreoContacto.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents txtCorreoContacto As Global.System.Web.UI.WebControls.TextBox
+    
+    '''<summary>
+    '''Control txtPuesto.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents txtPuesto As Global.System.Web.UI.WebControls.TextBox
+    
+    '''<summary>
+    '''Control btnAgregarContacto.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents btnAgregarContacto As Global.System.Web.UI.WebControls.Button
     
     '''<summary>
     '''Control txtCuentaContable.

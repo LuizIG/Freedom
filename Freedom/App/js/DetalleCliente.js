@@ -3,76 +3,45 @@
         cargarEstados(1);
     });
 
-    var tabVisible;
+    var editar = $("#txtEditarCliente").val();
+    var validacionesTabs = true;
 
+    if (editar == "True") {
+        validacionesTabs = false;
+    } else {
+        //validacionesTabs = true;
+        validacionesTabs = false;
+    }
+    
     $('#tabsCliente a[href="#tab1"]').tab('show');
 
-    $('#tabInfo').click(function (e) {
-        validarInfoGeneral();
-    });
-
-    $('#tabDomicilio').click(function (e) {
+    $('#btnGuardarInfo').click(function (e) {
         if (validarInfoGeneral()) {
-            $('#refDomicilio').attr('href', '#tab2');
+            GuardarCliente();
+            return true;
         } else {
-            $('#refDomicilio').attr('href', 'javascript:void(0);');
+            return false;
         }
     });
 
-    //$('#tabFormasPago').click(function (e) {
-    //    if (validarDomicilioFiscal()) {
-    //        $('#refFormasPago').attr('href', '#tab4');
-    //    } else {
-    //        $('#refFormasPago').attr('href', 'javascript:void(0);');
-    //    }
-    //});
-
-    //$('#tabCheck').click(function (e) {
-    //    if (validarInfoGeneral()) {
-    //        if (validarDomicilioFiscal()) {
-    //            $('#refCheck').attr('href', '#tab4');
-    //        } else {
-    //            $('#refCheck').attr('href', 'javascript:void(0);');
-    //        }
-    //    } else {
-    //        $('#refCheck').attr('href', 'javascript:void(0);');
-    //    }
-    //});
-
-    $('#btnSiguienteTab1').click(function (e) {
-        if (validarInfoGeneral()) {
-            e.preventDefault();
-            $('#refDomicilio').attr('href', '#tab2');
-            $('#tabsCliente a[href="#tab2"]').tab('show');
-        } else {
-            $('#refDomicilio').attr('href', 'javascript:void(0);');
-        }
-    });
-
-    $('#btnSiguienteTab2').click(function (e) {
+    $('#btnGuardarDomicilio').click(function (e) {
         if (validarDomicilioFiscal()) {
-            e.preventDefault();
-
-            $('#refFormasPago').attr('href', '#tab3');
-            $('#tabsCliente a[href="#tab3"]').tab('show');
+            GuardarDomicilio();
+            return true;
         } else {
-            $('#refFormasPago').attr('href', 'javascript:void(0);');
+            return false;
         }
+    });
+
+
+
+    $('#btnFinalizar').click(function (e) {
+        window.location.replace("Clientes.aspx");
     });
 
     $('#btnAnteriorTab2').click(function (e) {
         e.preventDefault();
         $('#tabsCliente a[href="#tab1"]').tab('show');
-    });
-
-    $('#btnSiguienteTab3').click(function (e) {
-        //if (validarLugarEmision()) {
-        //    e.preventDefault();
-        //    $('#refCheck').attr('href', '#tab4');
-        //    $('#tabsCliente a[href="#tab4"]').tab('show');
-        //} else {
-        //    $('#refCheck').attr('href', 'javascript:void(0);');
-        //}
     });
 
     $('#btnAnteriorTab3').click(function (e) {
@@ -84,9 +53,21 @@
         e.preventDefault();
         $('#tabsCliente a[href="#tab3"]').tab('show');
     });
+
+    $('#btnAnteriorTab5').click(function (e) {
+        e.preventDefault();
+        $('#tabsCliente a[href="#tab4"]').tab('show');
+    });
+
+    $('#btnAnteriorTab6').click(function (e) {
+        e.preventDefault();
+        $('#tabsCliente a[href="#tab5"]').tab('show');
+    });
+
+
 });
 
-function getClienteParams() {
+function getInfoParams() {
     var retValue = [];
     var item = {};
     item["ParamName"] = "Nombre";
@@ -107,7 +88,17 @@ function getClienteParams() {
     item["ParamValue"] = options;
     retValue.push(item);
 
-    item = {};
+    var retValueJson = "";
+    if (retValue.length != 0) {
+        retValueJson = JSON.stringify(retValue);
+    }
+
+    return retValueJson;
+}
+
+function getDomicilioParams() {
+    var retValue = [];
+    var item = {};
     item["ParamName"] = "Calle";
     item["ParamType"] = "NVARCHAR";
     item["ParamValue"] = $("#txtCalle").val();
@@ -249,6 +240,47 @@ function GuardarCliente() {
             showDialog(data.Message);
             if (data.Ret) {
                 window.location.replace("../configuraciones/Cliente.aspx");
+            }
+        },
+        error: function (xmlHttpRequest, textStatus, errorThrown) {
+            showDialog("Error " + url + ": " + textStatus + ' [' + xmlHttpRequest.responseText + '] ' + errorThrown, ' -- ');
+        }
+    });
+}
+
+function GuardarDomicilio() {
+    var parameters = getDomicilioParams();
+    var dataj = "{value: '" + parameters + "'}";
+    var url = "DetalleCliente.aspx/GuardarDomicilio";
+
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: dataj,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (ret) {
+            data = ret.d;
+
+            if (data.Result != true) {
+                showDialog(data.Message);
+            } else {
+                var info = JSON.parse(data.Ret);
+                $('[data-id=lblCalle]').text(info[0].calle);
+                $("#requeridoCalle").attr('class', 'fa fa-check');
+                $('[data-id=lblNoExt]').text(info[0].numeroExterno);
+                $("#requeridoNumExt").attr('class', 'fa fa-check');
+                $('[data-id=lblNoInt]').text(info[0].numeroInterno);
+                $('[data-id=lblColonia]').text(info[0].colonia);
+                $("#requeridoColonia").attr('class', 'fa fa-check');
+                $('[data-id=lblCalles]').text(info[0].entreCalles);
+                $('[data-id=lblCP]').text(info[0].cp);
+                $('[data-id=lblPais]').text(info[0].pais);
+                $('[data-id=lblEstado]').text(info[0].estado);
+                $('[data-id=lblMunicipio]').text(info[0].municipio);
+
+                showDialog(data.Message);
+                $('#tabsEmpresa a[href="#tab3"]').tab('show');
             }
         },
         error: function (xmlHttpRequest, textStatus, errorThrown) {

@@ -454,6 +454,7 @@ Public Class DetalleEmpresa
             For Each row As DataRow In contactos.Rows
                 Dim contacto = New ContactoEmpresa() With {
                     .idEmpresa = page.EmpresaId,
+                    .id = Convert.ToInt32(row("ContactoId")),
                     .nombre = row("NombreContacto"),
                     .telefono = row("TelefonoFijo"),
                     .telefonoMovil = row("TelefonoMovil"),

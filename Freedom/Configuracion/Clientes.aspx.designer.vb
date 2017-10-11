@@ -14,6 +14,15 @@ Option Explicit On
 Partial Public Class Clientes
     
     '''<summary>
+    '''Control btnNuevoCliente.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents btnNuevoCliente As Global.System.Web.UI.WebControls.Button
+    
+    '''<summary>
     '''Control repClientes.
     '''</summary>
     '''<remarks>

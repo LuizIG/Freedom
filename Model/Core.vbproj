@@ -65,6 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\CertificadoEmpresa.vb" />
+    <Compile Include="Entities\ClienteModel.vb" />
     <Compile Include="Entities\Comprobante.vb" />
     <Compile Include="Entities\ConfiguracionImpuesto.vb" />
     <Compile Include="Entities\ContactoEmpresa.vb" />

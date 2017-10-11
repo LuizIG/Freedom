@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.16
+VisualStudioVersion = 15.0.26730.10
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Freedom", "Freedom\Freedom.vbproj", "{CD8E53D2-B177-494B-AE08-1CEEF98E43D7}"
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Core", "Model\Core.vbproj", "{AE7D1622-AA31-4A59-A6F5-7C3154451EA6}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "FreedomApi", "FreedomApi\FreedomApi.vbproj", "{A39CE4EF-BD2E-46BF-AAC9-6C3063781DF8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{AE7D1622-AA31-4A59-A6F5-7C3154451EA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AE7D1622-AA31-4A59-A6F5-7C3154451EA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AE7D1622-AA31-4A59-A6F5-7C3154451EA6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A39CE4EF-BD2E-46BF-AAC9-6C3063781DF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A39CE4EF-BD2E-46BF-AAC9-6C3063781DF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A39CE4EF-BD2E-46BF-AAC9-6C3063781DF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A39CE4EF-BD2E-46BF-AAC9-6C3063781DF8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

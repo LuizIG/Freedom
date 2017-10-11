@@ -249,12 +249,12 @@ Partial Public Class Entities
         Return DirectCast(Me, IObjectContextAdapter).ObjectContext.ExecuteFunction(Of spAllCertificadoEmpresa_Result)("spAllCertificadoEmpresa")
     End Function
 
-    Public Overridable Function spAllCliente() As ObjectResult(Of spAllCliente_Result)
-        Return DirectCast(Me, IObjectContextAdapter).ObjectContext.ExecuteFunction(Of spAllCliente_Result)("spAllCliente")
-    End Function
+    Public Overridable Function spAllContactoCliente(organizacionId As Nullable(Of Integer), empresaId As Nullable(Of Integer)) As ObjectResult(Of spAllContactoCliente_Result)
+        Dim organizacionIdParameter As ObjectParameter = If(organizacionId.HasValue, New ObjectParameter("OrganizacionId", organizacionId), New ObjectParameter("OrganizacionId", GetType(Integer)))
 
-    Public Overridable Function spAllContactoCliente() As ObjectResult(Of spAllContactoCliente_Result)
-        Return DirectCast(Me, IObjectContextAdapter).ObjectContext.ExecuteFunction(Of spAllContactoCliente_Result)("spAllContactoCliente")
+        Dim empresaIdParameter As ObjectParameter = If(empresaId.HasValue, New ObjectParameter("EmpresaId", empresaId), New ObjectParameter("EmpresaId", GetType(Integer)))
+
+        Return DirectCast(Me, IObjectContextAdapter).ObjectContext.ExecuteFunction(Of spAllContactoCliente_Result)("spAllContactoCliente", organizacionIdParameter, empresaIdParameter)
     End Function
 
     Public Overridable Function spAllEmpleado() As ObjectResult(Of spAllEmpleado_Result)
@@ -423,10 +423,14 @@ Partial Public Class Entities
         Return DirectCast(Me, IObjectContextAdapter).ObjectContext.ExecuteFunction(Of spConsCertificadoEmpresa_EmpresaId_Result)("spConsCertificadoEmpresa_EmpresaId", empresaIdParameter, organizacionIdParameter, usuarioIdParameter)
     End Function
 
-    Public Overridable Function spConsCliente_ClienteId(clienteId As Nullable(Of Integer)) As ObjectResult(Of spConsCliente_ClienteId_Result)
+    Public Overridable Function spConsCliente_ClienteId(clienteId As Nullable(Of Integer), organizacionId As Nullable(Of Integer), empresaId As Nullable(Of Integer)) As ObjectResult(Of spConsCliente_ClienteId_Result)
         Dim clienteIdParameter As ObjectParameter = If(clienteId.HasValue, New ObjectParameter("ClienteId", clienteId), New ObjectParameter("ClienteId", GetType(Integer)))
 
-        Return DirectCast(Me, IObjectContextAdapter).ObjectContext.ExecuteFunction(Of spConsCliente_ClienteId_Result)("spConsCliente_ClienteId", clienteIdParameter)
+        Dim organizacionIdParameter As ObjectParameter = If(organizacionId.HasValue, New ObjectParameter("OrganizacionId", organizacionId), New ObjectParameter("OrganizacionId", GetType(Integer)))
+
+        Dim empresaIdParameter As ObjectParameter = If(empresaId.HasValue, New ObjectParameter("EmpresaId", empresaId), New ObjectParameter("EmpresaId", GetType(Integer)))
+
+        Return DirectCast(Me, IObjectContextAdapter).ObjectContext.ExecuteFunction(Of spConsCliente_ClienteId_Result)("spConsCliente_ClienteId", clienteIdParameter, organizacionIdParameter, empresaIdParameter)
     End Function
 
     Public Overridable Function spConsClienteCuentaContable(clienteID As Nullable(Of Integer)) As ObjectResult(Of String)
@@ -1169,10 +1173,14 @@ Partial Public Class Entities
         Return DirectCast(Me, IObjectContextAdapter).ObjectContext.ExecuteFunction("spDELCategoriaArticulo", categoriaArticuloIDParameter)
     End Function
 
-    Public Overridable Function spDelCliente(clienteId As Nullable(Of Integer)) As Integer
+    Public Overridable Function spDelCliente(clienteId As Nullable(Of Integer), organizacionId As Nullable(Of Integer), empresaId As Nullable(Of Integer)) As Integer
         Dim clienteIdParameter As ObjectParameter = If(clienteId.HasValue, New ObjectParameter("ClienteId", clienteId), New ObjectParameter("ClienteId", GetType(Integer)))
 
-        Return DirectCast(Me, IObjectContextAdapter).ObjectContext.ExecuteFunction("spDelCliente", clienteIdParameter)
+        Dim organizacionIdParameter As ObjectParameter = If(organizacionId.HasValue, New ObjectParameter("OrganizacionId", organizacionId), New ObjectParameter("OrganizacionId", GetType(Integer)))
+
+        Dim empresaIdParameter As ObjectParameter = If(empresaId.HasValue, New ObjectParameter("EmpresaId", empresaId), New ObjectParameter("EmpresaId", GetType(Integer)))
+
+        Return DirectCast(Me, IObjectContextAdapter).ObjectContext.ExecuteFunction("spDelCliente", clienteIdParameter, organizacionIdParameter, empresaIdParameter)
     End Function
 
     Public Overridable Function spDelConfiguracionImpuesto(empresaId As Nullable(Of Integer), tipoComprobanteId As Nullable(Of Integer)) As Integer
@@ -1871,14 +1879,14 @@ Partial Public Class Entities
         Return DirectCast(Me, IObjectContextAdapter).ObjectContext.ExecuteFunction(Of spCONOrganizacion_Usuario_Invitacion_Result)("spCONOrganizacion_Usuario_Invitacion", emailParameter)
     End Function
 
-    Public Overridable Function spINSOrganizacion_Usuario_Invitacion(email As String, organizacionId As Nullable(Of Integer), perfilId As Nullable(Of Integer), usuarioIdInvita As Nullable(Of Integer)) As Integer
+    Public Overridable Function spINSOrganizacion_Usuario_Invitacion(email As String, organizacionId As Nullable(Of Integer), perfilId As Nullable(Of Integer), usuarioIdInvita As String) As Integer
         Dim emailParameter As ObjectParameter = If(email IsNot Nothing, New ObjectParameter("Email", email), New ObjectParameter("Email", GetType(String)))
 
         Dim organizacionIdParameter As ObjectParameter = If(organizacionId.HasValue, New ObjectParameter("OrganizacionId", organizacionId), New ObjectParameter("OrganizacionId", GetType(Integer)))
 
         Dim perfilIdParameter As ObjectParameter = If(perfilId.HasValue, New ObjectParameter("PerfilId", perfilId), New ObjectParameter("PerfilId", GetType(Integer)))
 
-        Dim usuarioIdInvitaParameter As ObjectParameter = If(usuarioIdInvita.HasValue, New ObjectParameter("UsuarioIdInvita", usuarioIdInvita), New ObjectParameter("UsuarioIdInvita", GetType(Integer)))
+        Dim usuarioIdInvitaParameter As ObjectParameter = If(usuarioIdInvita IsNot Nothing, New ObjectParameter("UsuarioIdInvita", usuarioIdInvita), New ObjectParameter("UsuarioIdInvita", GetType(String)))
 
         Return DirectCast(Me, IObjectContextAdapter).ObjectContext.ExecuteFunction("spINSOrganizacion_Usuario_Invitacion", emailParameter, organizacionIdParameter, perfilIdParameter, usuarioIdInvitaParameter)
     End Function
@@ -1889,6 +1897,86 @@ Partial Public Class Entities
         Dim organizacionIdParameter As ObjectParameter = If(organizacionId.HasValue, New ObjectParameter("OrganizacionId", organizacionId), New ObjectParameter("OrganizacionId", GetType(Integer)))
 
         Return DirectCast(Me, IObjectContextAdapter).ObjectContext.ExecuteFunction("spUPDOrganizacion_Usuario_Invitacion", emailParameter, organizacionIdParameter)
+    End Function
+
+    Public Overridable Function spInsCliente(clienteEmpresaNombre As String, rFC As String, regimenFiscalId As Nullable(Of Integer), organizacionId As Nullable(Of Integer), empresaId As Nullable(Of Integer)) As ObjectResult(Of spInsCliente_Result)
+        Dim clienteEmpresaNombreParameter As ObjectParameter = If(clienteEmpresaNombre IsNot Nothing, New ObjectParameter("ClienteEmpresaNombre", clienteEmpresaNombre), New ObjectParameter("ClienteEmpresaNombre", GetType(String)))
+
+        Dim rFCParameter As ObjectParameter = If(rFC IsNot Nothing, New ObjectParameter("RFC", rFC), New ObjectParameter("RFC", GetType(String)))
+
+        Dim regimenFiscalIdParameter As ObjectParameter = If(regimenFiscalId.HasValue, New ObjectParameter("RegimenFiscalId", regimenFiscalId), New ObjectParameter("RegimenFiscalId", GetType(Integer)))
+
+        Dim organizacionIdParameter As ObjectParameter = If(organizacionId.HasValue, New ObjectParameter("OrganizacionId", organizacionId), New ObjectParameter("OrganizacionId", GetType(Integer)))
+
+        Dim empresaIdParameter As ObjectParameter = If(empresaId.HasValue, New ObjectParameter("EmpresaId", empresaId), New ObjectParameter("EmpresaId", GetType(Integer)))
+
+        Return DirectCast(Me, IObjectContextAdapter).ObjectContext.ExecuteFunction(Of spInsCliente_Result)("spInsCliente", clienteEmpresaNombreParameter, rFCParameter, regimenFiscalIdParameter, organizacionIdParameter, empresaIdParameter)
+    End Function
+
+    Public Overridable Function spUpdCliente(clienteEmpresaId As Nullable(Of Integer), clienteEmpresaNombre As String, rFC As String, regimenFiscalId As Nullable(Of Integer), organizacionId As Nullable(Of Integer), empresaId As Nullable(Of Integer)) As Integer
+        Dim clienteEmpresaIdParameter As ObjectParameter = If(clienteEmpresaId.HasValue, New ObjectParameter("ClienteEmpresaId", clienteEmpresaId), New ObjectParameter("ClienteEmpresaId", GetType(Integer)))
+
+        Dim clienteEmpresaNombreParameter As ObjectParameter = If(clienteEmpresaNombre IsNot Nothing, New ObjectParameter("ClienteEmpresaNombre", clienteEmpresaNombre), New ObjectParameter("ClienteEmpresaNombre", GetType(String)))
+
+        Dim rFCParameter As ObjectParameter = If(rFC IsNot Nothing, New ObjectParameter("RFC", rFC), New ObjectParameter("RFC", GetType(String)))
+
+        Dim regimenFiscalIdParameter As ObjectParameter = If(regimenFiscalId.HasValue, New ObjectParameter("RegimenFiscalId", regimenFiscalId), New ObjectParameter("RegimenFiscalId", GetType(Integer)))
+
+        Dim organizacionIdParameter As ObjectParameter = If(organizacionId.HasValue, New ObjectParameter("OrganizacionId", organizacionId), New ObjectParameter("OrganizacionId", GetType(Integer)))
+
+        Dim empresaIdParameter As ObjectParameter = If(empresaId.HasValue, New ObjectParameter("EmpresaId", empresaId), New ObjectParameter("EmpresaId", GetType(Integer)))
+
+        Return DirectCast(Me, IObjectContextAdapter).ObjectContext.ExecuteFunction("spUpdCliente", clienteEmpresaIdParameter, clienteEmpresaNombreParameter, rFCParameter, regimenFiscalIdParameter, organizacionIdParameter, empresaIdParameter)
+    End Function
+
+    Public Overridable Function spInsDomicilioCliente(clienteEmpresaId As Nullable(Of Integer), calle As String, numeroExterno As String, numeroInterno As String, colonia As String, cP As String, municipio As String, estadoId As Nullable(Of Integer)) As ObjectResult(Of spInsDomicilioCliente_Result)
+        Dim clienteEmpresaIdParameter As ObjectParameter = If(clienteEmpresaId.HasValue, New ObjectParameter("ClienteEmpresaId", clienteEmpresaId), New ObjectParameter("ClienteEmpresaId", GetType(Integer)))
+
+        Dim calleParameter As ObjectParameter = If(calle IsNot Nothing, New ObjectParameter("Calle", calle), New ObjectParameter("Calle", GetType(String)))
+
+        Dim numeroExternoParameter As ObjectParameter = If(numeroExterno IsNot Nothing, New ObjectParameter("NumeroExterno", numeroExterno), New ObjectParameter("NumeroExterno", GetType(String)))
+
+        Dim numeroInternoParameter As ObjectParameter = If(numeroInterno IsNot Nothing, New ObjectParameter("NumeroInterno", numeroInterno), New ObjectParameter("NumeroInterno", GetType(String)))
+
+        Dim coloniaParameter As ObjectParameter = If(colonia IsNot Nothing, New ObjectParameter("Colonia", colonia), New ObjectParameter("Colonia", GetType(String)))
+
+        Dim cPParameter As ObjectParameter = If(cP IsNot Nothing, New ObjectParameter("CP", cP), New ObjectParameter("CP", GetType(String)))
+
+        Dim municipioParameter As ObjectParameter = If(municipio IsNot Nothing, New ObjectParameter("Municipio", municipio), New ObjectParameter("Municipio", GetType(String)))
+
+        Dim estadoIdParameter As ObjectParameter = If(estadoId.HasValue, New ObjectParameter("EstadoId", estadoId), New ObjectParameter("EstadoId", GetType(Integer)))
+
+        Return DirectCast(Me, IObjectContextAdapter).ObjectContext.ExecuteFunction(Of spInsDomicilioCliente_Result)("spInsDomicilioCliente", clienteEmpresaIdParameter, calleParameter, numeroExternoParameter, numeroInternoParameter, coloniaParameter, cPParameter, municipioParameter, estadoIdParameter)
+    End Function
+
+    Public Overridable Function spUpdDomicilioCliente(domicilioClienteEmpresaId As Nullable(Of Integer), clienteEmpresaId As Nullable(Of Integer), calle As String, numeroExterno As String, numeroInterno As String, colonia As String, cP As String, municipio As String, estadoId As Nullable(Of Integer)) As Integer
+        Dim domicilioClienteEmpresaIdParameter As ObjectParameter = If(domicilioClienteEmpresaId.HasValue, New ObjectParameter("DomicilioClienteEmpresaId", domicilioClienteEmpresaId), New ObjectParameter("DomicilioClienteEmpresaId", GetType(Integer)))
+
+        Dim clienteEmpresaIdParameter As ObjectParameter = If(clienteEmpresaId.HasValue, New ObjectParameter("ClienteEmpresaId", clienteEmpresaId), New ObjectParameter("ClienteEmpresaId", GetType(Integer)))
+
+        Dim calleParameter As ObjectParameter = If(calle IsNot Nothing, New ObjectParameter("Calle", calle), New ObjectParameter("Calle", GetType(String)))
+
+        Dim numeroExternoParameter As ObjectParameter = If(numeroExterno IsNot Nothing, New ObjectParameter("NumeroExterno", numeroExterno), New ObjectParameter("NumeroExterno", GetType(String)))
+
+        Dim numeroInternoParameter As ObjectParameter = If(numeroInterno IsNot Nothing, New ObjectParameter("NumeroInterno", numeroInterno), New ObjectParameter("NumeroInterno", GetType(String)))
+
+        Dim coloniaParameter As ObjectParameter = If(colonia IsNot Nothing, New ObjectParameter("Colonia", colonia), New ObjectParameter("Colonia", GetType(String)))
+
+        Dim cPParameter As ObjectParameter = If(cP IsNot Nothing, New ObjectParameter("CP", cP), New ObjectParameter("CP", GetType(String)))
+
+        Dim municipioParameter As ObjectParameter = If(municipio IsNot Nothing, New ObjectParameter("Municipio", municipio), New ObjectParameter("Municipio", GetType(String)))
+
+        Dim estadoIdParameter As ObjectParameter = If(estadoId.HasValue, New ObjectParameter("EstadoId", estadoId), New ObjectParameter("EstadoId", GetType(Integer)))
+
+        Return DirectCast(Me, IObjectContextAdapter).ObjectContext.ExecuteFunction("spUpdDomicilioCliente", domicilioClienteEmpresaIdParameter, clienteEmpresaIdParameter, calleParameter, numeroExternoParameter, numeroInternoParameter, coloniaParameter, cPParameter, municipioParameter, estadoIdParameter)
+    End Function
+
+    Public Overridable Function spAllCliente(organizacionId As Nullable(Of Integer), empresaId As Nullable(Of Integer)) As ObjectResult(Of spAllCliente_Result)
+        Dim organizacionIdParameter As ObjectParameter = If(organizacionId.HasValue, New ObjectParameter("OrganizacionId", organizacionId), New ObjectParameter("OrganizacionId", GetType(Integer)))
+
+        Dim empresaIdParameter As ObjectParameter = If(empresaId.HasValue, New ObjectParameter("EmpresaId", empresaId), New ObjectParameter("EmpresaId", GetType(Integer)))
+
+        Return DirectCast(Me, IObjectContextAdapter).ObjectContext.ExecuteFunction(Of spAllCliente_Result)("spAllCliente", organizacionIdParameter, empresaIdParameter)
     End Function
 
 End Class

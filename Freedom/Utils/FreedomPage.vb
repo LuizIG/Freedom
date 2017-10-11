@@ -81,6 +81,32 @@ Public Class FreedomPage
         End Set
     End Property
 
+    Public Property IdCliente() As Integer
+        Get
+            If Session("IdCliente") Is Nothing Then
+                Return Nothing
+            Else
+                Return DirectCast(Session("IdCliente"), Integer)
+            End If
+        End Get
+        Set
+            Session("IdCliente") = Value
+        End Set
+    End Property
+
+    Public Property ConfiguracionId() As Integer
+        Get
+            If Session("ConfiguracionId") Is Nothing Then
+                Return Nothing
+            Else
+                Return DirectCast(Session("ConfiguracionId"), Integer)
+            End If
+        End Get
+        Set
+            Session("ConfiguracionId") = Value
+        End Set
+    End Property
+
     Public Property EditEmpresa() As Boolean
         Get
             If Session("EditarEmpresa") Is Nothing Then
@@ -104,6 +130,19 @@ Public Class FreedomPage
         End Get
         Set
             Session("UpdateEmpresa") = Value
+        End Set
+    End Property
+
+    Public Property EditCliente() As Boolean
+        Get
+            If Session("EditCliente") Is Nothing Then
+                Return Nothing
+            Else
+                Return CBool(Session("EditCliente"))
+            End If
+        End Get
+        Set
+            Session("EditCliente") = Value
         End Set
     End Property
 
