@@ -57,11 +57,10 @@ Namespace Controllers
             End If
 
             Try
-                Dim response = db.spInsCliente(model.NombreCliente, model.RFC, model.RegimenFiscalId, model.OrganizacionId, model.EmpresaId)
+                Dim response = db.spInsCliente(model.ClienteEmpresaNombre, model.RFC, model.RegimenFiscalId, model.OrganizacionId, model.EmpresaId)
 
                 Dim cliente As New ClienteModel
-                cliente.ClienteId = response.ToList(0).Id
-
+                cliente.ClienteEmpresaId = response.ToList(0).id
                 Return Ok(cliente)
             Catch ex As Exception
                 Return BadRequest(ex.Message)
@@ -82,7 +81,7 @@ Namespace Controllers
 
             Try
                 With model
-                    db.spUpdCliente(.ClienteId, .NombreCliente, .RFC, .RegimenFiscalId, .OrganizacionId, .EmpresaId)
+                    db.spUpdCliente(.ClienteEmpresaId, .ClienteEmpresaNombre, .RFC, .RegimenFiscalId, .OrganizacionId, .EmpresaId)
                     Return Ok()
                 End With
             Catch ex As Exception

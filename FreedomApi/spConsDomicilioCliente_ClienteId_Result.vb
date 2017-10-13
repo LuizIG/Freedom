@@ -10,19 +10,17 @@
 Imports System
 Imports System.Collections.Generic
 
-Partial Public Class spConsContactoCliente_ClienteId_Result
-    Public Property Nombre As String
-    Public Property TelefonoFijo As String
-    Public Property TelefonoMovil As String
-    Public Property CorreoElectronico As String
-    Public Property Puesto As String
-    Public Property TipoContacto As String
-    Public Property NombreCliente As String
-    Public Property Domicilio As String
-    Public Property Municipio As String
-    Public Property Estado As String
-    Public Property Pais As String
+Partial Public Class spConsDomicilioCliente_ClienteId_Result
+    Public Property ClienteEmpresaId As Integer
+    Public Property Calle As String
+    Public Property NumeroExterno As String
+    Public Property NumeroInterno As String
+    Public Property Colonia As String
     Public Property CP As String
-    Public Property ContactoId As Integer
+    Public Property Municipio As String
+    Public Property EstadoId As Nullable(Of Integer)
+    Public Property Estado As String
+    Public Property PaisId As Nullable(Of Integer)
+    Public Property Pais As String
 
 End Class

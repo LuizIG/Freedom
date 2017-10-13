@@ -1,15 +1,17 @@
 ﻿Public Class ClienteModel
-    Public Property ClienteId As Integer
-    Public Property NombreCliente As String
+    Public Property ClienteEmpresaId As Integer
+    Public Property OrganizacionId As Integer
+    Public Property EmpresaId As Integer
+    Public Property ClienteEmpresaNombre As String
     Public Property RegimenFiscalId As Integer
     Public Property RegimenFiscal As String
     Public Property RFC As String
-    Public Property OrganizacionId As Integer
-    Public Property EmpresaId As Integer
 End Class
 
 Public Class ClienteDomicilioModel
     Public Property DomicilioId As Integer
+    Public Property OrganizacionId As Integer
+    Public Property EmpresaId As Integer
     Public Property ClienteId As Integer
     Public Property Calle As String
     Public Property NumeroExterno As String
@@ -27,6 +29,8 @@ End Class
 Public Class ClienteConfiguracionModel
     Public Property ConfiguracionId As Integer
     Public Property ClienteId As Integer
+    Public Property OrganizacionId As Integer
+    Public Property EmpresaId As Integer
     Public Property Telefono As String
     Public Property CorreoElectronico As String
     Public Property DiasCredito As Integer
@@ -35,6 +39,8 @@ End Class
 Public Class ClienteContactoModel
     Public Property ContactoId As Integer
     Public Property ClienteId As Integer
+    Public Property OrganizacionId As Integer
+    Public Property EmpresaId As Integer
     Public Property Nombre As String
     Public Property Telefono As String
     Public Property TelefonoMovil As String

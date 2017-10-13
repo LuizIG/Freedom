@@ -37,16 +37,16 @@
                     <ItemTemplate>
                         <tbody>
                             <tr role="row">
-                                <td class="v-align-middle">
-                                    <input name="lblClienteId" type="hidden" value='<%# Eval("ClienteId") %>'>
+                                <td class="v-align-middle" style="text-align:center;">
+                                    <asp:Label ID="Label1" runat="server" Text='<%# Eval("ClienteEmpresaId") %>' />
                                 </td>
-                                <td class="v-align-middle semi-bold sorting_1">
-                                    <asp:Label ID="txtName" runat="server" Text='<%# Eval("NombreCliente") %>' />
+                                <td class="v-align-middle semi-bold sorting_1" style="text-align:center;">
+                                    <asp:Label ID="txtName" runat="server" Text='<%# Eval("ClienteEmpresaNombre") %>' />
                                 </td>
-                                <td class="v-align-middle">
+                                <td class="v-align-middle" style="text-align:center;">
                                     <asp:Label ID="TextBox1" runat="server" Text='<%# Eval("RegimenFiscal") %>' />
                                 </td>
-                                <td class="v-align-middle semi-bold">
+                                <td class="v-align-middle semi-bold" style="text-align:center;">
                                     <asp:Label ID="TextBox2" runat="server" Text='<%# Eval("RFC") %>' />
                                 </td>
                                 <%--<td class="v-align-middle">
@@ -68,7 +68,7 @@
                                         <asp:Label ID="Label6" runat="server" Text='<%# Eval("Estado") %>' />
                                 </td>--%>
                                 <td class="v-align-middle editarEmpresa" style="text-align:center;">
-                                    <asp:LinkButton runat="server" ID="btnEditarCliente" ForeColor="Black" ClientIDMode="Static" OnCommand="btnEditarCliente_Click" CssClass="fa fa-pencil fa-lg" CommandArgument='<%# Eval("ClienteId") %>'></asp:LinkButton>
+                                    <asp:LinkButton runat="server" ID="btnEditarCliente" ForeColor="Black" ClientIDMode="Static" OnCommand="btnEditarCliente_Click" CssClass="fa fa-pencil fa-lg" CommandArgument='<%# Eval("ClienteEmpresaId") %>'></asp:LinkButton>
                                 </td>
                                 <td class="v-align-middle" style="text-align:center;">
                                     <span><i id="eliminaCliente" data-id="eliminaCliente" style="cursor: pointer;" class="fa fa-trash fa-lg"></i></span>

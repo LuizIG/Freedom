@@ -1,5 +1,23 @@
 ﻿$(function () {
 
+    var initTable = function () {
+        var table = $('#tblClientes');
+
+        var settings = {
+            "sDom": "<t><'row'<p i>>",
+            //"destroy": true,
+            "scrollCollapse": true,
+            "oLanguage": {
+                "sLengthMenu": "_MENU_ ",
+                "sInfo": "Mostrando <b>_START_ a _END_</b> de _TOTAL_ registros"
+            },
+            "iDisplayLength": 5
+        };
+
+        table.dataTable(settings);
+    }
+    initTable();
+
     $('#tblClientes').on("click", "[data-id=eliminaCliente]", function (e) {
         var trow = $(this).parent().siblings(".deleteChecked");
         trow.find('input[type="checkbox"]').prop('checked', true);

@@ -509,9 +509,6 @@
     <Compile Include="spConsConfiguracionImpuesto_Result.vb">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
-    <Compile Include="spConsContactoCliente_ClienteId_Result.vb">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
     <Compile Include="spConsContactoEmpresa_EmpresaId_Result.vb">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
@@ -522,6 +519,9 @@
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="spConsDatos_Poliza_Result.vb">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="spConsDomicilioCliente_ClienteId_Result.vb">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="spConsDomicilioEmpresa_EmpresaId_Result.vb">

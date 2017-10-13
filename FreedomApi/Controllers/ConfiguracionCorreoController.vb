@@ -7,19 +7,19 @@ Namespace Controllers
     Public Class ConfiguracionCorreoController
         Inherits FreedomApi
 
-        ''' <summary>
-        ''' spConsConfiguracionCliente_ClienteId
-        ''' </summary>
-        ''' <returns></returns>
-        <HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)>
-        <HttpGet>
-        Public Function getConsConfiguracionCorreo_EmpresaId() As IEnumerable(Of spConsConfiguracionCliente_ClienteId_Result)
-            Try
-                Return db.spConsConfiguracionCliente_ClienteId(GetUserId)
-            Catch ex As Exception
-                Return BadRequest(ex.Message)
-            End Try
-        End Function
+        '''' <summary>
+        '''' spConsConfiguracionCliente_ClienteId
+        '''' </summary>
+        '''' <returns></returns>
+        '<HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)>
+        '<HttpGet>
+        'Public Function getConsConfiguracionCorreo_EmpresaId() As IEnumerable(Of spConsConfiguracionCliente_ClienteId_Result)
+        '    Try
+        '        Return db.spConsConfiguracionCliente_ClienteId(GetUserId)
+        '    Catch ex As Exception
+        '        Return BadRequest(ex.Message)
+        '    End Try
+        'End Function
 
 
         ''' <summary>

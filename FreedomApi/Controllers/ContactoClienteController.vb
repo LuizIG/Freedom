@@ -8,20 +8,20 @@ Namespace Controllers
     Public Class ContactoClienteController
         Inherits FreedomApi
 
-        ''' <summary>
-        ''' spConsContactoCliente_ClienteId
-        ''' </summary>
-        ''' <param name="clienteId"></param>
-        ''' <returns></returns>
-        <HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)>
-        <HttpGet>
-        Public Function GetContactoClienteById(ByVal clienteId As Integer) As IEnumerable(Of spConsContactoCliente_ClienteId_Result)
-            Try
-                Return db.spConsContactoCliente_ClienteId(clienteId)
-            Catch ex As Exception
-                Return BadRequest(ex.Message)
-            End Try
-        End Function
+        '''' <summary>
+        '''' spConsContactoCliente_ClienteId
+        '''' </summary>
+        '''' <param name="clienteId"></param>
+        '''' <returns></returns>
+        '<HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)>
+        '<HttpGet>
+        'Public Function GetContactoClienteById(ByVal clienteId As Integer) As IEnumerable(Of spConsContactoCliente_ClienteId_Result)
+        '    Try
+        '        Return db.spConsContactoCliente_ClienteId(clienteId)
+        '    Catch ex As Exception
+        '        Return BadRequest(ex.Message)
+        '    End Try
+        'End Function
 
         ''' <summary>
         ''' spInsContactoCliente

@@ -9,14 +9,22 @@
     if (editar == "True") {
         validacionesTabs = false;
     } else {
-        //validacionesTabs = true;
-        validacionesTabs = false;
+        validacionesTabs = true;
+        //validacionesTabs = false;
     }
     
     $('#tabsCliente a[href="#tab1"]').tab('show');
 
+    $('#btnTriggerAgregaContacto').click(function (e) {
+        if (validarContacto()) {
+            $("#btnAgregarContacto").click();
+            return true;
+        }
+        return false;
+    });
+
     $('#btnGuardarInfo').click(function (e) {
-        if (validarInfoGeneral()) {
+        if (validarInfoClienteGeneral()) {
             GuardarCliente();
             return true;
         } else {
@@ -25,7 +33,7 @@
     });
 
     $('#btnGuardarDomicilio').click(function (e) {
-        if (validarDomicilioFiscal()) {
+        if (validarDomicilioClienteFiscal()) {
             GuardarDomicilio();
             return true;
         } else {
@@ -33,7 +41,17 @@
         }
     });
 
+    $('#btnGuardarPersonalizar').click(function (e) {
+        GuardarPersonalizacion();
+    });
 
+    //$('#btnGuardarFormasPago').click(function (e) {
+    //    GuardarFormasPago();
+    //});
+
+    $('#btnGuardarContactos').click(function (e) {
+        GuardarContactos();
+    });
 
     $('#btnFinalizar').click(function (e) {
         window.location.replace("Clientes.aspx");
@@ -64,10 +82,134 @@
         $('#tabsCliente a[href="#tab5"]').tab('show');
     });
 
+    if (validacionesTabs) {
+        $('#tabDomicilio').click(function (e) {
+            validarInfoClienteGeneral();
+        });
 
+        $('#tabPersonalizacion').click(function (e) {
+            validarInfoClienteGeneral();
+        });
+
+        $('#tabFormasPago').click(function (e) {
+            validarInfoClienteGeneral();
+        });
+
+        $('#tabContactos').click(function (e) {
+            validarInfoClienteGeneral();
+        });
+
+        $('#tabCheck').click(function (e) {
+            validarInfoClienteGeneral();
+        });
+    } else {
+        $('#refDomicilio').attr('href', '#tab2');
+        $('#refPersonalizacion').attr('href', '#tab3');
+        $('#refContactos').attr('href', '#tab4');
+        $('#refFormasPago').attr('href', '#tab5');
+        $('#refCheck').attr('href', '#tab6');
+    }
 });
 
-function getInfoParams() {
+function UpdateResumen(contactos) {
+    // I N F O  G E N E R A L
+    var nombre = $("#txtNombre").val();
+    var rfc = $("#txtRFC").val();
+    var regFiscal = $("[data-id=cbxRegimenFiscal] option:selected").text();
+
+    if (nombre != "") {
+        $('[data-id=lblNombreEmpresa]').text(nombre);
+        $("#requeridoNombre").attr('class', 'fa fa-check');
+    }
+
+    if (rfc != "") {
+        $('[data-id=lblRFC]').text(rfc);
+        $("#requeridoRFC").attr('class', 'fa fa-check');
+    }
+
+    if (regFiscal != "") {
+        $('[data-id=lblRegimen]').text(regFiscal);
+        $("#requeridoRegimen").attr('class', 'fa fa-check');
+    }
+
+
+    // D O M I C I L I O
+    var calle = $("#txtCalle").val();
+    var numExt = $("#txtNumExt").val();
+    var numInt = $("#txtNumInt").val();
+    var calles = $("#txtCalles").val();
+    var colonia = $("#txtColonia").val();
+    var cp = $("#txtCP").val();
+    var municipio = $("#txtMunicipio").val();
+    var estado = $("[data-id=cbxEstado] option:selected").text();
+    var pais = $("[data-id=cbxPais] option:selected").text();
+    //var esLugarEmision = $("[data-id=cbxEmision]").is(':checked');
+
+    if (calle != "") {
+        $('[data-id=lblCalle]').text(calle);
+        $("#requeridoCalle").attr('class', 'fa fa-check');
+    }
+
+    if (numExt != "") {
+        $('[data-id=lblNoExt]').text(numExt);
+        $("#requeridoNumExt").attr('class', 'fa fa-check');
+    }
+
+    if (numInt != "") {
+        $('[data-id=lblNoInt]').text(numInt);
+    }
+
+    if (calles != "") {
+        $('[data-id=lblCalles]').text(calles);
+    }
+
+    if (cp != "") {
+        $('[data-id=lblCP]').text(cp);
+    }
+
+    if (municipio != "") {
+        $('[data-id=lblMunicipio]').text(municipio);
+    }
+
+    if (pais != "") {
+        $('[data-id=lblPais]').text(pais);
+    }
+
+    if (estado != "") {
+        $('[data-id=lblEstado]').text(estado);
+    }
+
+    if (colonia != "") {
+        $('[data-id=lblColonia]').text(colonia);
+        $("#requeridoColonia").attr('class', 'fa fa-check');
+    }
+
+    // P E R S O N A L I Z A C I O N
+    var telefonosPer = $("#txtTelefonoPer").val();
+    var correoPer = $("#txtCorreoPer").val();
+    var diasCredito = $("#txtDiasCredito").val();
+
+    if (telefonosPer != "") {
+        $('[data-id=lblTelefono]').text(telefonosPer);
+    }
+
+    if (correoPer != "") {
+        $('[data-id=lblCorreoElectronico]').text(correoPer);
+    }
+
+    if (diasCredito != "") {
+        $('[data-id=lblDiasCredito]').text(diasCredito);
+    }
+
+
+    // C O N T A C T O S
+    if (contactos != "") {
+        $('[data-id=lblContactos]').html(contactos);
+        $("#requeridoContactos").attr('class', 'fa fa-check');
+    }
+}
+
+function getInfoClienteParams() {
     var retValue = [];
     var item = {};
     item["ParamName"] = "Nombre";
@@ -83,9 +225,16 @@ function getInfoParams() {
 
     var options = $("[data-id=cbxRegimenFiscal] option:selected").val(); //$("[data-init-plugin=select2] option:selected").map(function () { return this.value }).get().join(", ");
     item = {};
-    item["ParamName"] = "RegimenFiscal";
+    item["ParamName"] = "RegimenFiscalId";
     item["ParamType"] = "NVARCHAR";
     item["ParamValue"] = options;
+    retValue.push(item);
+
+    var regFiscal = $("[data-id=cbxRegimenFiscal] option:selected").text();
+    item = {};
+    item["ParamName"] = "RegimenFiscal";
+    item["ParamType"] = "NVARCHAR";
+    item["ParamValue"] = regFiscal;
     retValue.push(item);
 
     var retValueJson = "";
@@ -96,7 +245,7 @@ function getInfoParams() {
     return retValueJson;
 }
 
-function getDomicilioParams() {
+function getDomicilioClienteParams() {
     var retValue = [];
     var item = {};
     item["ParamName"] = "Calle";
@@ -140,14 +289,28 @@ function getDomicilioParams() {
     item["ParamValue"] = $("#txtMunicipio").val();
     retValue.push(item);
 
-    var estado = $("[data-id=cbxEstado] option:selected").val();
+    var estadoId = $("[data-id=cbxEstado] option:selected").val();
+    item = {};
+    item["ParamName"] = "EstadoId";
+    item["ParamType"] = "NVARCHAR";
+    item["ParamValue"] = estadoId;
+    retValue.push(item);
+
+    var estado = $("[data-id=cbxEstado] option:selected").text();
     item = {};
     item["ParamName"] = "Estado";
     item["ParamType"] = "NVARCHAR";
     item["ParamValue"] = estado;
     retValue.push(item);
 
-    var pais = $("[data-id=cbxPais] option:selected").val();
+    var paisId = $("[data-id=cbxPais] option:selected").val();
+    item = {};
+    item["ParamName"] = "PaisId";
+    item["ParamType"] = "NVARCHAR";
+    item["ParamValue"] = paisId;
+    retValue.push(item);
+
+    var pais = $("[data-id=cbxPais] option:selected").text();
     item = {};
     item["ParamName"] = "Pais";
     item["ParamType"] = "NVARCHAR";
@@ -162,7 +325,37 @@ function getDomicilioParams() {
     return retValueJson;
 }
 
-function validarInfoGeneral() {
+function getPersonalizarClienteParams() {
+    var retValue = [];
+    var item = {};
+
+    item = {};
+    item["ParamName"] = "TelefonoCliente";
+    item["ParamType"] = "NVARCHAR";
+    item["ParamValue"] = $("#txtTelefonoPer").val();
+    retValue.push(item);
+
+    item = {};
+    item["ParamName"] = "CorreoCliente";
+    item["ParamType"] = "NVARCHAR";
+    item["ParamValue"] = $("#txtCorreoPer").val();
+    retValue.push(item);
+
+    item = {};
+    item["ParamName"] = "DiasCredito";
+    item["ParamType"] = "NVARCHAR";
+    item["ParamValue"] = $("#txtDiasCredito").val();
+    retValue.push(item);
+
+    var retValueJson = "";
+    if (retValue.length != 0) {
+        retValueJson = JSON.stringify(retValue);
+    }
+
+    return retValueJson;
+}
+
+function validarInfoClienteGeneral() {
     var nombre = $("#txtNombre").val();
     var rfc = $("#txtRFC").val();
     var regimenFiscal = $("[data-id=cbxRegimenFiscal] option:selected").val();
@@ -176,8 +369,8 @@ function validarInfoGeneral() {
         showDialog("Ingrese el RFC del cliente");
         return false;
     } else {
-        if (rfc.length != 13) {
-            showDialog("El RFC debe ser de 13 carácteres");
+        if (rfc.length != 12 && rfc.length != 13) {
+            showDialog("El RFC debe ser de al menos 12 carácteres");
             return false;
         } else {
             if (!validarRFC(rfc, false)) {
@@ -195,7 +388,7 @@ function validarInfoGeneral() {
     return true;
 }
 
-function validarDomicilioFiscal() {
+function validarDomicilioClienteFiscal() {
     var calle = $("#txtCalle").val();
     var numExt = $("#txtNumExt").val();
     var calles = $("#txtCalles").val();
@@ -224,10 +417,21 @@ function validarDomicilioFiscal() {
     return true;
 }
 
+function validarContacto() {
+    var nombre = $("#txtNombreContacto").val();
+
+    if (nombre == "") {
+        showDialog("Es necesario ingresar el nombre del contacto");
+        return false;
+    }
+
+    return true;
+}
+
 function GuardarCliente() {
-    var parameters = getClienteParams();
+    var parameters = getInfoClienteParams();
     var dataj = "{value: '" + parameters + "'}";
-    var url = "../configuraciones/DetalleCliente.aspx/GuardarCliente";
+    var url = "DetalleCliente.aspx/GuardarCliente";
 
     $.ajax({
         type: "POST",
@@ -237,9 +441,28 @@ function GuardarCliente() {
         dataType: "json",
         success: function (ret) {
             data = ret.d;
-            showDialog(data.Message);
-            if (data.Ret) {
-                window.location.replace("../configuraciones/Cliente.aspx");
+
+            if (data.Result != true) {
+                showDialog(data.Message);
+            } else {
+                var info = JSON.parse(data.Ret);
+
+                $("#btnTriggerUpdate").click();
+                $('[data-id=lblNombreEmpresa]').text(info.NombreEmpresa);
+                $("#requeridoNombre").attr('class', 'fa fa-check');
+                $('[data-id=lblRFC]').text(info.RFC);
+                $("#requeridoRFC").attr('class', 'fa fa-check');
+                $('[data-id=lblRegimen]').text(info.RegimenFiscal);
+                $("#requeridoRegimen").attr('class', 'fa fa-check');
+                $('[data-id=lblCURP]').text(info.CURP);
+
+                showDialog(data.Message);
+                $('#refDomicilio').attr('href', '#tab2');
+                $('#refPersonalizacion').attr('href', '#tab3');
+                $('#refContactos').attr('href', '#tab4');
+                $('#refFormasPago').attr('href', '#tab5');
+                $('#refCheck').attr('href', '#tab6');
+                $('#tabsEmpresa a[href="#tab2"]').tab('show');
             }
         },
         error: function (xmlHttpRequest, textStatus, errorThrown) {
@@ -249,7 +472,7 @@ function GuardarCliente() {
 }
 
 function GuardarDomicilio() {
-    var parameters = getDomicilioParams();
+    var parameters = getDomicilioClienteParams();
     var dataj = "{value: '" + parameters + "'}";
     var url = "DetalleCliente.aspx/GuardarDomicilio";
 
@@ -266,21 +489,22 @@ function GuardarDomicilio() {
                 showDialog(data.Message);
             } else {
                 var info = JSON.parse(data.Ret);
-                $('[data-id=lblCalle]').text(info[0].calle);
+                $('[data-id=lblCalle]').text(info[0].Calle);
                 $("#requeridoCalle").attr('class', 'fa fa-check');
-                $('[data-id=lblNoExt]').text(info[0].numeroExterno);
+                $('[data-id=lblNoExt]').text(info[0].NumeroExterno);
                 $("#requeridoNumExt").attr('class', 'fa fa-check');
-                $('[data-id=lblNoInt]').text(info[0].numeroInterno);
-                $('[data-id=lblColonia]').text(info[0].colonia);
+                $('[data-id=lblNoInt]').text(info[0].NumeroInterno);
+                $('[data-id=lblColonia]').text(info[0].Colonia);
                 $("#requeridoColonia").attr('class', 'fa fa-check');
-                $('[data-id=lblCalles]').text(info[0].entreCalles);
-                $('[data-id=lblCP]').text(info[0].cp);
-                $('[data-id=lblPais]').text(info[0].pais);
-                $('[data-id=lblEstado]').text(info[0].estado);
-                $('[data-id=lblMunicipio]').text(info[0].municipio);
+                //$('[data-id=lblCalles]').text(info[0].entreCalles);
+                $('[data-id=lblCP]').text(info[0].CP);
+                $('[data-id=lblMunicipio]').text(info[0].Municipio);
+                $('[data-id=lblPais]').text(info[0].Pais);
+                $('[data-id=lblEstado]').text(info[0].Estado);
+                
 
                 showDialog(data.Message);
-                $('#tabsEmpresa a[href="#tab3"]').tab('show');
+                $('#tabsCliente a[href="#tab3"]').tab('show');
             }
         },
         error: function (xmlHttpRequest, textStatus, errorThrown) {
@@ -289,9 +513,75 @@ function GuardarDomicilio() {
     });
 }
 
+function GuardarContactos() {
+    var dataj = "{}";
+    var url = "DetalleCliente.aspx/GuardarContactos";
+
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: dataj,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (ret) {
+            data = ret.d;
+            if (data.Result != true) {
+                showDialog(data.Message);
+            } else {
+                var info = data.Ret;
+
+                $('[data-id=lblContactos]').html(info);
+                $("#requeridoContactos").attr('class', 'fa fa-check');
+
+                showDialog(data.Message);
+                $('#tabsCliente a[href="#tab6"]').tab('show');
+            }
+        },
+        error: function (xmlHttpRequest, textStatus, errorThrown) {
+            showDialog("Error " + url + ": " + textStatus + ' [' + xmlHttpRequest.responseText + '] ' + errorThrown, ' -- ');
+        }
+    });
+}
+
+function GuardarPersonalizacion() {
+    var parameters = getPersonalizarClienteParams();
+    var dataj = "{value: '" + parameters + "'}";
+    var url = "DetalleCliente.aspx/GuardarPersonalizacion";
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: dataj,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (ret) {
+            data = ret.d;
+
+            if (data.Result != true) {
+                showDialog(data.Message);
+            } else {
+                var info = JSON.parse(data.Ret);
+
+                $('[data-id=lblTelefono]').text(info.Telefono);
+                $('[data-id=lblCorreoElectronico]').text(info.CorreoElectronico);
+                $('[data-id=lblDiasCredito]').text(info.DiasCredito);
+
+                showDialog(data.Message);
+                $('#tabsCliente a[href="#tab4"]').tab('show');
+            }
+        },
+        error: function (xmlHttpRequest, textStatus, errorThrown) {
+            showDialog("Error " + url + ": " + textStatus + ' [' + xmlHttpRequest.responseText + '] ' + errorThrown, ' -- ');
+        }
+    });
+}
+
+function eliminarContacto() {
+    $("#btnEliminarContacto").click();
+}
+
 function cargarEstados(pais) {
     var dataj = "{paisId: '" + pais + "'}";
-    var url = "../configuraciones/DetalleCliente.aspx/CargarEstados";
+    var url = "DetalleCliente.aspx/CargarEstados";
 
     $.ajax({
         type: "POST",

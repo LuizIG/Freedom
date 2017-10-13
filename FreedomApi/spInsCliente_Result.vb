@@ -11,7 +11,7 @@ Imports System
 Imports System.Collections.Generic
 
 Partial Public Class spInsCliente_Result
-    Public Property Id As Nullable(Of Integer)
+    Public Property id As Integer
     Public Property IdError As Integer
     Public Property [Error] As String
 

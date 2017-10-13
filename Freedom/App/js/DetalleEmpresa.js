@@ -545,7 +545,7 @@ function validarInfoGeneral() {
         showDialog("Ingrese el RFC de la empresa");
         return false;
     } else {
-        if (rfc.length != 13) {
+        if (rfc.length != 12 && rfc.length != 13) {
             showDialog("El RFC debe ser de 13 carácteres");
             return false;
         } else {

@@ -16,15 +16,5 @@ Partial Public Class spAllCliente_Result
     Public Property RegimenFiscalId As Nullable(Of Integer)
     Public Property RegimenFiscal As String
     Public Property RFC As String
-    Public Property Calle As String
-    Public Property NumeroExterno As String
-    Public Property NumeroInterno As String
-    Public Property Colonia As String
-    Public Property CP As String
-    Public Property Municipio As String
-    Public Property EstadoId As Nullable(Of Integer)
-    Public Property Estado As String
-    Public Property PaisId As Nullable(Of Integer)
-    Public Property Pais As String
 
 End Class

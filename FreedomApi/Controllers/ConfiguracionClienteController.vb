@@ -15,9 +15,9 @@ Namespace Controllers
         ''' <returns></returns>
         <HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)>
         <HttpGet>
-        Public Function GetConfiguracionClienteById(ByVal clienteId As Integer) As IEnumerable(Of spConsConfiguracionCliente_ClienteId_Result)
+        Public Function GetConfiguracionClienteById(ByVal clienteId As Integer, ByVal organizacionId As Integer, ByVal empresaId As Integer) As IEnumerable(Of spConsConfiguracionCliente_ClienteId_Result)
             Try
-                Return db.spConsConfiguracionCliente_ClienteId(clienteId)
+                Return db.spConsConfiguracionCliente_ClienteId(clienteId, organizacionId, empresaId)
             Catch ex As Exception
                 Return BadRequest(ex.Message)
             End Try
@@ -54,18 +54,18 @@ Namespace Controllers
         <HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)>
         <HttpPut>
         Public Function UpdateConfiguracionCliente(ByVal model As ClienteConfiguracionModel) As IHttpActionResult
-            'If Not ModelState.IsValid Then
-            '    Return BadRequest(ModelState)
-            'End If
+            If Not ModelState.IsValid Then
+                Return BadRequest(ModelState)
+            End If
 
-            'Try
-            '    With model
-            '        db.spUpdConfiguracionCliente(.ConfiguracionId, .Telefono, .CorreoElectronico, .DiasCredito)
-            '        Return Ok()
-            '    End With
-            'Catch ex As Exception
-            '    Return BadRequest(ex.Message)
-            'End Try
+            Try
+                With model
+                    db.spUpdConfiguracionCliente(.ClienteId, 1, .Telefono, .CorreoElectronico, .DiasCredito, .OrganizacionId, .EmpresaId)
+                    Return Ok()
+                End With
+            Catch ex As Exception
+                Return BadRequest(ex.Message)
+            End Try
         End Function
     End Class
 End Namespace

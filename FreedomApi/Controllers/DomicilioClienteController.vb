@@ -15,8 +15,8 @@ Namespace Controllers
         ''' <returns></returns>
         <HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)>
         <HttpGet>
-        Public Function GetDomicilioClienteById(ByVal clienteId As Integer) As IEnumerable(Of spConsDomicilioEmpresa_EmpresaId_Result)
-            'Return db.spConsDomicilioCliente_ClienteId(clienteId)
+        Public Function GetDomicilioClienteById(ByVal clienteId As Integer, ByVal organizacionId As Integer, ByVal empresaId As Integer) As IEnumerable(Of spConsDomicilioEmpresa_EmpresaId_Result)
+            Return db.spConsDomicilioCliente_ClienteId(clienteId, organizacionId, empresaId)
         End Function
 
         ''' <summary>
@@ -27,19 +27,19 @@ Namespace Controllers
         <HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)>
         <HttpPost>
         Public Function InsertDomicilioCliente(ByVal model As ClienteDomicilioModel) As IHttpActionResult
-            'If Not ModelState.IsValid Then
-            '    Return BadRequest(ModelState)
-            'End If
-            'Try
-            '    With model
-            '        db.spInsDomicilioCliente(.ClienteId, .Calle, .NumeroExterno,
-            '                                 .NumeroInterno, .EntreCalles, .Colonia,
-            '                                 .CP, .Municipio, .EstadoId)
-            '    End With
-            '    Return Ok()
-            'Catch ex As Exception
-            '    Return BadRequest(ex.Message)
-            'End Try
+            If Not ModelState.IsValid Then
+                Return BadRequest(ModelState)
+            End If
+            Try
+                With model
+                    db.spInsDomicilioCliente(.ClienteId, .Calle, .NumeroExterno,
+                                             .NumeroInterno, .Colonia,
+                                             .CP, .Municipio, .EstadoId)
+                End With
+                Return Ok()
+            Catch ex As Exception
+                Return BadRequest(ex.Message)
+            End Try
         End Function
 
         ''' <summary>
@@ -50,20 +50,20 @@ Namespace Controllers
         <HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)>
         <HttpPut>
         Public Function UpdateDomicilioCliente(ByVal model As ClienteDomicilioModel) As IHttpActionResult
-            'If Not ModelState.IsValid Then
-            '    Return BadRequest(ModelState)
-            'End If
+            If Not ModelState.IsValid Then
+                Return BadRequest(ModelState)
+            End If
 
-            'Try
-            '    With model
-            '        db.spUpdDomicilioCliente(.DomicilioId, .Calle, .NumeroExterno,
-            '                                 .NumeroInterno, .EntreCalles, .Colonia,
-            '                                 .CP, .Municipio, .EstadoId)
-            '        Return Ok()
-            '    End With
-            'Catch ex As Exception
-            '    Return BadRequest(ex.Message)
-            'End Try
+            Try
+                With model
+                    db.spUpdDomicilioCliente(.DomicilioId, .ClienteId, .Calle, .NumeroExterno,
+                                             .NumeroInterno, .Colonia,
+                                             .CP, .Municipio, .EstadoId)
+                    Return Ok()
+                End With
+            Catch ex As Exception
+                Return BadRequest(ex.Message)
+            End Try
         End Function
     End Class
 End Namespace

@@ -17,7 +17,7 @@ Partial Public Class spAllContactoCliente_Result
     Public Property CorreoElectronico As String
     Public Property Puesto As String
     Public Property TipoContacto As String
-    Public Property NombreCliente As String
+    Public Property ClienteEmpresaNombre As String
     Public Property Domicilio As String
     Public Property Municipio As String
     Public Property Estado As String

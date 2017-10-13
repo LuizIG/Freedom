@@ -102,7 +102,7 @@ Public Class DetalleCliente
             Dim parametros As List(Of Parametros) = StringToValue(value, GetType(List(Of Parametros)))
             Dim nombre = If(parametros.Where(Function(x) x.ParamName.ToUpper() = "NOMBRE").ToList()(0).ParamValue.ToString() <> "", parametros.Where(Function(x) x.ParamName.ToUpper() = "NOMBRE").ToList()(0).ParamValue.ToString(), "")
             Dim rfc = If(parametros.Where(Function(x) x.ParamName.ToUpper() = "RFC").ToList()(0).ParamValue.ToString() <> "", parametros.Where(Function(x) x.ParamName.ToUpper() = "RFC").ToList()(0).ParamValue.ToString(), "")
-            Dim regimendFiscalId = If(parametros.Where(Function(x) x.ParamName.ToUpper() = "REGIMENFISCAL").ToList()(0).ParamValue.ToString() <> "", parametros.Where(Function(x) x.ParamName.ToUpper() = "REGIMENFISCAL").ToList()(0).ParamValue.ToString(), "")
+            Dim regimendFiscalId = If(parametros.Where(Function(x) x.ParamName.ToUpper() = "REGIMENFISCALID").ToList()(0).ParamValue.ToString() <> "", parametros.Where(Function(x) x.ParamName.ToUpper() = "REGIMENFISCALID").ToList()(0).ParamValue.ToString(), "")
             Dim regimendFiscal = If(parametros.Where(Function(x) x.ParamName.ToUpper() = "REGIMENFISCAL").ToList()(0).ParamValue.ToString() <> "", parametros.Where(Function(x) x.ParamName.ToUpper() = "REGIMENFISCAL").ToList()(0).ParamValue.ToString(), "")
 
             Dim page = New FreedomPage()
@@ -110,12 +110,12 @@ Public Class DetalleCliente
 
             Dim empresa = New ClienteModel With {
                 .EmpresaId = page.EmpresaId,
-                .ClienteId = page.IdCliente,
-                .NombreCliente = nombre,
+                .ClienteEmpresaId = page.IdCliente,
+                .ClienteEmpresaNombre = nombre,
                 .RFC = rfc,
-                .RegimenFiscalId = regimendFiscalId,
+                .RegimenFiscalId = integer.Parse(regimendFiscalId),
                 .RegimenFiscal = regimendFiscal,
-                .OrganizacionId = loginsession.OrganizacionId.ToString()
+                .OrganizacionId = loginsession.OrganizacionId
             }
 
             Dim req = ""
@@ -136,8 +136,8 @@ Public Class DetalleCliente
             If (statusCode >= 200 And statusCode < 400) Then
                 Dim detail = result.GetValue("detail").Value(Of JObject)
 
-                If Not page.EditEmpresa Then
-                    Dim cliente = detail.GetValue("ClienteId").Value(Of String)
+                If Not page.EditCliente Then
+                    Dim cliente = detail.GetValue("ClienteEmpresaId").Value(Of String)
                     page.IdCliente = Convert.ToInt32(cliente)
                 End If
 
@@ -174,9 +174,10 @@ Public Class DetalleCliente
             Dim colonia = If(parametros.Where(Function(x) x.ParamName.ToUpper() = "COLONIA").ToList()(0).ParamValue.ToString() <> "", parametros.Where(Function(x) x.ParamName.ToUpper() = "COLONIA").ToList()(0).ParamValue.ToString(), "")
             Dim cp = If(parametros.Where(Function(x) x.ParamName.ToUpper() = "CP").ToList()(0).ParamValue.ToString() <> "", parametros.Where(Function(x) x.ParamName.ToUpper() = "CP").ToList()(0).ParamValue.ToString(), "")
             Dim municipio = If(parametros.Where(Function(x) x.ParamName.ToUpper() = "MUNICIPIO").ToList()(0).ParamValue.ToString() <> "", parametros.Where(Function(x) x.ParamName.ToUpper() = "MUNICIPIO").ToList()(0).ParamValue.ToString(), "")
+            Dim estadoId = If(parametros.Where(Function(x) x.ParamName.ToUpper() = "ESTADOID").ToList()(0).ParamValue.ToString() <> "", parametros.Where(Function(x) x.ParamName.ToUpper() = "ESTADOID").ToList()(0).ParamValue.ToString(), "")
             Dim estado = If(parametros.Where(Function(x) x.ParamName.ToUpper() = "ESTADO").ToList()(0).ParamValue.ToString() <> "", parametros.Where(Function(x) x.ParamName.ToUpper() = "ESTADO").ToList()(0).ParamValue.ToString(), "")
+            Dim paisId = If(parametros.Where(Function(x) x.ParamName.ToUpper() = "PAISID").ToList()(0).ParamValue.ToString() <> "", parametros.Where(Function(x) x.ParamName.ToUpper() = "PAISID").ToList()(0).ParamValue.ToString(), "")
             Dim pais = If(parametros.Where(Function(x) x.ParamName.ToUpper() = "PAIS").ToList()(0).ParamValue.ToString() <> "", parametros.Where(Function(x) x.ParamName.ToUpper() = "PAIS").ToList()(0).ParamValue.ToString(), "")
-            Dim esLugarEmision = If(parametros.Where(Function(x) x.ParamName.ToUpper() = "LUGAREMISION").ToList()(0).ParamValue.ToString() <> "", parametros.Where(Function(x) x.ParamName.ToUpper() = "LUGAREMISION").ToList()(0).ParamValue.ToString(), "")
 
             Dim page = New FreedomPage()
             Dim pageDet = New DetalleCliente()
@@ -192,7 +193,10 @@ Public Class DetalleCliente
                 .Colonia = colonia,
                 .CP = cp,
                 .Municipio = municipio,
-                .EstadoId = estado
+                .EstadoId = estadoId,
+                .Estado = estado,
+                .PaisId = paisId,
+                .Pais = pais
             }
 
             Dim data = JsonConvert.SerializeObject(domicilio)
@@ -256,7 +260,9 @@ Public Class DetalleCliente
                 .ConfiguracionId = page.ConfiguracionId,
                 .DiasCredito = diasCredito,
                 .Telefono = telefonoFactura,
-                .CorreoElectronico = correoFactura
+                .CorreoElectronico = correoFactura,
+                .OrganizacionId = loginsession.OrganizacionId,
+                .EmpresaId = page.EmpresaId
             }
 
             Dim data = JsonConvert.SerializeObject(personalizacion)
@@ -325,7 +331,9 @@ Public Class DetalleCliente
                     .TelefonoMovil = row("TelefonoMovil"),
                     .CorreoElectronico = row("Correo"),
                     .Puesto = row("Puesto"),
-                    .TipoContacto = row("TipoContacto")
+                    .TipoContacto = row("TipoContacto"),
+                    .OrganizacionId = loginsession.OrganizacionId,
+                    .EmpresaId = page.EmpresaId
                 }
 
                 nombresContactos += row("NombreContacto") + "<br/>"
@@ -525,7 +533,7 @@ Public Class DetalleCliente
             Dim cliente As List(Of ClienteModel) = StringToValue(detail.ToString(), GetType(List(Of ClienteModel)))
 
             If cliente.Count > 0 Then
-                txtNombre.Text = cliente(0).NombreCliente
+                txtNombre.Text = cliente(0).ClienteEmpresaNombre
                 txtRFC.Text = cliente(0).RFC
                 'cbxRegimenFiscal.Items.FindByValue(empresa(0).).Selected = True
             End If
@@ -533,7 +541,7 @@ Public Class DetalleCliente
     End Sub
 
     Public Sub CargarPersonalizacion()
-        Dim url = "api/ConfiguracionCliente?clienteId=" & IdCliente
+        Dim url = "api/ConfiguracionCliente?clienteId=" & IdCliente & "&organizacionId=" & UserSession.OrganizacionId & "&empresaId=" & EmpresaId
         Dim req = GetRequest(url, UserSession.Token)
         Dim result = JObject.Parse(req)
         Dim statusCode = result.GetValue("statusCode").Value(Of Integer)
@@ -555,7 +563,7 @@ Public Class DetalleCliente
     End Sub
 
     Public Sub CargarDomicilio()
-        Dim url = "api/DomicilioCliente?clienteId=" & IdCliente
+        Dim url = "api/DomicilioCliente?clienteId=" & IdCliente & "&organizacionId=" & UserSession.OrganizacionId & "&empresaId=" & EmpresaId
         Dim req = GetRequest(url, UserSession.Token)
         Dim result = JObject.Parse(req)
         Dim statusCode = result.GetValue("statusCode").Value(Of Integer)
@@ -705,5 +713,13 @@ Public Class DetalleCliente
         Catch ex As Exception
 
         End Try
+    End Sub
+
+    Protected Sub repContactos_ItemCreated(sender As Object, e As RepeaterItemEventArgs)
+        Dim scriptMan As ScriptManager = ScriptManager.GetCurrent(Me)
+        Dim btn As LinkButton = TryCast(e.Item.FindControl("btnEditarContacto"), LinkButton)
+        If btn IsNot Nothing Then
+            scriptMan.RegisterAsyncPostBackControl(btn)
+        End If
     End Sub
 End Class

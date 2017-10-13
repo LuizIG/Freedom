@@ -18,9 +18,14 @@ Public Class ComboEmpresas
             If page.EmpresaId > 0 Then
                 For Each item As ListItem In cbxEmpresa.Items
                     If item.Value = page.EmpresaId.ToString() Then
-                        item.Selected = True
+                        If Not item.Selected Then
+                            item.Selected = True
+                        End If
                     End If
                 Next
+            Else
+                Dim idEmpresa = cbxEmpresa.Items(cbxEmpresa.SelectedIndex).Value
+                page.EmpresaId = Convert.ToInt32(idEmpresa)
             End If
         End If
     End Sub

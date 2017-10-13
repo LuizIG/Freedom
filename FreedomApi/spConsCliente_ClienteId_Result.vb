@@ -11,15 +11,14 @@ Imports System
 Imports System.Collections.Generic
 
 Partial Public Class spConsCliente_ClienteId_Result
-    Public Property ClienteId As Integer
-    Public Property NombreCliente As String
+    Public Property ClienteEmpresaId As Integer
+    Public Property ClienteEmpresaNombre As String
     Public Property RegimenFiscalId As Nullable(Of Integer)
     Public Property RegimenFiscal As String
     Public Property RFC As String
     Public Property Calle As String
     Public Property NumeroExterno As String
     Public Property NumeroInterno As String
-    Public Property EntreCalles As String
     Public Property Colonia As String
     Public Property CP As String
     Public Property Municipio As String

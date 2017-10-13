@@ -23,7 +23,7 @@ Public Class Clientes
             Dim detail = result.GetValue("detail").Value(Of JArray)
             Dim clientes As List(Of ClienteModel) = StringToValue(detail.ToString(), GetType(List(Of ClienteModel)))
 
-            repClientes.DataSource = clientes
+            repClientes.DataSource = clientes.OrderBy(Function(x) x.ClienteEmpresaId)
             repClientes.DataBind()
         End If
     End Sub

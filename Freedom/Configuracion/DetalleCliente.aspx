@@ -423,13 +423,241 @@
 				</div>
 			</div>
 		</div>
-		<div class="tab-pane slide-left padding-20 sm-no-padding" id="tab6">
-			<h1>Registrar cliente</h1>
+        <div class="tab-pane slide-left padding-20 sm-no-padding" id="tab6">
+            <div class="row">
+                <div class="col-md-12" style="text-align:center;">
+                    <h1>Resúmen de registro</h1>
+                </div>
+            </div>
+            <div class="form-horizontal">
+                <div class="form-group row">
+                    <div class="col-md-4 col-md-offset-4">
+                        <div class="row">
+                            <div class="col-md-12" style="text-align:center;">
+                                <label class="control-label">Información General</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <p id="fname" class="hint-text small">Nombre:</p>
+                            </div>
+                            <div class="col-md-8">
+                                    <p data-id="lblNombreEmpresa" runat="server"></p>
+                            </div>
+                            <div class="col-md-1">
+                                    <span class="pull-left" runat="server"><i id="requeridoNombre" class="fa fa-exclamation"></i></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <p class="hint-text small">RFC:</p>
+                            </div>
+                            <div class="col-md-8">
+                                    <p data-id="lblRFC" runat="server"></p>
+                            </div>
+                            <div class="col-md-1">
+                                    <span class="pull-left" runat="server"><i id="requeridoRFC" class="fa fa-exclamation"></i></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <p class="hint-text small">Régimen Fiscal: </p>
+                            </div>
+                            <div class="col-md-8">
+                                    <p data-id="lblRegimen" runat="server"></p>
+                            </div>
+                            <div class="col-md-1">
+                                    <span class="pull-left" runat="server"><i id="requeridoRegimen" class="fa fa-exclamation"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-4 col-md-offset-4">
+                        <div class="row">
+                            <div class="col-md-12" style="text-align:center;">
+                                <label class="control-label">Domicilio Fiscal</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <p class="hint-text small">Calle:</p>
+                            </div>
+                            <div class="col-md-8">
+                                    <p data-id="lblCalle" runat="server"></p>
+                            </div>
+                            <div class="col-md-1">
+                                    <span class="pull-left" runat="server"><i id="requeridoCalle" class="fa fa-exclamation"></i></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <p class="hint-text small">Num Exterior:</p>
+                            </div>
+                            <div class="col-md-8">
+                                    <p data-id="lblNoExt" runat="server"></p>
+                            </div>
+                            <div class="col-md-1">
+                                    <span class="pull-left" runat="server"><i id="requeridoNumExt" class="fa fa-exclamation"></i></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <p class="hint-text small">Num Interior:</p>
+                            </div>
+                            <div class="col-md-8">
+                                    <p data-id="lblNoInt" runat="server"></p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <p class="hint-text small">Entre calles:</p>
+                            </div>
+                            <div class="col-md-8">
+                                    <p data-id="lblCalles" runat="server"></p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <p class="hint-text small">Colonia:</p>
+                            </div>
+                            <div class="col-md-8">
+                                    <p data-id="lblColonia" runat="server"></p>
+                            </div>
+                            <div class="col-md-1">
+                                    <span class="pull-left" runat="server"><i id="requeridoColonia" class="fa fa-exclamation"></i></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <p class="hint-text small">CP:</p>
+                            </div>
+                            <div class="col-md-8">
+                                    <p data-id="lblCP" runat="server"></p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <p class="hint-text small">Pais:</p>
+                            </div>
+                            <div class="col-md-8">
+                                    <p data-id="lblPais" runat="server"></p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <p class="hint-text small">Estado:</p>
+                            </div>
+                            <div class="col-md-8">
+                                    <p data-id="lblEstado" runat="server"></p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <p class="hint-text small">Municipio:</p>
+                            </div>
+                            <div class="col-md-8">
+                                    <p data-id="lblMunicipio" runat="server"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-4 col-md-offset-4">
+                        <div class="row">
+                            <div class="col-md-12" style="text-align:center;">
+                                <label class="control-label">Personalización</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <p class="hint-text small">Telefono: </p>
+                            </div>
+                            <div class="col-md-8">
+                                    <p data-id="lblTelefono" runat="server"></p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <p class="hint-text small">Correo: </p>
+                            </div>
+                            <div class="col-md-8">
+                                    <p data-id="lblCorreoElectronico" runat="server"></p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <p class="hint-text small">Días de Crédito: </p>
+                            </div>
+                            <div class="col-md-8">
+                                    <p data-id="lblDiasCredito" runat="server"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-4 col-md-offset-4">
+                        <div class="row">
+                            <div class="col-md-12" style="text-align:center;">
+                                <label class="control-label">Contactos</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <p class="hint-text small">Contactos:</p>
+                            </div>
+                            <div class="col-md-8">
+                                    <p data-id="lblContactos" runat="server"></p>
+                            </div>
+                            <div class="col-md-1">
+                                    <span class="pull-left" runat="server"><i id="requeridoContactos" class="fa fa-exclamation"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-4 col-md-offset-4">
+                        <div class="row">
+                            <div class="col-md-12" style="text-align:center;">
+                                <label class="control-label">Formas de Pago</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <p class="hint-text small">Comprobante:</p>
+                            </div>
+                            <div class="col-md-8">
+                                    <p data-id="lblComprobante" runat="server"></p>
+                            </div>
+                            <div class="col-md-1">
+                                    <span class="pull-left" runat="server"><i id="requeridoComprobante" class="fa fa-exclamation"></i></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <p class="hint-text small">Impuestos:</p>
+                            </div>
+                            <div class="col-md-8">
+                                    <p data-id="lblImpuestos" runat="server"></p>
+                            </div>
+                            <div class="col-md-1">
+                                    <span class="pull-left" runat="server"><i id="requeridoImpuestos" class="fa fa-exclamation"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
             <div class="padding-20 sm-padding-5 sm-m-b-20 sm-m-t-20 bg-white clearfix">
 				<ul class="pager wizard no-style">
 					<li class="next">
-						<button class="btn btn-primary btn-cons btn-animated from-left fa fa-save pull-right" id="btnGuardar" type="button" onclick="GuardarEmpresa();">
-							<span>Guardar</span>
+						<button class="btn btn-primary btn-cons btn-animated from-left fa fa-save pull-right" id="btnFinalizar" type="button">
+							<span>Finalizar</span>
 						</button>
 					</li>
 					<li class="previous">

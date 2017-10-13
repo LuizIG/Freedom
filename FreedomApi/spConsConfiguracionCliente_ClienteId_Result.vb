@@ -11,7 +11,7 @@ Imports System
 Imports System.Collections.Generic
 
 Partial Public Class spConsConfiguracionCliente_ClienteId_Result
-    Public Property ClienteId As Integer
+    Public Property ClienteEmpresaId As Integer
     Public Property IVAPredeterminado As Nullable(Of Integer)
     Public Property Telefono As String
     Public Property CorreoElectronico As String
