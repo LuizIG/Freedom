@@ -153,6 +153,7 @@ Public Class DetalleEmpresa
                     Dim empresaId = detail.GetValue("Id").Value(Of String)
 
                     page.UpdateEmpresa = True
+                    page.ReLoadComboEmpresa = True
                     page.EmpresaId = Convert.ToInt32(empresaId)
                 End If
 
@@ -804,7 +805,7 @@ Public Class DetalleEmpresa
                 Dim NombreLogo = personalizacion(0).LogoTipoNombre
 
                 If Not NombreLogo = "" Then
-                    url = "http://13.59.156.149/FreedomApi/logos/" & NombreLogo
+                    url = SERVER_HOST & "logos/" & NombreLogo
                     output.Src = url
                 End If
 

@@ -32,10 +32,49 @@
         table.dataTable(settings);
 
         // search box for table
-        //$('#search-table').keyup(function() {
-        //    table.fnFilter($(this).val());
-        //});
+        $('#search-table').keyup(function() {
+            table.fnFilter($(this).val());
+        });
     }
+
+    var initTablaClientes = function () {
+        var table = $('#tblClientes');
+
+        var settings = {
+            "sDom": "<t><'row'<p i>>",
+            //"destroy": true,
+            "scrollCollapse": true,
+            "oLanguage": {
+                "sLengthMenu": "_MENU_ ",
+                "sInfo": "Mostrando <b>_START_ a _END_</b> de _TOTAL_ registros"
+            },
+            "iDisplayLength": 5
+        };
+
+        table.dataTable(settings);
+
+        $('#search-table').keyup(function () {
+            table.fnFilter($(this).val());
+        });
+    }
+
+    var initTablaContactos = function () {
+        var table = $('#tblContactos');
+
+        var settings = {
+            "sDom": "<t><'row'<p i>>",
+            //"destroy": true,
+            "scrollCollapse": true,
+            "oLanguage": {
+                "sLengthMenu": "_MENU_ ",
+                "sInfo": "Mostrando <b>_START_ a _END_</b> de _TOTAL_ registros"
+            },
+            "iDisplayLength": 3
+        };
+
+        table.dataTable(settings);
+    }
+    
 
     // Initialize datatable with ability to add rows dynamically
     var initTableWithDynamicRows = function() {
@@ -132,6 +171,8 @@
 
     }
 
+    initTablaContactos();
+    initTablaClientes();
     initTableWithSearch();
     initTableWithDynamicRows();
     initTableWithExportOptions();

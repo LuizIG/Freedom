@@ -248,15 +248,6 @@ Partial Public Class DetalleCliente
     Protected WithEvents btnAgregarContacto As Global.System.Web.UI.WebControls.Button
     
     '''<summary>
-    '''Control txtCuentaContable.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents txtCuentaContable As Global.System.Web.UI.WebControls.TextBox
-    
-    '''<summary>
     '''Control txtMetodoPago.
     '''</summary>
     '''<remarks>
@@ -273,4 +264,40 @@ Partial Public Class DetalleCliente
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
     Protected WithEvents txtNumCuenta As Global.System.Web.UI.WebControls.TextBox
+    
+    '''<summary>
+    '''Control repMetodosPago.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents repMetodosPago As Global.System.Web.UI.WebControls.Repeater
+    
+    '''<summary>
+    '''Control btnCargarMetodoPago.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents btnCargarMetodoPago As Global.System.Web.UI.WebControls.Button
+    
+    '''<summary>
+    '''Control repNumCtaPago.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents repNumCtaPago As Global.System.Web.UI.WebControls.Repeater
+    
+    '''<summary>
+    '''Control btnCargarNumCtaPago.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents btnCargarNumCtaPago As Global.System.Web.UI.WebControls.Button
 End Class

@@ -290,12 +290,15 @@
     <Compile Include="Controllers\DomicilioEmpresaController.vb" />
     <Compile Include="Controllers\EmpresasController.vb" />
     <Compile Include="App_Start\EsquemaFiscalController.vb" />
+    <Compile Include="Controllers\MetodoPagoClienteController.vb" />
+    <Compile Include="Controllers\NumCtaPagoClienteController.vb" />
     <Compile Include="Controllers\OrganizacionController.vb" />
     <Compile Include="Controllers\EstadosController.vb" />
     <Compile Include="Controllers\RegimenFiscalController.vb" />
     <Compile Include="Controllers\TasaIVAController.vb" />
     <Compile Include="Controllers\TipoComprobanteEsquemaFiscalController.vb" />
     <Compile Include="Controllers\TipoImpuestoController.vb" />
+    <Compile Include="Controllers\TiposContactoController.vb" />
     <Compile Include="Controllers\UsuarioEmpresaController.vb" />
     <Compile Include="Controllers\UsuarioOrganizacionController.vb" />
     <Compile Include="Controllers\UsuarioSerieFolioCDFIController.vb" />
@@ -509,6 +512,9 @@
     <Compile Include="spConsConfiguracionImpuesto_Result.vb">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="spConsContactoCliente_ClienteId_Result.vb">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="spConsContactoEmpresa_EmpresaId_Result.vb">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
@@ -593,6 +599,9 @@
     <Compile Include="spConsTipoComprobante_Result.vb">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="spConsTipoContactoCliente_Result.vb">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="spConsTipoImpuesto_Result.vb">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
@@ -609,6 +618,9 @@
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="spInsCliente_Result.vb">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="spInsContactoCliente_Result.vb">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="spInsDomicilioCliente_Result.vb">

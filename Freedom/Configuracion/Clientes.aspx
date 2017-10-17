@@ -2,9 +2,8 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 <ul class="breadcrumb">
-        <li><a href="#" class="active">Clientes</a></li>
-    </ul>
-
+    <li><a href="#" class="active">Clientes</a></li>
+</ul>
     <div class="panel panel-transparent">
         <div class="panel-heading">
             <div class="panel-title">
@@ -21,7 +20,7 @@
                     <tr role="row">
                         <th style="width: 10px;  text-align:center;" class="sorting" tabindex="0" aria-controls="tblClientes" rowspan="1" colspan="1" aria-label="Title: activate to sort column descending">Num. Cliente</th>
                         <th style="width: 150px;  text-align:center;" class="sorting" tabindex="0" aria-controls="tblClientes" rowspan="1" colspan="1" aria-label="Title: activate to sort column descending">Cliente</th>
-                        <th style="width: 80px;  text-align:center;" class="sorting" tabindex="0" aria-controls="tblClientes" rowspan="1" colspan="1" aria-label="Key: activate to sort column ascending">Regímen Fiscal</th>
+                        <th style="width: 120px;  text-align:center;" class="sorting" tabindex="0" aria-controls="tblClientes" rowspan="1" colspan="1" aria-label="Key: activate to sort column ascending">Regímen Fiscal</th>
                         <th style="width: 80px;  text-align:center;" class="sorting" tabindex="0" aria-controls="tblClientes" rowspan="1" colspan="1" aria-label="Condensed: activate to sort column ascending">RFC</th>
                         <%--<th style="width: 80px;  text-align:center;" class="sorting" tabindex="0" aria-controls="tblClientes" rowspan="1" colspan="1" aria-label="Condensed: activate to sort column ascending">Num. Externo</th>
                         <th style="width: 80px;  text-align:center;" class="sorting" tabindex="0" aria-controls="tblClientes" rowspan="1" colspan="1" aria-label="Condensed: activate to sort column ascending">Num. Interno</th>
@@ -29,8 +28,8 @@
                         <th style="width: 80px;  text-align:center;" class="sorting" tabindex="0" aria-controls="tblClientes" rowspan="1" colspan="1" aria-label="Condensed: activate to sort column ascending">C.P.</th>
                         <th style="width: 80px;  text-align:center;" class="sorting" tabindex="0" aria-controls="tblClientes" rowspan="1" colspan="1" aria-label="Condensed: activate to sort column ascending">Municipio</th>
                         <th style="width: 80px;  text-align:center;" class="sorting" tabindex="0" aria-controls="tblClientes" rowspan="1" colspan="1" aria-label="Condensed: activate to sort column ascending">Estado</th>--%>
-                        <th style="width: 80px; text-align:center;" class="sorting" tabindex="0" aria-controls="tblClientes" rowspan="1" colspan="1" aria-label="Condensed: activate to sort column ascending">Editar</th>
-                        <th style="width: 80px; text-align:center;" class="sorting" tabindex="0" aria-controls="tblClientes" rowspan="1" colspan="1" aria-label="Condensed: activate to sort column ascending">Eliminar</th>
+                        <th style="width: 50px; text-align:center;" class="sorting" tabindex="0" aria-controls="tblClientes" rowspan="1" colspan="1" aria-label="Condensed: activate to sort column ascending">Editar</th>
+                        <th style="width: 50px; text-align:center;" class="sorting" tabindex="0" aria-controls="tblClientes" rowspan="1" colspan="1" aria-label="Condensed: activate to sort column ascending">Eliminar</th>
                     </tr>
                 </thead>
                 <asp:Repeater ID="repClientes" runat="server">

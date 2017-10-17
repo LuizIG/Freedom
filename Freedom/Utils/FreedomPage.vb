@@ -133,6 +133,19 @@ Public Class FreedomPage
         End Set
     End Property
 
+    Public Property ReLoadComboEmpresa() As Boolean
+        Get
+            If Session("ReLoadComboEmpresa") Is Nothing Then
+                Return Nothing
+            Else
+                Return CBool(Session("ReLoadComboEmpresa"))
+            End If
+        End Get
+        Set
+            Session("ReLoadComboEmpresa") = Value
+        End Set
+    End Property
+
     Public Property EditCliente() As Boolean
         Get
             If Session("EditCliente") Is Nothing Then

@@ -4,10 +4,10 @@ Imports System.Web.Hosting
 Imports Newtonsoft.Json.Linq
 Module DataAccess
     ' AWS
-    'Private Const SERVER_HOST As String = "http://13.59.156.149/FreedomApi/"
+    'Public Const SERVER_HOST As String = "http://13.59.156.149/FreedomApi/"
 
     ' Azure
-    Private Const SERVER_HOST As String = "http://freedomapi-test.azurewebsites.net/"
+    Public Const SERVER_HOST As String = "http://freedomapi-test.azurewebsites.net/"
 
     Public Function PostRequest(url As String, data As String, token As String, Optional ByVal contentType As String = "application/json") As String
         Dim request = CreateRequest(SERVER_HOST & url, "POST", token, contentType)

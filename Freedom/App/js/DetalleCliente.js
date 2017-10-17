@@ -9,18 +9,14 @@
     if (editar == "True") {
         validacionesTabs = false;
     } else {
-        validacionesTabs = true;
-        //validacionesTabs = false;
+        //validacionesTabs = true;
+        validacionesTabs = false;
     }
     
     $('#tabsCliente a[href="#tab1"]').tab('show');
 
     $('#btnTriggerAgregaContacto').click(function (e) {
-        if (validarContacto()) {
-            $("#btnAgregarContacto").click();
-            return true;
-        }
-        return false;
+        $("#btnAgregarContacto").click();
     });
 
     $('#btnGuardarInfo').click(function (e) {
@@ -45,12 +41,18 @@
         GuardarPersonalizacion();
     });
 
-    //$('#btnGuardarFormasPago').click(function (e) {
-    //    GuardarFormasPago();
-    //});
+    $('#btnGuardarFormasPago').click(function (e) {
+        GuardarFormasPago();
+    });
 
     $('#btnGuardarContactos').click(function (e) {
-        GuardarContactos();
+        if (validarContacto()) {
+            GuardarContactos();
+            return true;
+        } else {
+            return false;
+        }
+        
     });
 
     $('#btnFinalizar').click(function (e) {
@@ -111,7 +113,7 @@
     }
 });
 
-function UpdateResumen(contactos) {
+function UpdateResumen(contactos, metodosPago, numCtaPago) {
     // I N F O  G E N E R A L
     var nombre = $("#txtNombre").val();
     var rfc = $("#txtRFC").val();
@@ -206,6 +208,36 @@ function UpdateResumen(contactos) {
     if (contactos != "") {
         $('[data-id=lblContactos]').html(contactos);
         $("#requeridoContactos").attr('class', 'fa fa-check');
+    }
+
+
+    // M E T O D O S  D E  P A G O
+    if (metodosPago != "") {
+        $('[data-id=lblMetodosPago]').html(metodosPago);
+    }
+
+
+    // N U M E R O S  D E  C U E N T A
+    if (numCtaPago != "") {
+        $('[data-id=lblNumCtaPago]').html(numCtaPago);
+    }
+}
+
+function TriggerCargarNumCtaPago() {
+    if (validarNumCtaPago()) {
+        $("#btnCargarNumCtaPago").click();
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function TriggerCargarMetodoPago() {
+    if (validarMetodoPago()) {
+        $("#btnCargarMetodoPago").click();
+        return true;
+    } else {
+        return false;
     }
 }
 
@@ -355,6 +387,92 @@ function getPersonalizarClienteParams() {
     return retValueJson;
 }
 
+function getContactoParams() {
+    var retValue = [];
+    var item = {};
+    item["ParamName"] = "NombreContacto";
+    item["ParamType"] = "NVARCHAR";
+    item["ParamValue"] = $("#txtNombreContacto").val();
+    retValue.push(item);
+
+    item = {};
+    item["ParamName"] = "TelefonoFijo";
+    item["ParamType"] = "NVARCHAR";
+    item["ParamValue"] = $("#txtTelefonoFijo").val();
+    retValue.push(item);
+
+    item = {};
+    item["ParamName"] = "Movil";
+    item["ParamType"] = "NVARCHAR";
+    item["ParamValue"] = $("#txtMovil").val();
+    retValue.push(item);
+
+    item = {};
+    item["ParamName"] = "CorreoContacto";
+    item["ParamType"] = "NVARCHAR";
+    item["ParamValue"] = $("#txtCorreoContacto").val();
+    retValue.push(item);
+
+    item = {};
+    item["ParamName"] = "Puesto";
+    item["ParamType"] = "NVARCHAR";
+    item["ParamValue"] = $("#txtPuesto").val();
+    retValue.push(item);
+
+    var tipoContactoId = $("[data-id=cbxTipoContacto] option:selected").val();
+    item = {};
+    item["ParamName"] = "TipoContactoId";
+    item["ParamType"] = "NVARCHAR";
+    item["ParamValue"] = tipoContactoId;
+    retValue.push(item);
+
+    var tipoContacto = $("[data-id=cbxTipoContacto] option:selected").text();
+    item = {};
+    item["ParamName"] = "TipoContacto";
+    item["ParamType"] = "NVARCHAR";
+    item["ParamValue"] = tipoContacto;
+    retValue.push(item);
+
+    var retValueJson = "";
+    if (retValue.length != 0) {
+        retValueJson = JSON.stringify(retValue);
+    }
+
+    return retValueJson;
+}
+
+function getMetodosPagoParams() {
+    var retValue = [];
+    var item = {};
+    item["ParamName"] = "MetodoPago";
+    item["ParamType"] = "NVARCHAR";
+    item["ParamValue"] = $("#txtMetodoPago").val();
+    retValue.push(item);
+
+    var retValueJson = "";
+    if (retValue.length != 0) {
+        retValueJson = JSON.stringify(retValue);
+    }
+
+    return retValueJson;
+}
+
+function getNumCtaPagoParams() {
+    var retValue = [];
+    var item = {};
+    item["ParamName"] = "NumCuenta";
+    item["ParamType"] = "NVARCHAR";
+    item["ParamValue"] = $("#txtNumCuenta").val();
+    retValue.push(item);
+
+    var retValueJson = "";
+    if (retValue.length != 0) {
+        retValueJson = JSON.stringify(retValue);
+    }
+
+    return retValueJson;
+}
+
 function validarInfoClienteGeneral() {
     var nombre = $("#txtNombre").val();
     var rfc = $("#txtRFC").val();
@@ -422,6 +540,28 @@ function validarContacto() {
 
     if (nombre == "") {
         showDialog("Es necesario ingresar el nombre del contacto");
+        return false;
+    }
+
+    return true;
+}
+
+function validarMetodoPago() {
+    var metodoPago = $("#txtMetodoPago").val();
+
+    if (metodoPago == "") {
+        showDialog("Es necesario ingresar el método de pago");
+        return false;
+    }
+
+    return true;
+}
+
+function validarNumCtaPago() {
+    var numCuenta = $("#txtNumCuenta").val();
+
+    if (numCuenta == "") {
+        showDialog("Es necesario ingresar el número de cuenta");
         return false;
     }
 
@@ -514,7 +654,8 @@ function GuardarDomicilio() {
 }
 
 function GuardarContactos() {
-    var dataj = "{}";
+    var parameters = getContactoParams();
+    var dataj = "{value: '" + parameters + "'}";
     var url = "DetalleCliente.aspx/GuardarContactos";
 
     $.ajax({
@@ -529,12 +670,44 @@ function GuardarContactos() {
                 showDialog(data.Message);
             } else {
                 var info = data.Ret;
-
+                
                 $('[data-id=lblContactos]').html(info);
                 $("#requeridoContactos").attr('class', 'fa fa-check');
 
                 showDialog(data.Message);
-                $('#tabsCliente a[href="#tab6"]').tab('show');
+                
+                $('#tabsCliente a[href="#tab5"]').tab('show');
+                $("#btnTriggerAgregaContacto").click();
+            }
+        },
+        error: function (xmlHttpRequest, textStatus, errorThrown) {
+            showDialog("Error " + url + ": " + textStatus + ' [' + xmlHttpRequest.responseText + '] ' + errorThrown, ' -- ');
+        }
+    });
+}
+
+function GuardarFormasPago() {
+    var parameters = getMetodosPagoParams();
+    var dataj = "{value: '" + parameters + "'}";
+    var url = "DetalleCliente.aspx/GuardarMetodoPago";
+
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: dataj,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (ret) {
+            data = ret.d;
+            if (data.Result != true) {
+                showDialog(data.Message);
+            } else {
+                var info = data.Ret;
+
+                $('[data-id=lblMetodoPago]').html(info.MetodoPago);
+                $('[data-id=lblNumCtaPago]').html(info.NumCtaPago);
+
+                showDialog(data.Message);
             }
         },
         error: function (xmlHttpRequest, textStatus, errorThrown) {

@@ -8,20 +8,20 @@ Namespace Controllers
     Public Class ContactoClienteController
         Inherits FreedomApi
 
-        '''' <summary>
-        '''' spConsContactoCliente_ClienteId
-        '''' </summary>
-        '''' <param name="clienteId"></param>
-        '''' <returns></returns>
-        '<HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)>
-        '<HttpGet>
-        'Public Function GetContactoClienteById(ByVal clienteId As Integer) As IEnumerable(Of spConsContactoCliente_ClienteId_Result)
-        '    Try
-        '        Return db.spConsContactoCliente_ClienteId(clienteId)
-        '    Catch ex As Exception
-        '        Return BadRequest(ex.Message)
-        '    End Try
-        'End Function
+        ''' <summary>
+        ''' spConsContactoCliente_ClienteId
+        ''' </summary>
+        ''' <param name="clienteId"></param>
+        ''' <returns></returns>
+        <HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)>
+        <HttpGet>
+        Public Function GetContactoClienteById(ByVal clienteId As Integer) As IEnumerable(Of spConsContactoCliente_ClienteId_Result)
+            Try
+                Return db.spConsContactoCliente_ClienteId(clienteId)
+            Catch ex As Exception
+                Return BadRequest(ex.Message)
+            End Try
+        End Function
 
         ''' <summary>
         ''' spInsContactoCliente
@@ -37,9 +37,12 @@ Namespace Controllers
 
             Try
                 With model
-                    model.ContactoId = db.spInsContactoCliente(.ClienteId, .Nombre, .Telefono, .TelefonoMovil, .CorreoElectronico, .Puesto, .TipoContacto)
+                    Dim response = db.spInsContactoCliente(.ClienteId, .Nombre, .TelefonoFijo, .TelefonoMovil, .CorreoElectronico, .Puesto, .TipoContactoClienteId)
+                    Dim contacto As New ClienteContactoModel
+                    contacto.ContactoId = response.ToList(0).id
+                    Return Ok(contacto)
                 End With
-                Return Ok(model)
+
             Catch ex As Exception
                 Return BadRequest(ex.Message)
             End Try
@@ -59,7 +62,7 @@ Namespace Controllers
 
             Try
                 With model
-                    db.spUpdContactoCliente(.ClienteId, .ContactoId, .Nombre, .Telefono, .TelefonoMovil, .CorreoElectronico, .Puesto, .TipoContacto)
+                    db.spUpdContactoCliente(.ClienteId, .ContactoId, .Nombre, .TelefonoFijo, .TelefonoMovil, .CorreoElectronico, .Puesto, .TipoContactoClienteId)
                 End With
                 Return Ok(model)
             Catch ex As Exception

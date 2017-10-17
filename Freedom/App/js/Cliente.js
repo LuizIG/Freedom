@@ -1,22 +1,22 @@
 ﻿$(function () {
 
-    var initTable = function () {
-        var table = $('#tblClientes');
+    //var initTable = function () {
+    //    var table = $('#tblClientes');
 
-        var settings = {
-            "sDom": "<t><'row'<p i>>",
-            //"destroy": true,
-            "scrollCollapse": true,
-            "oLanguage": {
-                "sLengthMenu": "_MENU_ ",
-                "sInfo": "Mostrando <b>_START_ a _END_</b> de _TOTAL_ registros"
-            },
-            "iDisplayLength": 5
-        };
+    //    var settings = {
+    //        "sDom": "<t><'row'<p i>>",
+    //        //"destroy": true,
+    //        "scrollCollapse": true,
+    //        "oLanguage": {
+    //            "sLengthMenu": "_MENU_ ",
+    //            "sInfo": "Mostrando <b>_START_ a _END_</b> de _TOTAL_ registros"
+    //        },
+    //        "iDisplayLength": 5
+    //    };
 
-        table.dataTable(settings);
-    }
-    initTable();
+    //    table.dataTable(settings);
+    //}
+    //initTable();
 
     $('#tblClientes').on("click", "[data-id=eliminaCliente]", function (e) {
         var trow = $(this).parent().siblings(".deleteChecked");

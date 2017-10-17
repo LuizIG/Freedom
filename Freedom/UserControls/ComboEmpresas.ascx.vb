@@ -1,4 +1,5 @@
-﻿Imports System.Web.Script.Serialization
+﻿Imports System.IO
+Imports System.Web.Script.Serialization
 Imports Newtonsoft.Json.Linq
 
 Public Class ComboEmpresas
@@ -9,7 +10,7 @@ Public Class ComboEmpresas
         Dim loginsession = page.UserSession
 
         If IsPostBack Then
-            If page.UpdateEmpresa Then
+            If page.UpdateEmpresa AndAlso page.ReLoadComboEmpresa Then
                 CargarEmpresas(loginsession.OrganizacionId)
             End If
         Else
@@ -62,9 +63,17 @@ Public Class ComboEmpresas
         Return result
     End Function
 
-    Protected Sub cbxEmpresa_ServerChange(sender As Object, e As EventArgs)
-        Dim page = New FreedomPage()
+    Public Sub cbxEmpresa_ServerChange(sender As Object, e As EventArgs)
+        Dim freedom = New FreedomPage()
         Dim idEmpresa = cbxEmpresa.Items(cbxEmpresa.SelectedIndex).Value
-        Page.EmpresaId = Convert.ToInt32(idEmpresa)
+        freedom.EmpresaId = Convert.ToInt32(idEmpresa)
+
+        For Each item As ListItem In cbxEmpresa.Items
+            If item.Value = freedom.EmpresaId.ToString() Then
+                If Not item.Selected Then
+                    item.Selected = True
+                End If
+            End If
+        Next
     End Sub
 End Class

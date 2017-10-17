@@ -500,6 +500,7 @@
         <Function Name="spConsTipoComprobante" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="TipoLicencia" Type="int" Mode="In" />
         </Function>
+        <Function Name="spConsTipoContactoCliente" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="spConsTipoImpuesto" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="spConsTiposAddenda" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="TipoInformacionId" Type="int" Mode="In" />
@@ -774,7 +775,7 @@
           <Parameter Name="TelefonoMovil" Type="varchar" Mode="In" />
           <Parameter Name="CorreoElectronico" Type="varchar" Mode="In" />
           <Parameter Name="Puesto" Type="varchar" Mode="In" />
-          <Parameter Name="TipoContacto" Type="varchar" Mode="In" />
+          <Parameter Name="TipoContactoClienteId" Type="int" Mode="In" />
         </Function>
         <Function Name="spInsContactoEmpresa" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="EmpresaId" Type="int" Mode="In" />
@@ -958,7 +959,7 @@
           <Parameter Name="TelefonoMovil" Type="varchar" Mode="In" />
           <Parameter Name="CorreoElectronico" Type="varchar" Mode="In" />
           <Parameter Name="Puesto" Type="varchar" Mode="In" />
-          <Parameter Name="TipoContacto" Type="varchar" Mode="In" />
+          <Parameter Name="TipoContactoClienteId" Type="int" Mode="In" />
         </Function>
         <Function Name="spUpdContactoEmpresa" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="EmpresaId" Type="int" Mode="In" />
@@ -1930,15 +1931,6 @@
             <Parameter Name="OrganizacionId" Mode="In" Type="Int32" />
             <Parameter Name="EmpresaId" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="spAllContactoCliente" ReturnType="Collection(FREEDOMDBdevModel.spAllContactoCliente_Result)">
-            <Parameter Name="OrganizacionId" Mode="In" Type="Int32" />
-            <Parameter Name="EmpresaId" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="spConsCliente_ClienteId" ReturnType="Collection(FREEDOMDBdevModel.spConsCliente_ClienteId_Result)">
-            <Parameter Name="ClienteId" Mode="In" Type="Int32" />
-            <Parameter Name="OrganizacionId" Mode="In" Type="Int32" />
-            <Parameter Name="EmpresaId" Mode="In" Type="Int32" />
-          </FunctionImport>
           <FunctionImport Name="spConsConfiguracionCliente_ClienteId" ReturnType="Collection(FREEDOMDBdevModel.spConsConfiguracionCliente_ClienteId_Result)">
             <Parameter Name="ClienteEmpresaId" Mode="In" Type="Int32" />
             <Parameter Name="OrganizacionId" Mode="In" Type="Int32" />
@@ -1953,10 +1945,6 @@
             <Parameter Name="ClienteId" Mode="In" Type="Int32" />
             <Parameter Name="OrganizacionId" Mode="In" Type="Int32" />
             <Parameter Name="EmpresaId" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="spDelContactoCliente">
-            <Parameter Name="ClienteId" Mode="In" Type="Int32" />
-            <Parameter Name="ContactoId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="spInsConfiguracionCliente">
             <Parameter Name="ClienteEmpresaId" Mode="In" Type="Int32" />
@@ -1992,16 +1980,6 @@
             <Parameter Name="OrganizacionId" Mode="In" Type="Int32" />
             <Parameter Name="EmpresaId" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="spUpdContactoCliente">
-            <Parameter Name="ClienteId" Mode="In" Type="Int32" />
-            <Parameter Name="ContactoId" Mode="In" Type="Int32" />
-            <Parameter Name="Nombre" Mode="In" Type="String" />
-            <Parameter Name="TelefonoFijo" Mode="In" Type="String" />
-            <Parameter Name="TelefonoMovil" Mode="In" Type="String" />
-            <Parameter Name="CorreoElectronico" Mode="In" Type="String" />
-            <Parameter Name="Puesto" Mode="In" Type="String" />
-            <Parameter Name="TipoContacto" Mode="In" Type="String" />
-          </FunctionImport>
           <FunctionImport Name="spUpdDomicilioCliente">
             <Parameter Name="DomicilioClienteEmpresaId" Mode="In" Type="Int32" />
             <Parameter Name="ClienteEmpresaId" Mode="In" Type="Int32" />
@@ -2013,9 +1991,6 @@
             <Parameter Name="Municipio" Mode="In" Type="String" />
             <Parameter Name="EstadoId" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="spConsContactoCliente_ClienteId">
-          <Parameter Name="ClienteId" Mode="In" Type="Int32" />
-          </FunctionImport>
           <FunctionImport Name="spInsCliente" ReturnType="Collection(FREEDOMDBdevModel.spInsCliente_Result)">
             <Parameter Name="ClienteEmpresaNombre" Mode="In" Type="String" />
             <Parameter Name="RFC" Mode="In" Type="String" />
@@ -2023,14 +1998,41 @@
             <Parameter Name="OrganizacionId" Mode="In" Type="Int32" />
             <Parameter Name="EmpresaId" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="spInsContactoCliente">
+          <FunctionImport Name="spConsCliente_ClienteId" ReturnType="Collection(FREEDOMDBdevModel.spConsCliente_ClienteId_Result)">
+            <Parameter Name="ClienteId" Mode="In" Type="Int32" />
+            <Parameter Name="OrganizacionId" Mode="In" Type="Int32" />
+            <Parameter Name="EmpresaId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="spConsTipoContactoCliente" ReturnType="Collection(FREEDOMDBdevModel.spConsTipoContactoCliente_Result)" />
+          <FunctionImport Name="spDelContactoCliente">
+            <Parameter Name="ClienteId" Mode="In" Type="Int32" />
+            <Parameter Name="ContactoId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="spAllContactoCliente" ReturnType="Collection(FREEDOMDBdevModel.spAllContactoCliente_Result)">
+            <Parameter Name="OrganizacionId" Mode="In" Type="Int32" />
+            <Parameter Name="EmpresaId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="spConsContactoCliente_ClienteId" ReturnType="Collection(FREEDOMDBdevModel.spConsContactoCliente_ClienteId_Result)">
+            <Parameter Name="ClienteId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="spInsContactoCliente" ReturnType="Collection(FREEDOMDBdevModel.spInsContactoCliente_Result)">
             <Parameter Name="ClienteId" Mode="In" Type="Int32" />
             <Parameter Name="Nombre" Mode="In" Type="String" />
             <Parameter Name="TelefonoFijo" Mode="In" Type="String" />
             <Parameter Name="TelefonoMovil" Mode="In" Type="String" />
             <Parameter Name="CorreoElectronico" Mode="In" Type="String" />
             <Parameter Name="Puesto" Mode="In" Type="String" />
-            <Parameter Name="TipoContacto" Mode="In" Type="String" />
+            <Parameter Name="TipoContactoClienteId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="spUpdContactoCliente">
+            <Parameter Name="ClienteId" Mode="In" Type="Int32" />
+            <Parameter Name="ContactoId" Mode="In" Type="Int32" />
+            <Parameter Name="Nombre" Mode="In" Type="String" />
+            <Parameter Name="TelefonoFijo" Mode="In" Type="String" />
+            <Parameter Name="TelefonoMovil" Mode="In" Type="String" />
+            <Parameter Name="CorreoElectronico" Mode="In" Type="String" />
+            <Parameter Name="Puesto" Mode="In" Type="String" />
+            <Parameter Name="TipoContactoClienteId" Mode="In" Type="Int32" />
           </FunctionImport>
         </EntityContainer>
         <EntityType Name="AspNetRoles">
@@ -2751,37 +2753,6 @@
           <Property Type="String" Name="RegimenFiscal" Nullable="true" MaxLength="100" />
           <Property Type="String" Name="RFC" Nullable="true" MaxLength="15" />
         </ComplexType>
-        <ComplexType Name="spAllContactoCliente_Result">
-          <Property Type="String" Name="Nombre" Nullable="true" MaxLength="300" />
-          <Property Type="String" Name="TelefonoFijo" Nullable="true" MaxLength="20" />
-          <Property Type="String" Name="TelefonoMovil" Nullable="true" MaxLength="20" />
-          <Property Type="String" Name="CorreoElectronico" Nullable="true" MaxLength="200" />
-          <Property Type="String" Name="Puesto" Nullable="true" MaxLength="100" />
-          <Property Type="String" Name="TipoContacto" Nullable="true" MaxLength="100" />
-          <Property Type="String" Name="ClienteEmpresaNombre" Nullable="true" MaxLength="250" />
-          <Property Type="String" Name="Domicilio" Nullable="true" MaxLength="702" />
-          <Property Type="String" Name="Municipio" Nullable="true" MaxLength="600" />
-          <Property Type="String" Name="Estado" Nullable="true" MaxLength="200" />
-          <Property Type="String" Name="Pais" Nullable="true" MaxLength="100" />
-          <Property Type="String" Name="CP" Nullable="true" MaxLength="10" />
-        </ComplexType>
-        <ComplexType Name="spConsCliente_ClienteId_Result">
-          <Property Type="Int32" Name="ClienteEmpresaId" Nullable="false" />
-          <Property Type="String" Name="ClienteEmpresaNombre" Nullable="true" MaxLength="250" />
-          <Property Type="Int32" Name="RegimenFiscalId" Nullable="true" />
-          <Property Type="String" Name="RegimenFiscal" Nullable="true" MaxLength="100" />
-          <Property Type="String" Name="RFC" Nullable="true" MaxLength="15" />
-          <Property Type="String" Name="Calle" Nullable="true" MaxLength="300" />
-          <Property Type="String" Name="NumeroExterno" Nullable="true" MaxLength="200" />
-          <Property Type="String" Name="NumeroInterno" Nullable="true" MaxLength="200" />
-          <Property Type="String" Name="Colonia" Nullable="true" MaxLength="300" />
-          <Property Type="String" Name="CP" Nullable="true" MaxLength="10" />
-          <Property Type="String" Name="Municipio" Nullable="true" MaxLength="600" />
-          <Property Type="Int32" Name="EstadoId" Nullable="true" />
-          <Property Type="String" Name="Estado" Nullable="true" MaxLength="200" />
-          <Property Type="Int32" Name="PaisId" Nullable="true" />
-          <Property Type="String" Name="Pais" Nullable="true" MaxLength="100" />
-        </ComplexType>
         <ComplexType Name="spConsConfiguracionCliente_ClienteId_Result">
           <Property Type="Int32" Name="ClienteEmpresaId" Nullable="false" />
           <Property Type="Int32" Name="IVAPredeterminado" Nullable="true" />
@@ -2808,6 +2779,63 @@
           <Property Type="String" Name="Error" Nullable="false" MaxLength="16" />
         </ComplexType>
         <ComplexType Name="spInsCliente_Result">
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="Int32" Name="IdError" Nullable="false" />
+          <Property Type="String" Name="Error" Nullable="false" MaxLength="16" />
+        </ComplexType>
+        <ComplexType Name="spConsCliente_ClienteId_Result">
+          <Property Type="Int32" Name="ClienteEmpresaId" Nullable="false" />
+          <Property Type="String" Name="ClienteEmpresaNombre" Nullable="true" MaxLength="250" />
+          <Property Type="Int32" Name="RegimenFiscalId" Nullable="true" />
+          <Property Type="String" Name="RegimenFiscal" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="RFC" Nullable="true" MaxLength="15" />
+          <Property Type="String" Name="Calle" Nullable="true" MaxLength="300" />
+          <Property Type="String" Name="NumeroExterno" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="NumeroInterno" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="Colonia" Nullable="true" MaxLength="300" />
+          <Property Type="String" Name="CP" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="Municipio" Nullable="true" MaxLength="600" />
+          <Property Type="Int32" Name="EstadoId" Nullable="true" />
+          <Property Type="String" Name="Estado" Nullable="true" MaxLength="200" />
+          <Property Type="Int32" Name="PaisId" Nullable="true" />
+          <Property Type="String" Name="Pais" Nullable="true" MaxLength="100" />
+        </ComplexType>
+        <ComplexType Name="spConsTipoContactoCliente_Result">
+          <Property Type="Int32" Name="TipoContactoClienteId" Nullable="false" />
+          <Property Type="String" Name="TipoContactoClienteNombre" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="spAllContactoCliente_Result">
+          <Property Type="String" Name="Nombre" Nullable="true" MaxLength="300" />
+          <Property Type="String" Name="TelefonoFijo" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="TelefonoMovil" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="CorreoElectronico" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="Puesto" Nullable="true" MaxLength="100" />
+          <Property Type="Int32" Name="TipoContactoClienteId" Nullable="true" />
+          <Property Type="String" Name="ClienteEmpresaNombre" Nullable="true" MaxLength="250" />
+          <Property Type="String" Name="Domicilio" Nullable="true" MaxLength="702" />
+          <Property Type="String" Name="Municipio" Nullable="true" MaxLength="600" />
+          <Property Type="String" Name="Estado" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="Pais" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="CP" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="TipoContactoClienteNombre" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="spConsContactoCliente_ClienteId_Result">
+          <Property Type="String" Name="Nombre" Nullable="true" MaxLength="300" />
+          <Property Type="String" Name="TelefonoFijo" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="TelefonoMovil" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="CorreoElectronico" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="Puesto" Nullable="true" MaxLength="100" />
+          <Property Type="Int32" Name="TipoContactoClienteId" Nullable="true" />
+          <Property Type="String" Name="NombreCliente" Nullable="true" MaxLength="250" />
+          <Property Type="String" Name="Domicilio" Nullable="true" MaxLength="702" />
+          <Property Type="String" Name="Municipio" Nullable="true" MaxLength="600" />
+          <Property Type="String" Name="Estado" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="Pais" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="CP" Nullable="true" MaxLength="10" />
+          <Property Type="Int32" Name="ContactoId" Nullable="false" />
+          <Property Type="String" Name="TipoContactoClienteNombre" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="spInsContactoCliente_Result">
           <Property Type="Int32" Name="id" Nullable="false" />
           <Property Type="Int32" Name="IdError" Nullable="false" />
           <Property Type="String" Name="Error" Nullable="false" MaxLength="16" />
@@ -4058,45 +4086,6 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="spAllContactoCliente" FunctionName="FREEDOMDBdevModel.Store.spAllContactoCliente">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="FREEDOMDBdevModel.spAllContactoCliente_Result">
-                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
-                <ScalarProperty Name="TelefonoFijo" ColumnName="TelefonoFijo" />
-                <ScalarProperty Name="TelefonoMovil" ColumnName="TelefonoMovil" />
-                <ScalarProperty Name="CorreoElectronico" ColumnName="CorreoElectronico" />
-                <ScalarProperty Name="Puesto" ColumnName="Puesto" />
-                <ScalarProperty Name="TipoContacto" ColumnName="TipoContacto" />
-                <ScalarProperty Name="ClienteEmpresaNombre" ColumnName="ClienteEmpresaNombre" />
-                <ScalarProperty Name="Domicilio" ColumnName="Domicilio" />
-                <ScalarProperty Name="Municipio" ColumnName="Municipio" />
-                <ScalarProperty Name="Estado" ColumnName="Estado" />
-                <ScalarProperty Name="Pais" ColumnName="Pais" />
-                <ScalarProperty Name="CP" ColumnName="CP" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="spConsCliente_ClienteId" FunctionName="FREEDOMDBdevModel.Store.spConsCliente_ClienteId">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="FREEDOMDBdevModel.spConsCliente_ClienteId_Result">
-                <ScalarProperty Name="ClienteEmpresaId" ColumnName="ClienteEmpresaId" />
-                <ScalarProperty Name="ClienteEmpresaNombre" ColumnName="ClienteEmpresaNombre" />
-                <ScalarProperty Name="RegimenFiscalId" ColumnName="RegimenFiscalId" />
-                <ScalarProperty Name="RegimenFiscal" ColumnName="RegimenFiscal" />
-                <ScalarProperty Name="RFC" ColumnName="RFC" />
-                <ScalarProperty Name="Calle" ColumnName="Calle" />
-                <ScalarProperty Name="NumeroExterno" ColumnName="NumeroExterno" />
-                <ScalarProperty Name="NumeroInterno" ColumnName="NumeroInterno" />
-                <ScalarProperty Name="Colonia" ColumnName="Colonia" />
-                <ScalarProperty Name="CP" ColumnName="CP" />
-                <ScalarProperty Name="Municipio" ColumnName="Municipio" />
-                <ScalarProperty Name="EstadoId" ColumnName="EstadoId" />
-                <ScalarProperty Name="Estado" ColumnName="Estado" />
-                <ScalarProperty Name="PaisId" ColumnName="PaisId" />
-                <ScalarProperty Name="Pais" ColumnName="Pais" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="spConsConfiguracionCliente_ClienteId" FunctionName="FREEDOMDBdevModel.Store.spConsConfiguracionCliente_ClienteId">
             <ResultMapping>
               <ComplexTypeMapping TypeName="FREEDOMDBdevModel.spConsConfiguracionCliente_ClienteId_Result">
@@ -4126,7 +4115,6 @@
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="spDelCliente" FunctionName="FREEDOMDBdevModel.Store.spDelCliente" />
-          <FunctionImportMapping FunctionImportName="spDelContactoCliente" FunctionName="FREEDOMDBdevModel.Store.spDelContactoCliente" />
           <FunctionImportMapping FunctionImportName="spInsConfiguracionCliente" FunctionName="FREEDOMDBdevModel.Store.spInsConfiguracionCliente" />
           <FunctionImportMapping FunctionImportName="spInsDomicilioCliente" FunctionName="FREEDOMDBdevModel.Store.spInsDomicilioCliente">
             <ResultMapping>
@@ -4139,9 +4127,7 @@
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="spUpdCliente" FunctionName="FREEDOMDBdevModel.Store.spUpdCliente" />
           <FunctionImportMapping FunctionImportName="spUpdConfiguracionCliente" FunctionName="FREEDOMDBdevModel.Store.spUpdConfiguracionCliente" />
-          <FunctionImportMapping FunctionImportName="spUpdContactoCliente" FunctionName="FREEDOMDBdevModel.Store.spUpdContactoCliente" />
           <FunctionImportMapping FunctionImportName="spUpdDomicilioCliente" FunctionName="FREEDOMDBdevModel.Store.spUpdDomicilioCliente" />
-          <FunctionImportMapping FunctionImportName="spConsContactoCliente_ClienteId" FunctionName="FREEDOMDBdevModel.Store.spConsContactoCliente_ClienteId" />
           <FunctionImportMapping FunctionImportName="spInsCliente" FunctionName="FREEDOMDBdevModel.Store.spInsCliente">
             <ResultMapping>
               <ComplexTypeMapping TypeName="FREEDOMDBdevModel.spInsCliente_Result">
@@ -4151,7 +4137,85 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="spInsContactoCliente" FunctionName="FREEDOMDBdevModel.Store.spInsContactoCliente" />
+          <FunctionImportMapping FunctionImportName="spConsCliente_ClienteId" FunctionName="FREEDOMDBdevModel.Store.spConsCliente_ClienteId">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="FREEDOMDBdevModel.spConsCliente_ClienteId_Result">
+                <ScalarProperty Name="ClienteEmpresaId" ColumnName="ClienteEmpresaId" />
+                <ScalarProperty Name="ClienteEmpresaNombre" ColumnName="ClienteEmpresaNombre" />
+                <ScalarProperty Name="RegimenFiscalId" ColumnName="RegimenFiscalId" />
+                <ScalarProperty Name="RegimenFiscal" ColumnName="RegimenFiscal" />
+                <ScalarProperty Name="RFC" ColumnName="RFC" />
+                <ScalarProperty Name="Calle" ColumnName="Calle" />
+                <ScalarProperty Name="NumeroExterno" ColumnName="NumeroExterno" />
+                <ScalarProperty Name="NumeroInterno" ColumnName="NumeroInterno" />
+                <ScalarProperty Name="Colonia" ColumnName="Colonia" />
+                <ScalarProperty Name="CP" ColumnName="CP" />
+                <ScalarProperty Name="Municipio" ColumnName="Municipio" />
+                <ScalarProperty Name="EstadoId" ColumnName="EstadoId" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="PaisId" ColumnName="PaisId" />
+                <ScalarProperty Name="Pais" ColumnName="Pais" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spConsTipoContactoCliente" FunctionName="FREEDOMDBdevModel.Store.spConsTipoContactoCliente">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="FREEDOMDBdevModel.spConsTipoContactoCliente_Result">
+                <ScalarProperty Name="TipoContactoClienteId" ColumnName="TipoContactoClienteId" />
+                <ScalarProperty Name="TipoContactoClienteNombre" ColumnName="TipoContactoClienteNombre" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spDelContactoCliente" FunctionName="FREEDOMDBdevModel.Store.spDelContactoCliente" />
+          <FunctionImportMapping FunctionImportName="spAllContactoCliente" FunctionName="FREEDOMDBdevModel.Store.spAllContactoCliente">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="FREEDOMDBdevModel.spAllContactoCliente_Result">
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="TelefonoFijo" ColumnName="TelefonoFijo" />
+                <ScalarProperty Name="TelefonoMovil" ColumnName="TelefonoMovil" />
+                <ScalarProperty Name="CorreoElectronico" ColumnName="CorreoElectronico" />
+                <ScalarProperty Name="Puesto" ColumnName="Puesto" />
+                <ScalarProperty Name="TipoContactoClienteId" ColumnName="TipoContactoClienteId" />
+                <ScalarProperty Name="ClienteEmpresaNombre" ColumnName="ClienteEmpresaNombre" />
+                <ScalarProperty Name="Domicilio" ColumnName="Domicilio" />
+                <ScalarProperty Name="Municipio" ColumnName="Municipio" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="Pais" ColumnName="Pais" />
+                <ScalarProperty Name="CP" ColumnName="CP" />
+                <ScalarProperty Name="TipoContactoClienteNombre" ColumnName="TipoContactoClienteNombre" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spConsContactoCliente_ClienteId" FunctionName="FREEDOMDBdevModel.Store.spConsContactoCliente_ClienteId">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="FREEDOMDBdevModel.spConsContactoCliente_ClienteId_Result">
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="TelefonoFijo" ColumnName="TelefonoFijo" />
+                <ScalarProperty Name="TelefonoMovil" ColumnName="TelefonoMovil" />
+                <ScalarProperty Name="CorreoElectronico" ColumnName="CorreoElectronico" />
+                <ScalarProperty Name="Puesto" ColumnName="Puesto" />
+                <ScalarProperty Name="TipoContactoClienteId" ColumnName="TipoContactoClienteId" />
+                <ScalarProperty Name="NombreCliente" ColumnName="NombreCliente" />
+                <ScalarProperty Name="Domicilio" ColumnName="Domicilio" />
+                <ScalarProperty Name="Municipio" ColumnName="Municipio" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="Pais" ColumnName="Pais" />
+                <ScalarProperty Name="CP" ColumnName="CP" />
+                <ScalarProperty Name="ContactoId" ColumnName="ContactoId" />
+                <ScalarProperty Name="TipoContactoClienteNombre" ColumnName="TipoContactoClienteNombre" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spInsContactoCliente" FunctionName="FREEDOMDBdevModel.Store.spInsContactoCliente">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="FREEDOMDBdevModel.spInsContactoCliente_Result">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="IdError" ColumnName="IdError" />
+                <ScalarProperty Name="Error" ColumnName="Error" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spUpdContactoCliente" FunctionName="FREEDOMDBdevModel.Store.spUpdContactoCliente" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

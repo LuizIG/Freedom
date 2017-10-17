@@ -10,19 +10,8 @@
 Imports System
 Imports System.Collections.Generic
 
-Partial Public Class spAllContactoCliente_Result
-    Public Property Nombre As String
-    Public Property TelefonoFijo As String
-    Public Property TelefonoMovil As String
-    Public Property CorreoElectronico As String
-    Public Property Puesto As String
-    Public Property TipoContactoClienteId As Nullable(Of Integer)
-    Public Property ClienteEmpresaNombre As String
-    Public Property Domicilio As String
-    Public Property Municipio As String
-    Public Property Estado As String
-    Public Property Pais As String
-    Public Property CP As String
+Partial Public Class spConsTipoContactoCliente_Result
+    Public Property TipoContactoClienteId As Integer
     Public Property TipoContactoClienteNombre As String
 
 End Class

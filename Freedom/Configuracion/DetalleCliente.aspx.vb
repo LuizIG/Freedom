@@ -71,16 +71,44 @@ Public Class DetalleCliente
         End Set
     End Property
 
+    Public Property MetodosPagoCliente() As String
+        Get
+            If Session("MetodosPagoCliente") Is Nothing Then
+                Return String.Empty
+            Else
+                Return Session("MetodosPagoCliente").ToString()
+            End If
+        End Get
+        Set
+            Session("MetodosPagoCliente") = Value
+        End Set
+    End Property
+
+    Public Property NumCtaPagoCliente() As String
+        Get
+            If Session("NumCtaPagoCliente") Is Nothing Then
+                Return String.Empty
+            Else
+                Return Session("NumCtaPagoCliente").ToString()
+            End If
+        End Get
+        Set
+            Session("NumCtaPagoCliente") = Value
+        End Set
+    End Property
+
     Protected Overrides Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs)
         MyBase.Page_Load(sender, e)
 
         MaintainScrollPositionOnPostBack = True
 
+        CargarTiposContacto()
         CargarRegimenFiscal()
         CargarPaises()
 
         If Not IsPostBack Then
             Session("tblContactos") = Nothing
+            Session("tblMetodoPago") = Nothing
             IdDomicilio = 0
             IdContacto = 0
         End If
@@ -90,7 +118,7 @@ Public Class DetalleCliente
             txtEditarCliente.Text = "True"
             lblTitulo.Text = "Editar cliente"
 
-            ScriptManager.RegisterStartupScript(Me.Page, Me.GetType(), "script", "UpdateResumen('" + NombresContactosCliente + "');", True)
+            ScriptManager.RegisterStartupScript(Me.Page, Me.GetType(), "script", "UpdateResumen('" + NombresContactosCliente + "', '" + MetodosPagoCliente + "', , '" + NumCtaPagoCliente + "');", True)
         Else
             lblTitulo.Text = "Nuevo cliente"
         End If
@@ -113,7 +141,7 @@ Public Class DetalleCliente
                 .ClienteEmpresaId = page.IdCliente,
                 .ClienteEmpresaNombre = nombre,
                 .RFC = rfc,
-                .RegimenFiscalId = integer.Parse(regimendFiscalId),
+                .RegimenFiscalId = Integer.Parse(regimendFiscalId),
                 .RegimenFiscal = regimendFiscal,
                 .OrganizacionId = loginsession.OrganizacionId
             }
@@ -258,7 +286,7 @@ Public Class DetalleCliente
             Dim personalizacion = New ClienteConfiguracionModel() With {
                 .ClienteId = page.IdCliente,
                 .ConfiguracionId = page.ConfiguracionId,
-                .DiasCredito = diasCredito,
+                .DiasCredito = Int32.Parse(diasCredito),
                 .Telefono = telefonoFactura,
                 .CorreoElectronico = correoFactura,
                 .OrganizacionId = loginsession.OrganizacionId,
@@ -305,69 +333,377 @@ Public Class DetalleCliente
     End Function
 
     <WebMethod(EnableSession:=True)>
-    Public Shared Function GuardarContactos() As ServiceResult
+    Public Shared Function GuardarContactos(value As String) As ServiceResult
         Try
-            If HttpContext.Current.Session("tblContactos") Is Nothing Then
-                Return New ServiceResult() With {
-                    .Result = False,
-                    .Message = "Es necesario agregar al menos un contacto",
-                    .Ret = ""
-                }
-            End If
+            Dim parametros As List(Of Parametros) = StringToValue(value, GetType(List(Of Parametros)))
+            Dim nombreContacto = If(parametros.Where(Function(x) x.ParamName.ToUpper() = "NOMBRECONTACTO").ToList()(0).ParamValue.ToString() <> "", parametros.Where(Function(x) x.ParamName.ToUpper() = "NOMBRECONTACTO").ToList()(0).ParamValue.ToString(), "")
+            Dim tipoContactoId = If(parametros.Where(Function(x) x.ParamName.ToUpper() = "TIPOCONTACTOID").ToList()(0).ParamValue.ToString() <> "", parametros.Where(Function(x) x.ParamName.ToUpper() = "TIPOCONTACTOID").ToList()(0).ParamValue.ToString(), "")
+            Dim tipoContacto = If(parametros.Where(Function(x) x.ParamName.ToUpper() = "TIPOCONTACTO").ToList()(0).ParamValue.ToString() <> "", parametros.Where(Function(x) x.ParamName.ToUpper() = "TIPOCONTACTO").ToList()(0).ParamValue.ToString(), "")
+            Dim telFijo = If(parametros.Where(Function(x) x.ParamName.ToUpper() = "TELEFONOFIJO").ToList()(0).ParamValue.ToString() <> "", parametros.Where(Function(x) x.ParamName.ToUpper() = "TELEFONOFIJO").ToList()(0).ParamValue.ToString(), "")
+            Dim telMovil = If(parametros.Where(Function(x) x.ParamName.ToUpper() = "MOVIL").ToList()(0).ParamValue.ToString() <> "", parametros.Where(Function(x) x.ParamName.ToUpper() = "MOVIL").ToList()(0).ParamValue.ToString(), "")
+            Dim correo = If(parametros.Where(Function(x) x.ParamName.ToUpper() = "CORREOCONTACTO").ToList()(0).ParamValue.ToString() <> "", parametros.Where(Function(x) x.ParamName.ToUpper() = "CORREOCONTACTO").ToList()(0).ParamValue.ToString(), "")
+            Dim puesto = If(parametros.Where(Function(x) x.ParamName.ToUpper() = "PUESTO").ToList()(0).ParamValue.ToString() <> "", parametros.Where(Function(x) x.ParamName.ToUpper() = "PUESTO").ToList()(0).ParamValue.ToString(), "")
 
             Dim pageDet = New DetalleCliente()
             Dim page = New FreedomPage()
             Dim loginsession = page.UserSession
             Dim nombresContactos = ""
-            Dim contactos = DirectCast(HttpContext.Current.Session("tblContactos"), DataTable)
             Dim msjRet = ""
 
-            For Each row As DataRow In contactos.Rows
-                Dim contacto = New ClienteContactoModel() With {
-                    .ClienteId = page.IdCliente,
-                    .ContactoId = Convert.ToInt32(row("ContactoId")),
-                    .Nombre = row("NombreContacto"),
-                    .Telefono = row("TelefonoFijo"),
-                    .TelefonoMovil = row("TelefonoMovil"),
-                    .CorreoElectronico = row("Correo"),
-                    .Puesto = row("Puesto"),
-                    .TipoContacto = row("TipoContacto"),
-                    .OrganizacionId = loginsession.OrganizacionId,
-                    .EmpresaId = page.EmpresaId
-                }
+            Dim contacto = New ClienteContactoModel() With {
+                .ClienteId = page.IdCliente,
+                .ContactoId = page.IdContacto,
+                .Nombre = nombreContacto,
+                .TelefonoFijo = telFijo,
+                .TelefonoMovil = telMovil,
+                .CorreoElectronico = correo,
+                .Puesto = puesto,
+                .TipoContactoClienteNombre = tipoContacto,
+                .TipoContactoClienteId = tipoContactoId,
+                .OrganizacionId = loginsession.OrganizacionId,
+                .EmpresaId = page.EmpresaId
+            }
 
-                nombresContactos += row("NombreContacto") + "<br/>"
+            Dim req = ""
+            Dim data = JsonConvert.SerializeObject(contacto)
 
-                Dim req = ""
-                Dim data = JsonConvert.SerializeObject(contacto)
+            If pageDet.EditarContactosCliente Then
+                req = PutRequest("api/ContactoCliente", loginsession.Token, data)
+                msjRet = "Contacto actualizado"
+            Else
+                req = PostRequest("api/ContactoCliente", data, loginsession.Token)
+                msjRet = "Contacto guardado"
+            End If
 
-                If page.EditEmpresa AndAlso pageDet.EditarContactosCliente Then
-                    req = PutRequest("api/ContactoCliente", loginsession.Token, data)
-                    msjRet = "Contactos actualizados"
+            Dim result = JObject.Parse(req)
+            Dim statusCode = result.GetValue("statusCode").Value(Of Integer)
+
+            If (statusCode >= 200 And statusCode < 400) Then
+                Dim detail = result.GetValue("detail").Value(Of JObject)
+                Dim contactoCliente = detail.GetValue("ContactoId").Value(Of String)
+                page.IdContacto = Convert.ToInt32(contactoCliente)
+
+                If Not pageDet.EditarContactosCliente Then
+                    Dim tbl = New DataTable()
+
+                    If HttpContext.Current.Session("tblContactos") Is Nothing Then
+                        tbl.Columns.Add("ContactoId")
+                        tbl.Columns.Add("NombreContacto")
+                        tbl.Columns.Add("TipoContacto")
+                        tbl.Columns.Add("TelefonoFijo")
+                        tbl.Columns.Add("TelefonoMovil")
+                        tbl.Columns.Add("Correo")
+                        tbl.Columns.Add("Puesto")
+                        tbl.Columns.Add("TipoContactoId")
+
+                        tbl.Rows.Add(page.IdContacto, nombreContacto, tipoContacto, telFijo, telMovil, correo, puesto, tipoContactoId)
+                    Else
+                        tbl = DirectCast(HttpContext.Current.Session("tblContactos"), DataTable)
+                        Dim newRow = tbl.NewRow
+
+                        newRow(0) = page.IdContacto
+                        newRow(1) = nombreContacto
+                        newRow(2) = tipoContacto
+                        newRow(3) = telFijo
+                        newRow(4) = telMovil
+                        newRow(5) = correo
+                        newRow(6) = puesto
+                        newRow(7) = tipoContactoId
+
+                        tbl.Rows.Add(newRow)
+                    End If
+
+                    tbl.AcceptChanges()
+                    HttpContext.Current.Session("tblContactos") = tbl
+
+                    For Each row As DataRow In tbl.Rows
+                        nombresContactos += row("NombreContacto") + "<br/>"
+                    Next
                 Else
-                    req = PostRequest("api/ContactoCliente", data, loginsession.Token)
-                    msjRet = "Contactos guardados"
+                    If HttpContext.Current.Session("tblContactos") IsNot Nothing Then
+                        Dim tbl = DirectCast(HttpContext.Current.Session("tblContactos"), DataTable)
+
+                        For Each row As DataRow In tbl.Rows
+                            If CInt(row("ContactoId")) = page.IdContacto Then
+                                row("NombreContacto") = nombreContacto
+                                row("TelefonoFijo") = telFijo
+                                row("TelefonoMovil") = telMovil
+                                row("Correo") = correo
+                                row("Puesto") = puesto
+                                row("TipoContacto") = tipoContacto
+                                row("TipoContactoId") = tipoContactoId
+                                pageDet.EditarContactosCliente = False
+                                Exit For
+                            End If
+                        Next
+                    End If
                 End If
-
-                Dim result = JObject.Parse(req)
-                Dim statusCode = result.GetValue("statusCode").Value(Of Integer)
-
-                If (statusCode >= 200 And statusCode < 400) Then
-                    Continue For
-                Else
-                    Dim errorMessage = result.GetValue("errorMessage").Value(Of String)
-                    Return New ServiceResult() With {
+            Else
+                Dim errorMessage = result.GetValue("errorMessage").Value(Of String)
+                Return New ServiceResult() With {
                         .Result = False,
                         .Message = errorMessage,
                         .Ret = ""
                     }
-                End If
-            Next
+            End If
 
             Return New ServiceResult() With {
                 .Result = True,
                 .Message = msjRet,
                 .Ret = nombresContactos
+            }
+        Catch ex As Exception
+            Return New ServiceResult() With {
+                .Result = False,
+                .Message = ex.Message,
+                .Ret = ""
+            }
+        End Try
+    End Function
+
+    <WebMethod(EnableSession:=True)>
+    Public Shared Function GuardarMetodoPago(value As String) As ServiceResult
+        Try
+            Dim parametros As List(Of Parametros) = StringToValue(value, GetType(List(Of Parametros)))
+            Dim metodoPago = If(parametros.Where(Function(x) x.ParamName.ToUpper() = "METODOPAGO").ToList()(0).ParamValue.ToString() <> "", parametros.Where(Function(x) x.ParamName.ToUpper() = "METODOPAGO").ToList()(0).ParamValue.ToString(), "")
+
+            Dim pageDet = New DetalleCliente()
+            Dim page = New FreedomPage()
+            Dim loginsession = page.UserSession
+            Dim metodosPago = ""
+            Dim msjRet = ""
+
+            Dim metodoPagoModel = New ClienteMetodoPagoModel() With {
+                .ClienteId = page.IdCliente,
+                .MetodoPago = metodoPago
+            }
+
+            Dim req = ""
+            Dim data = JsonConvert.SerializeObject(metodoPagoModel)
+
+            req = PostRequest("api/MetodoPagoCliente", data, loginsession.Token)
+            msjRet = "Método de Pago guardado"
+
+            Dim result = JObject.Parse(req)
+            Dim statusCode = result.GetValue("statusCode").Value(Of Integer)
+
+            If (statusCode >= 200 And statusCode < 400) Then
+                Dim detail = result.GetValue("detail").Value(Of JObject)
+                Dim tbl As New DataTable()
+
+                If HttpContext.Current.Session("tblMetodoPago") Is Nothing Then
+                    tbl.Columns.Add("MetodoPagoId")
+                    tbl.Columns.Add("MetodoPago")
+
+                    tbl.Rows.Add(0, metodoPago)
+                Else
+                    tbl = DirectCast(HttpContext.Current.Session("tblMetodoPago"), DataTable)
+                    Dim newRow = tbl.NewRow
+
+                    newRow(0) = 0
+                    newRow(1) = metodoPago
+
+                    tbl.Rows.Add(newRow)
+                End If
+
+                tbl.AcceptChanges()
+                HttpContext.Current.Session("tblMetodoPago") = tbl
+
+                For Each row As DataRow In tbl.Rows
+                    metodosPago += row("MetodoPago") + "<br/>"
+                Next
+            Else
+                Dim errorMessage = result.GetValue("errorMessage").Value(Of String)
+                Return New ServiceResult() With {
+                        .Result = False,
+                        .Message = errorMessage,
+                        .Ret = ""
+                    }
+            End If
+
+            Return New ServiceResult() With {
+                .Result = True,
+                .Message = msjRet,
+                .Ret = metodosPago
+            }
+        Catch ex As Exception
+            Return New ServiceResult() With {
+                .Result = False,
+                .Message = ex.Message,
+                .Ret = ""
+            }
+        End Try
+    End Function
+
+    <WebMethod(EnableSession:=True)>
+    Public Shared Function GuardarNumCtaPago(value As String) As ServiceResult
+        Try
+            Dim parametros As List(Of Parametros) = StringToValue(value, GetType(List(Of Parametros)))
+            Dim metodoPago = If(parametros.Where(Function(x) x.ParamName.ToUpper() = "METODOPAGO").ToList()(0).ParamValue.ToString() <> "", parametros.Where(Function(x) x.ParamName.ToUpper() = "METODOPAGO").ToList()(0).ParamValue.ToString(), "")
+
+            Dim pageDet = New DetalleCliente()
+            Dim page = New FreedomPage()
+            Dim loginsession = page.UserSession
+            Dim metodosPago = ""
+            Dim msjRet = ""
+
+            Dim metodoPagoModel = New ClienteMetodoPagoModel() With {
+                .ClienteId = page.IdCliente,
+                .MetodoPago = metodoPago
+            }
+
+            Dim req = ""
+            Dim data = JsonConvert.SerializeObject(metodoPagoModel)
+
+            req = PostRequest("api/MetodoPagoCliente", data, loginsession.Token)
+            msjRet = "Método de Pago guardado"
+
+            Dim result = JObject.Parse(req)
+            Dim statusCode = result.GetValue("statusCode").Value(Of Integer)
+
+            If (statusCode >= 200 And statusCode < 400) Then
+                Dim detail = result.GetValue("detail").Value(Of JObject)
+                Dim tbl As New DataTable()
+
+                If HttpContext.Current.Session("tblMetodoPago") Is Nothing Then
+                    tbl.Columns.Add("MetodoPagoId")
+                    tbl.Columns.Add("MetodoPago")
+
+                    tbl.Rows.Add(0, metodoPago)
+                Else
+                    tbl = DirectCast(HttpContext.Current.Session("tblMetodoPago"), DataTable)
+                    Dim newRow = tbl.NewRow
+
+                    newRow(0) = 0
+                    newRow(1) = metodoPago
+
+                    tbl.Rows.Add(newRow)
+                End If
+
+                tbl.AcceptChanges()
+                HttpContext.Current.Session("tblMetodoPago") = tbl
+
+                For Each row As DataRow In tbl.Rows
+                    metodosPago += row("MetodoPago") + "<br/>"
+                Next
+            Else
+                Dim errorMessage = result.GetValue("errorMessage").Value(Of String)
+                Return New ServiceResult() With {
+                        .Result = False,
+                        .Message = errorMessage,
+                        .Ret = ""
+                    }
+            End If
+
+            Return New ServiceResult() With {
+                .Result = True,
+                .Message = msjRet,
+                .Ret = metodosPago
+            }
+        Catch ex As Exception
+            Return New ServiceResult() With {
+                .Result = False,
+                .Message = ex.Message,
+                .Ret = ""
+            }
+        End Try
+    End Function
+
+    <WebMethod(EnableSession:=True)>
+    Public Shared Function GuardarFormasPago() As ServiceResult
+        Try
+            Dim pageDet = New DetalleEmpresa()
+            Dim page = New FreedomPage()
+            Dim loginsession = page.UserSession
+            Dim metodosPago = ""
+            Dim numerosCuenta = ""
+            Dim msjRet = ""
+
+            If HttpContext.Current.Session("tblMetodoPago") Is Nothing AndAlso HttpContext.Current.Session("tblNumCtaPago") Is Nothing Then
+                Return New ServiceResult() With {
+                    .Result = False,
+                    .Message = "Es necesario agregar al menos un método de pago o un número de cuenta",
+                    .Ret = ""
+                }
+            End If
+
+            If HttpContext.Current.Session("tblMetodoPago") IsNot Nothing Then
+                Dim tblMetodoPago = DirectCast(HttpContext.Current.Session("tblMetodoPago"), DataTable)
+
+                For Each row As DataRow In tblMetodoPago.Rows
+                    Dim metodoPagoModel = New ClienteMetodoPagoModel() With {
+                        .ClienteId = page.IdCliente,
+                        .MetodoPago = row("MetodoPago")
+                    }
+
+                    Dim req = ""
+                    Dim data = JsonConvert.SerializeObject(metodoPagoModel)
+
+                    req = PostRequest("api/MetodoPagoCliente", data, loginsession.Token)
+                    msjRet = "Método de Pago guardado"
+
+                    metodosPago += row("MetodoPago") + "<br/>"
+
+                    Dim result = JObject.Parse(req)
+                    Dim statusCode = result.GetValue("statusCode").Value(Of Integer)
+
+                    If (statusCode >= 200 And statusCode < 400) Then
+                        Continue For
+                    Else
+                        Dim errorMessage = result.GetValue("errorMessage").Value(Of String)
+                        Return New ServiceResult() With {
+                            .Result = False,
+                            .Message = errorMessage,
+                            .Ret = ""
+                        }
+                    End If
+                Next
+            End If
+
+            If HttpContext.Current.Session("tblNumCtaPago") IsNot Nothing Then
+                Dim tblNumCtaPago = DirectCast(HttpContext.Current.Session("tblNumCtaPago"), DataTable)
+
+                For Each row As DataRow In tblNumCtaPago.Rows
+                    Dim numCtaPagoModel = New ClienteNumCtaPagoModel() With {
+                        .ClienteId = page.IdCliente,
+                        .NumCtaPago = row("NumCtaPago")
+                    }
+
+                    Dim req = ""
+                    Dim data = JsonConvert.SerializeObject(numCtaPagoModel)
+
+                    req = PostRequest("api/NumCtaPagoCliente", data, loginsession.Token)
+                    msjRet = "Número de cuenta guardado"
+
+                    numerosCuenta += row("NumCtaPago") + "<br/>"
+
+                    Dim result = JObject.Parse(req)
+                    Dim statusCode = result.GetValue("statusCode").Value(Of Integer)
+
+                    If (statusCode >= 200 And statusCode < 400) Then
+                        Continue For
+                    Else
+                        Dim errorMessage = result.GetValue("errorMessage").Value(Of String)
+                        Return New ServiceResult() With {
+                            .Result = False,
+                            .Message = errorMessage,
+                            .Ret = ""
+                        }
+                    End If
+                Next
+            End If
+
+            Dim formasPagoModel = New ClienteFormasPagoModel() With {
+                .MetodoPago = metodosPago,
+                .NumCtaPago = numerosCuenta
+            }
+
+            Dim formasPagoData = JsonConvert.SerializeObject(formasPagoModel)
+
+            Return New ServiceResult() With {
+                .Result = True,
+                .Message = msjRet,
+                .Ret = formasPagoData
             }
         Catch ex As Exception
             Return New ServiceResult() With {
@@ -446,73 +782,100 @@ Public Class DetalleCliente
         End If
     End Sub
 
+    Public Sub CargarTiposContacto()
+        Dim req = GetRequest("api/TiposContacto", UserSession.Token)
+        Dim result = JObject.Parse(req)
+        Dim statusCode = result.GetValue("statusCode").Value(Of Integer)
+
+        If (statusCode >= 200 And statusCode < 400) Then
+            Dim detail = result.GetValue("detail").Value(Of JArray)
+
+            cbxTipoContacto.DataSource = detail
+            cbxTipoContacto.DataValueField = "TipoContactoClienteId"
+            cbxTipoContacto.DataTextField = "TipoContactoClienteNombre"
+            cbxTipoContacto.DataBind()
+        End If
+    End Sub
+
     Public Sub CargarTablaContactos()
+        If Session("tblContactos") IsNot Nothing Then
+            Dim tbl = DirectCast(Session("tblContactos"), DataTable)
+            txtNombreContacto.Text = ""
+            cbxTipoContacto.SelectedIndex = 0
+            txtTelefonoFijo.Text = ""
+            txtMovil.Text = ""
+            txtCorreoContacto.Text = ""
+            txtPuesto.Text = ""
+
+            repContactos.DataSource = tbl
+            repContactos.DataBind()
+        End If
+    End Sub
+
+    Public Sub CargarTablaMetodosPago()
         Dim tbl = New DataTable()
-        Dim nombreContacto = txtNombreContacto.Text
-        Dim tipoContacto = "" 'cbxTipoContacto.Value
-        Dim telFijo = txtTelefonoFijo.Text
-        Dim telMovil = txtMovil.Text
-        Dim correo = txtCorreoContacto.Text
-        Dim puesto = txtPuesto.Text
+        Dim metodoPago = txtMetodoPago.Text
 
-        If EditContactoCliente Then
-            tbl = DirectCast(Session("tblContactos"), DataTable)
+        If Session("tblMetodoPago") Is Nothing Then
+            tbl.Columns.Add("MetodoPagoId")
+            tbl.Columns.Add("MetodoPago")
 
-            For Each row As DataRow In tbl.Rows
-                If CInt(row("ContactoId")) = IdContacto Then
-                    row("ContactoId") = IdContacto
-                    row("NombreContacto") = nombreContacto
-                    row("TelefonoFijo") = telFijo
-                    row("TelefonoMovil") = telMovil
-                    row("Correo") = correo
-                    row("Puesto") = puesto
-                    Exit For
-                End If
-            Next
-        Else
-            If Session("tblContactos") Is Nothing Then
-                tbl.Columns.Add("ContactoId")
-                tbl.Columns.Add("NombreContacto")
-                tbl.Columns.Add("TipoContacto")
-                tbl.Columns.Add("TelefonoFijo")
-                tbl.Columns.Add("TelefonoMovil")
-                tbl.Columns.Add("Correo")
-                tbl.Columns.Add("Puesto")
+            Dim id As Integer = 0
 
-                Dim id As Integer = 0
-
-                If tbl.Rows.Count > 0 Then
-                    id = tbl.Rows.Count
-                End If
-
-                tbl.Rows.Add(id, nombreContacto, tipoContacto, telFijo, telMovil, correo, puesto)
-            Else
-                tbl = DirectCast(Session("tblContactos"), DataTable)
-                Dim newRow = tbl.NewRow
-
-                newRow(0) = tbl.Rows.Count
-                newRow(1) = nombreContacto
-                newRow(2) = tipoContacto
-                newRow(3) = telFijo
-                newRow(4) = telMovil
-                newRow(5) = correo
-                newRow(6) = puesto
-
-                tbl.Rows.Add(newRow)
+            If tbl.Rows.Count > 0 Then
+                id = tbl.Rows.Count
             End If
+
+            tbl.Rows.Add(id, metodoPago)
+        Else
+            tbl = DirectCast(Session("tblMetodoPago"), DataTable)
+            Dim newRow = tbl.NewRow
+
+            newRow(0) = tbl.Rows.Count
+            newRow(1) = metodoPago
+
+            tbl.Rows.Add(newRow)
         End If
 
-        txtNombreContacto.Text = ""
-        'txtTipoContacto.Text = ""
-        txtTelefonoFijo.Text = ""
-        txtMovil.Text = ""
-        txtCorreoContacto.Text = ""
-        txtPuesto.Text = ""
+        txtMetodoPago.Text = ""
 
         tbl.AcceptChanges()
-        repContactos.DataSource = tbl
-        repContactos.DataBind()
-        Session("tblContactos") = tbl
+        repMetodosPago.DataSource = tbl
+        repMetodosPago.DataBind()
+        Session("tblMetodoPago") = tbl
+    End Sub
+
+    Public Sub CargarTablaNumCtaPago()
+        Dim tbl = New DataTable()
+        Dim numCtaPago = txtNumCuenta.Text
+
+        If Session("tblNumCtaPago") Is Nothing Then
+            tbl.Columns.Add("NumCtaPagoId")
+            tbl.Columns.Add("NumCtaPago")
+
+            Dim id As Integer = 0
+
+            If tbl.Rows.Count > 0 Then
+                id = tbl.Rows.Count
+            End If
+
+            tbl.Rows.Add(id, numCtaPago)
+        Else
+            tbl = DirectCast(Session("tblNumCtaPago"), DataTable)
+            Dim newRow = tbl.NewRow
+
+            newRow(0) = tbl.Rows.Count
+            newRow(1) = numCtaPago
+
+            tbl.Rows.Add(newRow)
+        End If
+
+        txtNumCuenta.Text = ""
+
+        tbl.AcceptChanges()
+        repNumCtaPago.DataSource = tbl
+        repNumCtaPago.DataBind()
+        Session("tblNumCtaPago") = tbl
     End Sub
 
     Public Sub CargarPagina()
@@ -613,12 +976,13 @@ Public Class DetalleCliente
                     tbl.Columns.Add("TelefonoMovil")
                     tbl.Columns.Add("Correo")
                     tbl.Columns.Add("Puesto")
+                    tbl.Columns.Add("TipoContactoId")
 
                     NombresContactosCliente = ""
 
-                    For Each contacto As ClienteContactoModel In contactos
+                    For Each contacto As ClienteContactoModel In contactos.OrderBy(Function(x) x.ContactoId)
                         NombresContactosCliente += contacto.Nombre + "<br/>"
-                        tbl.Rows.Add(contacto.ContactoId, contacto.Nombre, contacto.TipoContacto, contacto.Telefono, contacto.TelefonoMovil, contacto.CorreoElectronico, contacto.Puesto)
+                        tbl.Rows.Add(contacto.ContactoId, contacto.Nombre, contacto.TipoContactoClienteNombre, contacto.TelefonoFijo, contacto.TelefonoMovil, contacto.CorreoElectronico, contacto.Puesto, contacto.TipoContactoClienteId)
                     Next
 
                     tbl.AcceptChanges()
@@ -628,6 +992,72 @@ Public Class DetalleCliente
                 End If
             Else
                 EditarContactosCliente = False
+            End If
+        End If
+    End Sub
+
+    Public Sub CargarMetodoPago()
+        Dim url = "api/MetodoPagoCliente?clienteId=" & IdCliente
+        Dim req = GetRequest(url, UserSession.Token)
+        Dim result = JObject.Parse(req)
+        Dim statusCode = result.GetValue("statusCode").Value(Of Integer)
+
+        If (statusCode >= 200 And statusCode < 400) Then
+            Dim detail = result.GetValue("detail").Value(Of JArray)
+            Dim metodosPago As List(Of ClienteMetodoPagoModel) = StringToValue(detail.ToString(), GetType(List(Of ClienteMetodoPagoModel)))
+            Dim tbl = New DataTable()
+
+            If metodosPago.Count > 0 Then
+
+                If Session("tblMetodoPago") Is Nothing Then
+                    tbl.Columns.Add("MetodoPagoId")
+                    tbl.Columns.Add("MetodoPago")
+
+                    MetodosPagoCliente = ""
+
+                    For Each metodo As ClienteMetodoPagoModel In metodosPago
+                        MetodosPagoCliente += metodo.MetodoPago + "<br/>"
+                        tbl.Rows.Add(metodo.MetodoPagoId, metodo.MetodoPago)
+                    Next
+
+                    tbl.AcceptChanges()
+                    repMetodosPago.DataSource = tbl
+                    repMetodosPago.DataBind()
+                    Session("tblMetodoPago") = tbl
+                End If
+            End If
+        End If
+    End Sub
+
+    Public Sub CargarNumCtaPago()
+        Dim url = "api/NumCtaPagoCliente?clienteId=" & IdCliente
+        Dim req = GetRequest(url, UserSession.Token)
+        Dim result = JObject.Parse(req)
+        Dim statusCode = result.GetValue("statusCode").Value(Of Integer)
+
+        If (statusCode >= 200 And statusCode < 400) Then
+            Dim detail = result.GetValue("detail").Value(Of JArray)
+            Dim cuentasPago As List(Of ClienteNumCtaPagoModel) = StringToValue(detail.ToString(), GetType(List(Of ClienteNumCtaPagoModel)))
+            Dim tbl = New DataTable()
+
+            If cuentasPago.Count > 0 Then
+
+                If Session("tblNumCtaPago") Is Nothing Then
+                    tbl.Columns.Add("NumCtaPagoId")
+                    tbl.Columns.Add("NumCtaPago")
+
+                    NumCtaPagoCliente = ""
+
+                    For Each cuenta As ClienteNumCtaPagoModel In cuentasPago
+                        NumCtaPagoCliente += cuenta.NumCtaPago + "<br/>"
+                        tbl.Rows.Add(cuenta.NumCtaPagoId, cuenta.NumCtaPago)
+                    Next
+
+                    tbl.AcceptChanges()
+                    repNumCtaPago.DataSource = tbl
+                    repNumCtaPago.DataBind()
+                    Session("tblNumCtaPago") = tbl
+                End If
             End If
         End If
     End Sub
@@ -651,20 +1081,24 @@ Public Class DetalleCliente
     End Sub
 
     Public Sub EditarContacto(contactoId As Integer)
-        Dim tbl = DirectCast(Session("tblContactos"), DataTable)
+        If HttpContext.Current.Session("tblContactos") IsNot Nothing Then
+            Dim tbl = DirectCast(Session("tblContactos"), DataTable)
 
-        For Each row As DataRow In tbl.Rows
-            If CInt(row("ContactoId")) = contactoId Then
-                txtNombreContacto.Text = row("NombreContacto")
-                txtTelefonoFijo.Text = row("TelefonoFijo")
-                txtMovil.Text = row("TelefonoMovil")
-                txtCorreoContacto.Text = row("Correo")
-                txtPuesto.Text = row("Puesto")
-                EditContactoCliente = True
-                IdContacto = contactoId
-                Exit For
-            End If
-        Next
+            For Each row As DataRow In tbl.Rows
+                If CInt(row("ContactoId")) = contactoId Then
+                    txtNombreContacto.Text = row("NombreContacto")
+                    txtTelefonoFijo.Text = row("TelefonoFijo")
+                    txtMovil.Text = row("TelefonoMovil")
+                    txtCorreoContacto.Text = row("Correo")
+                    txtPuesto.Text = row("Puesto")
+                    cbxTipoContacto.SelectedIndex = Int32.Parse(row("TipoContactoId")) - 1
+                    EditContactoCliente = True
+                    EditarContactosCliente = True
+                    IdContacto = contactoId
+                    Exit For
+                End If
+            Next
+        End If
     End Sub
 
     Public Sub EliminarContacto(contactoId As String)
@@ -721,5 +1155,29 @@ Public Class DetalleCliente
         If btn IsNot Nothing Then
             scriptMan.RegisterAsyncPostBackControl(btn)
         End If
+    End Sub
+
+    Protected Sub repMetodosPago_ItemCreated(sender As Object, e As RepeaterItemEventArgs)
+        'Dim scriptMan As ScriptManager = ScriptManager.GetCurrent(Me)
+        'Dim btn As LinkButton = TryCast(e.Item.FindControl("btnEditarContacto"), LinkButton)
+        'If btn IsNot Nothing Then
+        '    scriptMan.RegisterAsyncPostBackControl(btn)
+        'End If
+    End Sub
+
+    Protected Sub repNumCtaPago_ItemCreated(sender As Object, e As RepeaterItemEventArgs)
+        'Dim scriptMan As ScriptManager = ScriptManager.GetCurrent(Me)
+        'Dim btn As LinkButton = TryCast(e.Item.FindControl("btnEditarContacto"), LinkButton)
+        'If btn IsNot Nothing Then
+        '    scriptMan.RegisterAsyncPostBackControl(btn)
+        'End If
+    End Sub
+
+    Protected Sub btnCargarMetodoPago_Click(sender As Object, e As EventArgs)
+        CargarTablaMetodosPago()
+    End Sub
+
+    Protected Sub btnCargarNumCtaPago_Click(sender As Object, e As EventArgs)
+        CargarTablaNumCtaPago()
     End Sub
 End Class

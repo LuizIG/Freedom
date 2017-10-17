@@ -3,7 +3,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 <ul class="breadcrumb">
     <li>
-        <a href='<%= ResolveUrl("~/Configuracion/Cliente.aspx")%>'>Clientes</a>
+        <a href='<%= ResolveUrl("Clientes.aspx")%>'>Clientes</a>
     </li>
     <li><a href="#" class="active"><asp:Label runat="server" ID="lblTitulo" ClientIDMode="Static"></asp:Label></a>
     </li>
@@ -193,7 +193,7 @@
 								</asp:TextBox>
 							</div>
                             <div class="form-group form-group-default required">
-								<label>Días de Créditp</label>
+								<label>Días de Crédito</label>
 								<asp:TextBox ID="txtDiasCredito" runat="server" class="form-control"
 										ClientIDMode="Static" placeholder="Dias de Credito">
 								</asp:TextBox>
@@ -296,7 +296,8 @@
 									    <div class="col-sm-6">
 										    <div class="form-group form-group-default">
 											    <label>Tipo de Contacto</label>
-                                                <select class="full-width full-height select2-hidden-accessible" name="tipoContacto" data-init-plugin="select2" runat="server" id="cbxTipoContacto" data-id="cbxTipoContacto" tabindex="-1" aria-hidden="true">
+                                                <select class="full-width full-height select2" name="tipoContacto" data-init-plugin="select2" 
+                                                    runat="server" id="cbxTipoContacto" data-id="cbxTipoContacto" tabindex="-1" aria-hidden="true">
 									            </select>
 										    </div>
 									    </div>
@@ -336,7 +337,9 @@
                                     <div class="padding-20 sm-padding-5 sm-m-b-20 sm-m-t-20 bg-white clearfix" style="visibility: hidden; display: none;">
 				                        <ul class="pager wizard no-style">
 					                        <li class="next">
-                                                <asp:Button runat="server" style="visibility: hidden; display: none;" ClientIDMode="Static" Text="Agregar Contacto" OnClick="btnAgregarContacto_Click" CssClass="btn btn-success btn-cons btn-animated from-left fa fa-users pull-right" ID="btnAgregarContacto" />
+                                                <asp:Button runat="server" style="visibility: hidden; display: none;" ClientIDMode="Static" 
+                                                    Text="Agregar Contacto" OnClick="btnAgregarContacto_Click"
+                                                    CssClass="btn btn-success btn-cons btn-animated from-left fa fa-users pull-right" ID="btnAgregarContacto" />
 					                        </li>
 				                        </ul>
 			                        </div>
@@ -345,7 +348,7 @@
                                     <asp:AsyncPostBackTrigger ControlID="repContactos"/>
                                 </Triggers>
                             </asp:UpdatePanel>
-                            <div class="padding-20 sm-padding-5 sm-m-b-20 sm-m-t-20 bg-white clearfix">
+                            <div class="padding-20 sm-padding-5 sm-m-b-20 sm-m-t-20 bg-white clearfix" style="visibility: hidden; display: none;">
 				                <ul class="pager wizard no-style">
 					                <li class="next">
                                         <button class="btn btn-success btn-cons btn-animated from-left fa fa-users pull-right" id="btnTriggerAgregaContacto" type="button">
@@ -383,27 +386,118 @@
                             </div>
                         </div>
                         <div class="panel-body">
-                            <div class="form-group form-group-default required">
-								<label>Cuenta Contable</label>
-								<asp:TextBox ID="txtCuentaContable" runat="server" class="form-control" ClientIDMode="Static">
-								</asp:TextBox>
-							</div>
+                            <div class="row">
+								<%--<div class="form-group form-group-default required">
+								    <label>Cuenta Contable</label>
+								    <asp:TextBox ID="txtCuentaContable" runat="server" class="form-control" ClientIDMode="Static">
+								    </asp:TextBox>
+							    </div>--%>
+                            </div>
 							<div class="row">
 								<div class="col-sm-6">
-									<div class="form-group form-group-default required">
-										<label>Método de Pago</label>
-										<asp:TextBox ID="txtMetodoPago" runat="server" class="form-control" ClientIDMode="Static">
-										</asp:TextBox>
+									<div class="form-group form-group-default input-group" style="padding-left:10px">
+                                        <div class="form-input-group">
+                                            <label style="color:#626262;">Método de Pago</label>
+                                            <asp:TextBox ID="txtMetodoPago" runat="server" class="form-control" ForeColor="Black" BackColor="Window" ClientIDMode="Static">
+										    </asp:TextBox>
+                                        </div>
+                                        <div class="input-group-addon btn btn-primary" onclick="TriggerCargarMetodoPago()">
+                                            <i class="fa fa-search"></i>
+                                        </div>
 									</div>
 								</div>
 								<div class="col-sm-6">
-									<div class="form-group form-group-default">
-										<label>Número de Cuenta</label>
-										<asp:TextBox ID="txtNumCuenta" runat="server" class="form-control" ClientIDMode="Static">
-										</asp:TextBox>
+                                    <div class="form-group form-group-default input-group" style="padding-left:10px">
+                                        <div class="form-input-group">
+                                            <label style="color:#626262;">Número de Cuenta</label>
+                                            <asp:TextBox ID="txtNumCuenta" runat="server" class="form-control" ForeColor="Black" BackColor="Window" ClientIDMode="Static">
+										    </asp:TextBox>
+                                        </div>
+                                        <div class="input-group-addon btn btn-primary" onclick="TriggerCargarNumCtaPago()">
+                                            <i class="fa fa-search"></i>
+                                        </div>
 									</div>
 								</div>
 							</div>
+                            <div class="row">
+								<div class="col-sm-6">
+									<asp:UpdatePanel runat="server" UpdateMode="Always">
+                                        <ContentTemplate>
+                                            <table class="table table-hover dataTable no-footer" id="tblMetodosPago" role="grid">
+                                                <thead>
+                                                    <tr role="row">
+                                                        <th style="width: 0px; visibility:hidden;" class="sorting" tabindex="0" aria-controls="tblMetodosPago" rowspan="1" colspan="1" aria-label="Title: activate to sort column descending">Id</th>
+                                                        <th style="width: 100px; text-align:center;" class="sorting" tabindex="0" aria-controls="tblMetodosPago" rowspan="1" colspan="1" aria-label="Title: activate to sort column descending">Método de Pago</th>
+                                                        <%--<th style="width: 80px; text-align:center;" class="sorting" tabindex="0" aria-controls="tblMetodosPago" rowspan="1" colspan="1" aria-label="Condensed: activate to sort column ascending">Editar</th>
+                                                        <th style="width: 80px; text-align:center;" class="sorting" tabindex="0" aria-controls="tblMetodosPago" rowspan="1" colspan="1" aria-label="Condensed: activate to sort column ascending">Eliminar</th>--%>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <asp:Repeater ID="repMetodosPago" runat="server" OnItemCreated="repMetodosPago_ItemCreated">
+                                                        <ItemTemplate>
+                                                            <tr role="row">
+                                                                <td class="v-align-middle">
+                                                                    <input name="lblMetodoPagoId" type="hidden" value='<%# Eval("MetodoPagoId") %>'>
+                                                                </td>
+                                                                <td class="v-align-middle semi-bold sorting_1" style="text-align:center;">
+                                                                    <asp:Label ID="txtName" runat="server" Text='<%# Eval("MetodoPago") %>' />
+                                                                </td>
+                                                            </tr>  
+                                                        </ItemTemplate>
+                                                    </asp:Repeater>
+                                                </tbody>     
+                                            </table>
+                                            <asp:Button ID="btnCargarMetodoPago" runat="server" style="visibility:hidden; display: none" ClientIDMode="Static" OnClick="btnCargarMetodoPago_Click" />
+                                        </ContentTemplate>
+                                        <Triggers>
+                                            <asp:AsyncPostBackTrigger ControlID="repMetodosPago"/>
+                                        </Triggers>
+                                    </asp:UpdatePanel>
+								</div>
+								<div class="col-sm-6">
+									<asp:UpdatePanel runat="server" UpdateMode="Always">
+                                        <ContentTemplate>
+                                            <table class="table table-hover dataTable no-footer" id="tblNumCtaPago" role="grid">
+                                                <thead>
+                                                    <tr role="row">
+                                                        <th style="width: 0px; visibility:hidden;" class="sorting" tabindex="0" aria-controls="tblNumCtaPago" rowspan="1" colspan="1" aria-label="Title: activate to sort column descending">Id</th>
+                                                        <th style="width: 100px; text-align:center;" class="sorting" tabindex="0" aria-controls="tblNumCtaPago" rowspan="1" colspan="1" aria-label="Title: activate to sort column descending">Número de Cuenta</th>
+                                                        <%--<th style="width: 80px; text-align:center;" class="sorting" tabindex="0" aria-controls="tblNumCtaPago" rowspan="1" colspan="1" aria-label="Condensed: activate to sort column ascending">Editar</th>
+                                                        <th style="width: 80px; text-align:center;" class="sorting" tabindex="0" aria-controls="tblNumCtaPago" rowspan="1" colspan="1" aria-label="Condensed: activate to sort column ascending">Eliminar</th>--%>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <asp:Repeater ID="repNumCtaPago" runat="server" OnItemCreated="repNumCtaPago_ItemCreated">
+                                                        <ItemTemplate>
+                                                            <tr role="row">
+                                                                <td class="v-align-middle">
+                                                                    <input name="lblNumCtaPagoId" type="hidden" value='<%# Eval("NumCtaPagoId") %>'>
+                                                                </td>
+                                                                <td class="v-align-middle semi-bold sorting_1" style="text-align:center;">
+                                                                    <asp:Label ID="txtName" runat="server" Text='<%# Eval("NumCtaPago") %>' />
+                                                                </td>
+                                                            </tr>  
+                                                        </ItemTemplate>
+                                                    </asp:Repeater>
+                                                </tbody>     
+                                            </table>
+                                            <asp:Button ID="btnCargarNumCtaPago" runat="server" style="visibility:hidden; display: none" ClientIDMode="Static" OnClick="btnCargarNumCtaPago_Click"/>
+                                    </ContentTemplate>
+                                        <Triggers>
+                                            <asp:AsyncPostBackTrigger ControlID="repNumCtaPago"/>
+                                        </Triggers>
+                                    </asp:UpdatePanel>
+								</div>
+							</div>
+                            <div class="padding-20 sm-padding-5 sm-m-b-20 sm-m-t-20 bg-white clearfix" style="visibility: hidden; display: none;">
+				                <ul class="pager wizard no-style">
+					                <li class="next">
+                                        <button class="btn btn-success btn-cons btn-animated from-left fa fa-users pull-right" id="btnTriggerAgregaNumCtaPago" type="button">
+							                
+						                </button>
+					                </li>
+				                </ul>
+			                </div><br />
                             <div class="padding-20 sm-padding-5 sm-m-b-20 sm-m-t-20 bg-white clearfix">
 				                <ul class="pager wizard no-style">
 					                <li class="next">
@@ -628,24 +722,18 @@
                         </div>
                         <div class="row">
                             <div class="col-md-3">
-                                <p class="hint-text small">Comprobante:</p>
+                                <p class="hint-text small">Métodos de Pago:</p>
                             </div>
                             <div class="col-md-8">
-                                    <p data-id="lblComprobante" runat="server"></p>
-                            </div>
-                            <div class="col-md-1">
-                                    <span class="pull-left" runat="server"><i id="requeridoComprobante" class="fa fa-exclamation"></i></span>
+                                    <p data-id="lblMetodosPago" runat="server"></p>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-3">
-                                <p class="hint-text small">Impuestos:</p>
+                                <p class="hint-text small">Números de Cuenta:</p>
                             </div>
                             <div class="col-md-8">
-                                    <p data-id="lblImpuestos" runat="server"></p>
-                            </div>
-                            <div class="col-md-1">
-                                    <span class="pull-left" runat="server"><i id="requeridoImpuestos" class="fa fa-exclamation"></i></span>
+                                    <p data-id="lblNumCtaPago" runat="server"></p>
                             </div>
                         </div>
                     </div>

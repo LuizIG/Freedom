@@ -4,7 +4,7 @@ Imports Microsoft.AspNet.Identity
 Imports Model
 
 Namespace Controllers
-    '<Authorize>
+    <Authorize>
     Public Class ClientesController
         Inherits FreedomApi
 

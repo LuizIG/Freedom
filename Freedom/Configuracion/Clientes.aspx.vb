@@ -8,9 +8,18 @@ Public Class Clientes
     Protected Overrides Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs)
         MyBase.Page_Load(sender, e)
 
-        If Not IsPostBack Then
-            CargarClientes(UserSession.OrganizacionId)
-        End If
+
+        'Dim combo = DirectCast(LoadControl("~/UserControls/ComboEmpresas.ascx"), ComboEmpresas)
+        'Me.Controls.Add(combo)
+
+        'If Not IsPostBack Then
+        '    combo.CargarEmpresas(UserSession.OrganizacionId)
+        'End If
+
+        'combo.cbxEmpresa_ServerChange(combo, Nothing)
+
+
+        CargarClientes(UserSession.OrganizacionId)
     End Sub
 
     Public Sub CargarClientes(IdOrganizacion As Integer)

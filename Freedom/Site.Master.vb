@@ -1,10 +1,16 @@
-﻿Imports System.Web.Script.Serialization
+﻿Imports System.IO
+Imports System.Web.Script.Serialization
 Imports Model
 Imports Newtonsoft.Json.Linq
 
 Public Class SiteMaster
     Inherits MasterPage
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
+        Dim freedom = New FreedomPage()
+        Dim pageName = Path.GetFileNameWithoutExtension(Page.AppRelativeVirtualPath)
+        If Not pageName = "DetalleEmpresa" Then
+            freedom.ReLoadComboEmpresa = False
+        End If
     End Sub
 
     Protected Sub btnLogout_ServerClick(sender As Object, e As EventArgs)

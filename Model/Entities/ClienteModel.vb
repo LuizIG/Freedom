@@ -42,11 +42,31 @@ Public Class ClienteContactoModel
     Public Property OrganizacionId As Integer
     Public Property EmpresaId As Integer
     Public Property Nombre As String
-    Public Property Telefono As String
+    Public Property TelefonoFijo As String
     Public Property TelefonoMovil As String
     Public Property CorreoElectronico As String
     Public Property Puesto As String
-    Public Property TipoContacto As String
+    Public Property TipoContactoClienteId As Integer
+    Public Property TipoContactoClienteNombre As String
+End Class
+
+Public Class ClienteMetodoPagoModel
+    Public Property MetodoPagoId As Integer
+    Public Property ClienteId As Integer
+    Public Property MetodoPago As String
+    Public Property Activo As Boolean
+End Class
+
+Public Class ClienteNumCtaPagoModel
+    Public Property NumCtaPagoId As Integer
+    Public Property ClienteId As Integer
+    Public Property NumCtaPago As String
+    Public Property Activo As Boolean
+End Class
+
+Public Class ClienteFormasPagoModel
+    Public Property NumCtaPago As String
+    Public Property MetodoPago As String
 End Class
 
 
