@@ -159,6 +159,7 @@
     <Content Include="App\js\Empresa.js" />
     <Content Include="App\js\Home.js" />
     <Content Include="App\js\Loading.js" />
+    <Content Include="App\js\Productos.js" />
     <Content Include="App\js\SeriesFolios.js" />
     <Content Include="App\js\Usuario.js" />
     <Content Include="App\js\Usuarios.js" />
@@ -1215,6 +1216,7 @@
     <Content Include="Configuracion\DetalleEmpresa.aspx" />
     <Content Include="Configuracion\Empleados.aspx" />
     <Content Include="Configuracion\Empresas.aspx" />
+    <Content Include="Configuracion\Productos.aspx" />
     <Content Include="Configuracion\SeriesFolios.aspx" />
     <Content Include="Configuracion\Usuarios.aspx" />
     <Content Include="favicon.ico" />
@@ -1574,6 +1576,13 @@
     </Compile>
     <Compile Include="Configuracion\Empresas.aspx.vb">
       <DependentUpon>Empresas.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Configuracion\Productos.aspx.designer.vb">
+      <DependentUpon>Productos.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Configuracion\Productos.aspx.vb">
+      <DependentUpon>Productos.aspx</DependentUpon>
       <SubType>ASPXCodebehind</SubType>
     </Compile>
     <Compile Include="Configuracion\SeriesFolios.aspx.designer.vb">
