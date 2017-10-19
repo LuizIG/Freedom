@@ -12,10 +12,12 @@ Namespace Controllers
         ''' spConsDomicilioCliente_ClienteId
         ''' </summary>
         ''' <param name="clienteId"></param>
+        ''' <param name="organizacionId"></param>
+        ''' <param name="empresaId"></param>
         ''' <returns></returns>
         <HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)>
         <HttpGet>
-        Public Function GetDomicilioClienteById(ByVal clienteId As Integer, ByVal organizacionId As Integer, ByVal empresaId As Integer) As IEnumerable(Of spConsDomicilioEmpresa_EmpresaId_Result)
+        Public Function GetDomicilioClienteById(ByVal clienteId As Integer, ByVal organizacionId As Integer, ByVal empresaId As Integer) As IEnumerable(Of spConsDomicilioCliente_ClienteId_Result)
             Return db.spConsDomicilioCliente_ClienteId(clienteId, organizacionId, empresaId)
         End Function
 

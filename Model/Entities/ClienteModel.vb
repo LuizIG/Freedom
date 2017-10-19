@@ -50,6 +50,11 @@ Public Class ClienteContactoModel
     Public Property TipoContactoClienteNombre As String
 End Class
 
+Public Class ClienteContactoDeleteModel
+    Public Property ContactoId As Integer
+    Public Property ClienteId As Integer
+End Class
+
 Public Class ClienteMetodoPagoModel
     Public Property MetodoPagoId As Integer
     Public Property ClienteId As Integer

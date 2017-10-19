@@ -34,7 +34,6 @@ function eliminarCliente() {
             clienteId = trow.find('input[name="lblClienteId"]').val();
         }
     });
-
     var dataj = "{clienteId: '" + clienteId + "'}";
     var url = "Clientes.aspx/EliminarCliente";
 

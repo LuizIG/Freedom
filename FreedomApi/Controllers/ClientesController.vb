@@ -88,5 +88,27 @@ Namespace Controllers
                 Return BadRequest(ex.Message)
             End Try
         End Function
+
+        ''' <summary>
+        ''' spDelCliente
+        ''' </summary>
+        ''' <param name="clienteId"></param>
+        ''' <param name="organizacionId"></param>
+        ''' <param name="empresaId"></param>
+        ''' <returns></returns>
+        <HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)>
+        <HttpDelete>
+        Public Function DeleteCliente(ByVal clienteId As Integer, ByVal organizacionId As Integer, ByVal empresaId As Integer) As IHttpActionResult
+            If Not ModelState.IsValid Then
+                Return BadRequest(ModelState)
+            End If
+
+            Try
+                db.spDelCliente(clienteId, organizacionId, empresaId)
+                Return Ok()
+            Catch ex As Exception
+                Return BadRequest(ex.Message)
+            End Try
+        End Function
     End Class
 End Namespace

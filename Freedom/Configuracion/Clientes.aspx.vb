@@ -56,7 +56,7 @@ Public Class Clientes
             Dim page = New FreedomPage()
             Dim loginsession = page.UserSession
 
-            Dim url = "api/Clientes?clienteId=" & Convert.ToInt32(clienteId) & "&idOrganizacion=" & loginsession.OrganizacionId
+            Dim url = "api/Clientes?clienteId=" & Convert.ToInt32(clienteId) & "&organizacionId=" & loginsession.OrganizacionId & "&empresaId=" & page.EmpresaId
             Dim req = DeleteRequest(url, loginsession.Token)
             Dim result = JObject.Parse(req)
             Dim statusCode = result.GetValue("statusCode").Value(Of Integer)

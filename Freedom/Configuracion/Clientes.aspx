@@ -37,7 +37,8 @@
                         <tbody>
                             <tr role="row">
                                 <td class="v-align-middle" style="text-align:center;">
-                                    <asp:Label ID="Label1" runat="server" Text='<%# Eval("ClienteEmpresaId") %>' />
+                                    <asp:Label ID="lbl" runat="server" Text='<%# Eval("ClienteEmpresaId") %>' />
+                                    <input name="lblClienteId" type="hidden" value='<%# Eval("ClienteEmpresaId") %>'>
                                 </td>
                                 <td class="v-align-middle semi-bold sorting_1" style="text-align:center;">
                                     <asp:Label ID="txtName" runat="server" Text='<%# Eval("ClienteEmpresaNombre") %>' />

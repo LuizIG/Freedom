@@ -111,16 +111,16 @@ Public Class DetalleCliente
             Session("tblMetodoPago") = Nothing
             IdDomicilio = 0
             IdContacto = 0
-        End If
 
-        If EditCliente Then
-            CargarPagina()
-            txtEditarCliente.Text = "True"
-            lblTitulo.Text = "Editar cliente"
+            If EditCliente Then
+                CargarPagina()
+                txtEditarCliente.Text = "True"
+                lblTitulo.Text = "Editar cliente"
 
-            ScriptManager.RegisterStartupScript(Me.Page, Me.GetType(), "script", "UpdateResumen('" + NombresContactosCliente + "', '" + MetodosPagoCliente + "', , '" + NumCtaPagoCliente + "');", True)
-        Else
-            lblTitulo.Text = "Nuevo cliente"
+                ScriptManager.RegisterStartupScript(Me.Page, Me.GetType(), "script", "UpdateResumen('" + NombresContactosCliente + "', '" + MetodosPagoCliente + "', '" + NumCtaPagoCliente + "');", True)
+            Else
+                lblTitulo.Text = "Nuevo cliente"
+            End If
         End If
     End Sub
 
@@ -150,7 +150,7 @@ Public Class DetalleCliente
             Dim msjRet = ""
             Dim data = JsonConvert.SerializeObject(empresa)
 
-            If page.EditEmpresa Then
+            If page.EditCliente Then
                 req = PutRequest("api/Clientes", loginsession.Token, data)
                 msjRet = "Información general actualizada"
             Else
@@ -232,7 +232,7 @@ Public Class DetalleCliente
             Dim req = ""
             Dim msjRet = ""
 
-            If page.EditEmpresa AndAlso pageDet.EditarDomicilioCliente Then
+            If page.EditCliente AndAlso pageDet.EditarDomicilioCliente Then
                 req = PutRequest("api/DomicilioCliente", loginsession.Token, data)
                 msjRet = "Domicilio Fiscal actualizado"
             Else
@@ -298,7 +298,7 @@ Public Class DetalleCliente
             Dim req = ""
             Dim msjRet = ""
 
-            If page.EditEmpresa AndAlso pageDet.EditarPersonalizacionCliente Then
+            If page.EditCliente AndAlso pageDet.EditarPersonalizacionCliente Then
                 req = PutRequest("api/ConfiguracionCliente", loginsession.Token, data)
                 msjRet = "Personalización actualizado"
             Else
@@ -435,6 +435,10 @@ Public Class DetalleCliente
                                 pageDet.EditarContactosCliente = False
                                 Exit For
                             End If
+                        Next
+
+                        For Each row As DataRow In tbl.Rows
+                            nombresContactos += row("NombreContacto") + "<br/>"
                         Next
                     End If
                 End If
@@ -1105,15 +1109,9 @@ Public Class DetalleCliente
         Try
             Dim tbl = DirectCast(Session("tblContactos"), DataTable)
 
-            If EditEmpresa Then
-                Dim contacto = New ClienteContactoModel() With {
-                    .ClienteId = IdCliente,
-                    .ContactoId = Convert.ToInt32(contactoId)
-                }
-
-                Dim data = JsonConvert.SerializeObject(contacto)
-                Dim url = "api/ContactoCliente"
-                Dim req = DeleteRequest(url, UserSession.Token, data)
+            If EditCliente Then
+                Dim url = "api/ContactoCliente?clienteId=" & IdCliente & "&contactoId=" & Convert.ToInt32(contactoId)
+                Dim req = DeleteRequest(url, UserSession.Token)
                 Dim result = JObject.Parse(req)
                 Dim statusCode = result.GetValue("statusCode").Value(Of Integer)
 
@@ -1121,6 +1119,7 @@ Public Class DetalleCliente
                     For Each row As DataRow In tbl.Rows
                         If row("ContactoId") = contactoId Then
                             tbl.Rows.Remove(row)
+                            Exit For
                         End If
                     Next
 
@@ -1136,6 +1135,7 @@ Public Class DetalleCliente
                 For Each row As DataRow In tbl.Rows
                     If row("ContactoId") = contactoId Then
                         tbl.Rows.Remove(row)
+                        Exit For
                     End If
                 Next
 
@@ -1145,7 +1145,7 @@ Public Class DetalleCliente
                 Session("tblContactos") = tbl
             End If
         Catch ex As Exception
-
+            Dim text = ex.Message
         End Try
     End Sub
 

@@ -73,23 +73,29 @@ Namespace Controllers
         ''' <summary>
         ''' spDelContactoCliente
         ''' </summary>
-        ''' <param name="model"></param>
+        ''' <param name="clienteId"></param>
+        ''' <param name="contactoId"></param>
         ''' <returns></returns>
         <HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)>
         <HttpDelete>
-        Public Function DeleteContactoCliente(ByVal model As ClienteContactoModel) As IHttpActionResult
+        Public Function DeleteContactoCliente(ByVal clienteId As Integer, ByVal contactoId As Integer) As IHttpActionResult
             If Not ModelState.IsValid Then
                 Return BadRequest(ModelState)
             End If
 
             Try
-                With model
-                    model.ClienteId = db.spDelContactoCliente(.ClienteId, .ContactoId)
+                'With Model
+                '    Model.ContactoId = db.spDelContactoCliente(.ClienteId, .ContactoId)
 
-                    If (model.ClienteId = 0) Then
-                        Return BadRequest()
-                    End If
-                End With
+                '    If (Model.ContactoId = 0) Then
+                '        Return BadRequest()
+                '    End If
+                'End With
+                contactoId = db.spDelContactoCliente(clienteId, contactoId)
+
+                If (contactoId = 0) Then
+                    Return BadRequest()
+                End If
                 Return Ok()
             Catch ex As Exception
                 Return BadRequest(ex.Message)

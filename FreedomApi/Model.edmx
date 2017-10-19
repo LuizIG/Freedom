@@ -144,7 +144,7 @@
           <Parameter Name="TipoComprobanteID" Type="int" Mode="In" />
         </Function>
         <Function Name="spCONOrganizacion_Usuario_Invitacion" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="Email" Type="nvarchar" Mode="In" />
+          <Parameter Name="IdInvitacion" Type="int" Mode="In" />
         </Function>
         <Function Name="spCONS_FolioSerie_CFDI" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="EmpresaID" Type="int" Mode="In" />
@@ -1015,8 +1015,7 @@
           <Parameter Name="ActivoFlg" Type="bit" Mode="In" />
         </Function>
         <Function Name="spUPDOrganizacion_Usuario_Invitacion" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="Email" Type="nvarchar" Mode="In" />
-          <Parameter Name="OrganizacionId" Type="int" Mode="In" />
+          <Parameter Name="Id" Type="int" Mode="In" />
         </Function>
         <Function Name="spValidaComprobantesEmitidosporEmpresa" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="EmpresaId" Type="int" Mode="In" />
@@ -1911,7 +1910,7 @@
             <Parameter Name="UsuarioId" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="spCONOrganizacion_Usuario_Invitacion" ReturnType="Collection(FREEDOMDBdevModel.spCONOrganizacion_Usuario_Invitacion_Result)">
-          <Parameter Name="Email" Mode="In" Type="String" />
+          <Parameter Name="IdInvitacion" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="spINSOrganizacion_Usuario_Invitacion">
             <Parameter Name="Email" Mode="In" Type="String" />
@@ -1920,8 +1919,7 @@
             <Parameter Name="UsuarioIdInvita" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="spUPDOrganizacion_Usuario_Invitacion">
-            <Parameter Name="Email" Mode="In" Type="String" />
-            <Parameter Name="OrganizacionId" Mode="In" Type="Int32" />
+          <Parameter Name="Id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="spUpdCliente_Cuenta_Contable">
             <Parameter Name="ClienteID" Mode="In" Type="Int32" />
@@ -1933,11 +1931,6 @@
           </FunctionImport>
           <FunctionImport Name="spConsConfiguracionCliente_ClienteId" ReturnType="Collection(FREEDOMDBdevModel.spConsConfiguracionCliente_ClienteId_Result)">
             <Parameter Name="ClienteEmpresaId" Mode="In" Type="Int32" />
-            <Parameter Name="OrganizacionId" Mode="In" Type="Int32" />
-            <Parameter Name="EmpresaId" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="spConsDomicilioCliente_ClienteId" ReturnType="Collection(FREEDOMDBdevModel.spConsDomicilioCliente_ClienteId_Result)">
-            <Parameter Name="ClienteId" Mode="In" Type="Int32" />
             <Parameter Name="OrganizacionId" Mode="In" Type="Int32" />
             <Parameter Name="EmpresaId" Mode="In" Type="Int32" />
           </FunctionImport>
@@ -2004,16 +1997,12 @@
             <Parameter Name="EmpresaId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="spConsTipoContactoCliente" ReturnType="Collection(FREEDOMDBdevModel.spConsTipoContactoCliente_Result)" />
-          <FunctionImport Name="spDelContactoCliente">
-            <Parameter Name="ClienteId" Mode="In" Type="Int32" />
-            <Parameter Name="ContactoId" Mode="In" Type="Int32" />
-          </FunctionImport>
           <FunctionImport Name="spAllContactoCliente" ReturnType="Collection(FREEDOMDBdevModel.spAllContactoCliente_Result)">
             <Parameter Name="OrganizacionId" Mode="In" Type="Int32" />
             <Parameter Name="EmpresaId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="spConsContactoCliente_ClienteId" ReturnType="Collection(FREEDOMDBdevModel.spConsContactoCliente_ClienteId_Result)">
-            <Parameter Name="ClienteId" Mode="In" Type="Int32" />
+          <Parameter Name="ClienteId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="spInsContactoCliente" ReturnType="Collection(FREEDOMDBdevModel.spInsContactoCliente_Result)">
             <Parameter Name="ClienteId" Mode="In" Type="Int32" />
@@ -2033,6 +2022,15 @@
             <Parameter Name="CorreoElectronico" Mode="In" Type="String" />
             <Parameter Name="Puesto" Mode="In" Type="String" />
             <Parameter Name="TipoContactoClienteId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="spConsDomicilioCliente_ClienteId" ReturnType="Collection(FREEDOMDBdevModel.spConsDomicilioCliente_ClienteId_Result)">
+            <Parameter Name="ClienteId" Mode="In" Type="Int32" />
+            <Parameter Name="OrganizacionId" Mode="In" Type="Int32" />
+            <Parameter Name="EmpresaId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="spDelContactoCliente">
+            <Parameter Name="ClienteId" Mode="In" Type="Int32" />
+            <Parameter Name="ContactoId" Mode="In" Type="Int32" />
           </FunctionImport>
         </EntityContainer>
         <EntityType Name="AspNetRoles">
@@ -2760,19 +2758,6 @@
           <Property Type="String" Name="CorreoElectronico" Nullable="true" MaxLength="200" />
           <Property Type="Int32" Name="DiasCredito" Nullable="true" />
         </ComplexType>
-        <ComplexType Name="spConsDomicilioCliente_ClienteId_Result">
-          <Property Type="Int32" Name="ClienteEmpresaId" Nullable="false" />
-          <Property Type="String" Name="Calle" Nullable="true" MaxLength="300" />
-          <Property Type="String" Name="NumeroExterno" Nullable="true" MaxLength="200" />
-          <Property Type="String" Name="NumeroInterno" Nullable="true" MaxLength="200" />
-          <Property Type="String" Name="Colonia" Nullable="true" MaxLength="300" />
-          <Property Type="String" Name="CP" Nullable="true" MaxLength="10" />
-          <Property Type="String" Name="Municipio" Nullable="true" MaxLength="600" />
-          <Property Type="Int32" Name="EstadoId" Nullable="true" />
-          <Property Type="String" Name="Estado" Nullable="true" MaxLength="200" />
-          <Property Type="Int32" Name="PaisId" Nullable="true" />
-          <Property Type="String" Name="Pais" Nullable="true" MaxLength="100" />
-        </ComplexType>
         <ComplexType Name="spInsDomicilioCliente_Result">
           <Property Type="Int32" Name="id" Nullable="false" />
           <Property Type="Int32" Name="IdError" Nullable="false" />
@@ -2839,6 +2824,19 @@
           <Property Type="Int32" Name="id" Nullable="false" />
           <Property Type="Int32" Name="IdError" Nullable="false" />
           <Property Type="String" Name="Error" Nullable="false" MaxLength="16" />
+        </ComplexType>
+        <ComplexType Name="spConsDomicilioCliente_ClienteId_Result">
+          <Property Type="Int32" Name="ClienteEmpresaId" Nullable="false" />
+          <Property Type="String" Name="Calle" Nullable="true" MaxLength="300" />
+          <Property Type="String" Name="NumeroExterno" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="NumeroInterno" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="Colonia" Nullable="true" MaxLength="300" />
+          <Property Type="String" Name="CP" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="Municipio" Nullable="true" MaxLength="600" />
+          <Property Type="Int32" Name="EstadoId" Nullable="true" />
+          <Property Type="String" Name="Estado" Nullable="true" MaxLength="200" />
+          <Property Type="Int32" Name="PaisId" Nullable="true" />
+          <Property Type="String" Name="Pais" Nullable="true" MaxLength="100" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -4097,23 +4095,6 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="spConsDomicilioCliente_ClienteId" FunctionName="FREEDOMDBdevModel.Store.spConsDomicilioCliente_ClienteId">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="FREEDOMDBdevModel.spConsDomicilioCliente_ClienteId_Result">
-                <ScalarProperty Name="ClienteEmpresaId" ColumnName="ClienteEmpresaId" />
-                <ScalarProperty Name="Calle" ColumnName="Calle" />
-                <ScalarProperty Name="NumeroExterno" ColumnName="NumeroExterno" />
-                <ScalarProperty Name="NumeroInterno" ColumnName="NumeroInterno" />
-                <ScalarProperty Name="Colonia" ColumnName="Colonia" />
-                <ScalarProperty Name="CP" ColumnName="CP" />
-                <ScalarProperty Name="Municipio" ColumnName="Municipio" />
-                <ScalarProperty Name="EstadoId" ColumnName="EstadoId" />
-                <ScalarProperty Name="Estado" ColumnName="Estado" />
-                <ScalarProperty Name="PaisId" ColumnName="PaisId" />
-                <ScalarProperty Name="Pais" ColumnName="Pais" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="spDelCliente" FunctionName="FREEDOMDBdevModel.Store.spDelCliente" />
           <FunctionImportMapping FunctionImportName="spInsConfiguracionCliente" FunctionName="FREEDOMDBdevModel.Store.spInsConfiguracionCliente" />
           <FunctionImportMapping FunctionImportName="spInsDomicilioCliente" FunctionName="FREEDOMDBdevModel.Store.spInsDomicilioCliente">
@@ -4166,7 +4147,6 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="spDelContactoCliente" FunctionName="FREEDOMDBdevModel.Store.spDelContactoCliente" />
           <FunctionImportMapping FunctionImportName="spAllContactoCliente" FunctionName="FREEDOMDBdevModel.Store.spAllContactoCliente">
             <ResultMapping>
               <ComplexTypeMapping TypeName="FREEDOMDBdevModel.spAllContactoCliente_Result">
@@ -4216,6 +4196,24 @@
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="spUpdContactoCliente" FunctionName="FREEDOMDBdevModel.Store.spUpdContactoCliente" />
+          <FunctionImportMapping FunctionImportName="spConsDomicilioCliente_ClienteId" FunctionName="FREEDOMDBdevModel.Store.spConsDomicilioCliente_ClienteId">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="FREEDOMDBdevModel.spConsDomicilioCliente_ClienteId_Result">
+                <ScalarProperty Name="ClienteEmpresaId" ColumnName="ClienteEmpresaId" />
+                <ScalarProperty Name="Calle" ColumnName="Calle" />
+                <ScalarProperty Name="NumeroExterno" ColumnName="NumeroExterno" />
+                <ScalarProperty Name="NumeroInterno" ColumnName="NumeroInterno" />
+                <ScalarProperty Name="Colonia" ColumnName="Colonia" />
+                <ScalarProperty Name="CP" ColumnName="CP" />
+                <ScalarProperty Name="Municipio" ColumnName="Municipio" />
+                <ScalarProperty Name="EstadoId" ColumnName="EstadoId" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="PaisId" ColumnName="PaisId" />
+                <ScalarProperty Name="Pais" ColumnName="Pais" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spDelContactoCliente" FunctionName="FREEDOMDBdevModel.Store.spDelContactoCliente" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
